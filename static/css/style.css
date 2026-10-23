@@ -28,6 +28,12 @@
   --transition:   .22s ease;
 }
 
+/* Portal nghiệp vụ */
+.inline-form{display:inline}.link-button{border:0;background:transparent;color:var(--primary,#16866a);cursor:pointer;font:inherit;padding:.25rem}.danger{color:#b42318}.data-table{width:100%;border-collapse:collapse;background:#fff;margin:1rem 0 2rem}.data-table th,.data-table td{padding:.8rem;text-align:left;border-bottom:1px solid #e7eceb}.data-table th{background:#edf8f4}.pet-avatar{width:100%;height:170px;object-fit:cover;border-radius:12px}.invoice{max-width:720px;margin:0 auto;background:#fff;padding:2rem}.auth-page{min-height:80vh;display:grid;place-items:center;padding:2rem}.auth-page .login-card{width:min(100%,520px)}
+.doctor-avatar{display:grid;place-items:center;min-height:220px;background:linear-gradient(135deg,#d9f3eb,#b8e3d6);font-size:5rem;border-radius:16px 16px 0 0}.doctor-card-full .doctor-avatar{border-radius:18px;min-height:300px}
+@media print{.admin-header,.no-print,.flash{display:none!important}.admin-page{padding:0}.invoice{box-shadow:none;width:100%;max-width:none}}
+@media (max-width:700px){.admin-nav,.admin-actions{flex-wrap:wrap;gap:.5rem}.data-table{display:block;overflow-x:auto}.stats-grid{grid-template-columns:repeat(2,1fr)}}
+
 /* ── RESET & BASE ──────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 

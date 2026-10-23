@@ -1,0 +1,1 @@
+{% extends 'portal.html' %}{% block portal_content %}<h1>Thông báo</h1><div class="card-grid">{% for notification in notifications %}<article class="service-card"><p>{{ notification.content }}</p><small>{{ notification.created_at }}</small></article>{% else %}<p>Chưa có thông báo.</p>{% endfor %}</div>{% endblock %}

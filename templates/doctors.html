@@ -23,21 +23,12 @@
     <div class="doctor-grid-full">
       {% for doctor in doctors %}
       <article class="doctor-card-full">
-        <div class="doctor-img-wrap">
-          <img src="{{ doctor.image }}" alt="{{ doctor.name }}" loading="lazy">
-        </div>
+        <div class="doctor-avatar" aria-hidden="true">👨‍⚕️</div>
         <div class="doctor-info-full">
           <h2>{{ doctor.name }}</h2>
           <p class="doctor-role">{{ doctor.role }}</p>
           <p class="doctor-specialty-tag">{{ doctor.specialty }}</p>
-          <div class="doctor-bio">
-            <p>{{ doctor.bio }}</p>
-          </div>
-          <div class="doctor-skills">
-            {% for skill in doctor.skills %}
-            <span class="skill-tag">{{ skill }}</span>
-            {% endfor %}
-          </div>
+          <div class="doctor-bio"><p>Thăm khám tận tâm, giải thích rõ ràng và theo dõi sức khỏe thú cưng theo từng ca.</p></div>
         </div>
       </article>
       {% endfor %}
