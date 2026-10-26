@@ -8,13 +8,16 @@ from datetime import date, timedelta
 import pytest
 
 from app import create_app
+from werkzeug.security import check_password_hash
 
 
 # ── FIXTURE ────────────────────────────────────────────────────────────
 
 @pytest.fixture()
-def client(tmp_path):
+def client(tmp_path, monkeypatch):
     """Tạo client kiểm thử riêng biệt với SQLite tạm."""
+    monkeypatch.setenv("PETCARE_DEMO_ADMIN_PASSWORD", "admin123")
+    monkeypatch.setenv("PETCARE_DEMO_PASSWORD", "123456")
     app = create_app({
         "TESTING": True,
         "SECRET_KEY": "test-secret-key-not-for-production",
@@ -254,8 +257,15 @@ def test_admin_delete_appointment(client):
         "phone": "0900000002", "pet_name": "Cat", "appointment_date": today(),
         "service": "Tiêm phòng", "note": "", "status": "Chờ xác nhận",
     }, follow_redirects=True)
+    with client.application.app_context():
+        import sqlite3
+        database = sqlite3.connect(client.application.config["DATABASE"])
+        appointment_id = database.execute(
+            "SELECT id FROM appointments WHERE pet_name=? ORDER BY id DESC LIMIT 1", ("Cat",)
+        ).fetchone()[0]
+        database.close()
     dash = client.get("/admin")
-    r = client.post("/admin/appointments/1/delete",
+    r = client.post(f"/admin/appointments/{appointment_id}/delete",
                     data={"csrf_token": get_csrf_token(dash)},
                     follow_redirects=True)
     assert "Đã xóa lịch hẹn" in r.get_data(as_text=True)
@@ -373,4 +383,48 @@ def test_booking_invalid_phone_symbols_only(client):
         "service": "Khám sức khỏe",
     }, follow_redirects=True)
     assert "chưa đúng định dạng" in r.get_data(as_text=True)
+
+
+def test_demo_seed_accounts_are_hashed_and_idempotent(client):
+    with client.application.app_context():
+        database = client.application.extensions.get("sqlite_db")
+        if database is None:
+            import sqlite3
+            database = sqlite3.connect(client.application.config["DATABASE"])
+            database.row_factory = sqlite3.Row
+        admin = database.execute("SELECT * FROM users WHERE username='admin'").fetchone()
+        assert admin is not None
+        assert admin["password_hash"] != "admin123"
+        assert check_password_hash(admin["password_hash"], "admin123") is True
+        assert database.execute("SELECT COUNT(*) FROM invoices").fetchone()[0] >= 2
+
+
+def test_admin_users_alias_and_staff_alias(client):
+    admin_login(client)
+    assert client.get("/admin/users").status_code == 200
+    assert client.get("/admin/staff").status_code == 200
+
+
+def test_admin_users_can_add_staff(client):
+    admin_login(client)
+    page = client.get("/admin/users")
+    r = client.post("/admin/users", data={
+        "csrf_token": get_csrf_token(page),
+        "full_name": "Bác sĩ kiểm thử",
+        "username": "doctor_test",
+        "password": "safe-test-password",
+        "role": "DOCTOR",
+    }, follow_redirects=True)
+    assert "Đã thêm nhân sự" in r.get_data(as_text=True)
+
+
+def test_non_admin_cannot_access_admin_users(client):
+    page = client.get("/login")
+    r = client.post("/login", data={
+        "csrf_token": get_csrf_token(page),
+        "username": "khachhang01",
+        "password": "123456",
+    })
+    assert r.status_code == 302
+    assert client.get("/admin/users").status_code == 403
 

@@ -95,6 +95,53 @@ def create_app(test_config=None):
                 database.execute("INSERT INTO users(username,password_hash,full_name,role) VALUES (?,?,?,?)", (username, generate_password_hash(secrets.token_urlsafe(32)), full_name, "DOCTOR"))
         if app.config.get("ADMIN_USERNAME") and app.config.get("ADMIN_PASSWORD") and not database.execute("SELECT 1 FROM users WHERE username=?", (app.config["ADMIN_USERNAME"],)).fetchone():
             database.execute("INSERT INTO users(username,password_hash,full_name,role) VALUES (?,?,?,?)", (app.config["ADMIN_USERNAME"], generate_password_hash(app.config["ADMIN_PASSWORD"]), "Quản trị viên", "ADMIN"))
+
+        demo_admin_password = os.environ.get("PETCARE_DEMO_ADMIN_PASSWORD") or secrets.token_urlsafe(16)
+        demo_password = os.environ.get("PETCARE_DEMO_PASSWORD") or secrets.token_urlsafe(16)
+        if not os.environ.get("PETCARE_DEMO_ADMIN_PASSWORD") or not os.environ.get("PETCARE_DEMO_PASSWORD"):
+            app.logger.warning("Demo passwords are random because PETCARE_DEMO_ADMIN_PASSWORD/PETCARE_DEMO_PASSWORD are not configured.")
+        demo_accounts = (
+            ("admin", "Quản trị viên Demo", "ADMIN", demo_admin_password),
+            ("bs_minhanh", "Bác sĩ Minh Anh", "DOCTOR", demo_password),
+            ("bs_quocbao", "Bác sĩ Quốc Bảo", "DOCTOR", demo_password),
+            ("thungan01", "Thu ngân Demo", "CASHIER", demo_password),
+            ("khachhang01", "Khách hàng Demo", "CUSTOMER", demo_password),
+        )
+        for username, full_name, role, password in demo_accounts:
+            database.execute(
+                "INSERT OR IGNORE INTO users(username,password_hash,full_name,role) VALUES (?,?,?,?)",
+                (username, generate_password_hash(password), full_name, role),
+            )
+        customer_user = database.execute("SELECT id FROM users WHERE username='khachhang01'").fetchone()
+        if customer_user:
+            database.execute(
+                "INSERT OR IGNORE INTO customers(user_id,phone,address) VALUES (?,?,?)",
+                (customer_user["id"], "0900000001", "TP. Hồ Chí Minh"),
+            )
+            demo_customer = database.execute("SELECT id FROM customers WHERE user_id=?", (customer_user["id"],)).fetchone()
+            if demo_customer and not database.execute("SELECT 1 FROM pets WHERE customer_id=?", (demo_customer["id"],)).fetchone():
+                database.execute(
+                    "INSERT INTO pets(customer_id,name,species,breed,birth_date,gender,weight,medical_history) VALUES (?,?,?,?,?,?,?,?)",
+                    (demo_customer["id"], "Milo", "Chó", "Poodle", "2021-05-10", "Đực", 6.5, "Không có tiền sử đặc biệt"),
+                )
+        demo_customer = database.execute("SELECT id FROM customers WHERE user_id=(SELECT id FROM users WHERE username='khachhang01')").fetchone()
+        demo_pet = database.execute("SELECT id FROM pets WHERE customer_id=? ORDER BY id LIMIT 1", (demo_customer["id"],)).fetchone() if demo_customer else None
+        demo_doctor = database.execute("SELECT id FROM users WHERE username='bs_minhanh'").fetchone()
+        service = database.execute("SELECT id,name,price FROM services ORDER BY id LIMIT 1").fetchone()
+        if demo_customer and demo_pet and demo_doctor and service:
+            for index in range(1, 3):
+                marker = f"Dữ liệu mẫu PetCare #{index}"
+                appointment = database.execute("SELECT id FROM appointments WHERE note=?", (marker,)).fetchone()
+                if not appointment:
+                    cursor = database.execute(
+                        "INSERT INTO appointments(customer_id,pet_id,doctor_id,full_name,phone,pet_name,appointment_date,time_slot,service,note,status) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                        (demo_customer["id"], demo_pet["id"], demo_doctor["id"], "Khách hàng Demo", "0900000001", "Milo", (date.today() - timedelta(days=index)).isoformat(), f"0{8 + index}:00", service["name"], marker, "Đã hoàn thành"),
+                    )
+                    appointment_id = cursor.lastrowid
+                    database.execute(
+                        "INSERT INTO invoices(appointment_id,customer_id,examination_fee,medicine_fee,surcharge_fee,total_amount,payment_method) VALUES (?,?,?,?,?,?,?)",
+                        (appointment_id, demo_customer["id"], service["price"], 50000 * index, 10000 * (index - 1), service["price"] + 50000 * index + 10000 * (index - 1), "Tiền mặt"),
+                    )
         database.commit()
 
     def user():
@@ -193,7 +240,7 @@ def create_app(test_config=None):
         if request.method == "POST":
             account = get_db().execute("SELECT * FROM users WHERE username=? AND is_active=1", (request.form.get("username", ""),)).fetchone()
             if account and check_password_hash(account["password_hash"], request.form.get("password", "")):
-                session.clear(); session["user_id"] = account["id"]; csrf_token(); destination = request.args.get("next", ""); return redirect(destination if destination.startswith("/") and not destination.startswith("//") else url_for("dashboard"))
+                session.clear(); session["user_id"] = account["id"]; session["user_role"] = account["role"]; session["full_name"] = account["full_name"]; csrf_token(); destination = request.args.get("next", ""); return redirect(destination if destination.startswith("/") and not destination.startswith("//") else url_for("dashboard"))
             flash("Tên đăng nhập hoặc mật khẩu không đúng.", "error")
         return render_template("login.html")
 
@@ -401,6 +448,7 @@ def create_app(test_config=None):
     def admin_dashboard():
         database=get_db();metrics={"customers":database.execute("SELECT COUNT(*) FROM customers").fetchone()[0],"pets":database.execute("SELECT COUNT(*) FROM pets").fetchone()[0],"appointments":database.execute("SELECT COUNT(*) FROM appointments").fetchone()[0],"revenue":database.execute("SELECT COALESCE(SUM(total_amount),0) FROM invoices").fetchone()[0]};chart=database.execute("SELECT substr(paid_at,1,10) label,SUM(total_amount) value FROM invoices GROUP BY substr(paid_at,1,10) ORDER BY label DESC LIMIT 7").fetchall();return render_template("admin_dashboard.html",metrics=metrics,chart=json.dumps([dict(row) for row in chart]),appointments=database.execute("SELECT * FROM appointments ORDER BY id DESC LIMIT 10").fetchall(),messages=database.execute("SELECT * FROM messages ORDER BY id DESC LIMIT 5").fetchall())
 
+    @app.route("/admin/users",methods=["GET","POST"], endpoint="admin_users")
     @app.route("/admin/staff",methods=["GET","POST"])
     @admin_required
     def admin_staff():
@@ -411,7 +459,7 @@ def create_app(test_config=None):
             else:
                 try: database.execute("INSERT INTO users(username,password_hash,full_name,role) VALUES (?,?,?,?)",(username,generate_password_hash(password),full_name,role));database.commit();flash("Đã thêm nhân sự.","success")
                 except sqlite3.IntegrityError: flash("Tên đăng nhập đã tồn tại.","error")
-        return render_template("staff.html",staff=database.execute("SELECT * FROM users WHERE role IN ('DOCTOR','CASHIER')").fetchall())
+        return render_template("admin_users.html",staff=database.execute("SELECT * FROM users WHERE role IN ('DOCTOR','CASHIER') ORDER BY role,full_name").fetchall())
 
     @app.route("/admin/services",methods=["GET","POST"])
     @admin_required
