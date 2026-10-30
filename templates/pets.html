@@ -1,1 +1,95 @@
-{% extends 'portal.html' %}{% block portal_content %}<div class="section-heading"><h1>Hồ sơ thú cưng</h1><a class="btn btn-primary" href="{{ url_for('pet_form') }}">+ Thêm thú cưng</a></div><div class="card-grid">{% for pet in pets %}<article class="service-card">{% if pet.image_path %}<img class="pet-avatar" src="{{ url_for('static',filename=pet.image_path) }}" alt="{{ pet.name }}">{% endif %}<h2>{{ pet.name }}</h2><p>{{ pet.species }} · {{ pet.breed or 'Chưa cập nhật giống' }}</p><p>Cân nặng: {{ pet.weight or '—' }} kg</p><a href="{{ url_for('pet_form',pet_id=pet.id) }}">Sửa</a> · <a href="{{ url_for('vaccinations',pet_id=pet.id) }}">Sổ tiêm</a><form class="inline-form" method="post" action="{{ url_for('delete_pet',pet_id=pet.id) }}" data-confirm="Xóa hồ sơ thú cưng này?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="link-button danger">Xóa</button></form></article>{% else %}<p>Chưa có thú cưng. Hãy thêm hồ sơ đầu tiên.</p>{% endfor %}</div>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Hồ sơ Thú cưng của tôi | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">QUẢN LÝ THÀNH VIÊN BỐN CHÂN</span>
+      <h1>Danh sách Thú cưng của bạn</h1>
+      <p class="text-muted">Lưu trữ thông tin giống loài, tiêm vắc-xin, dị ứng và tiền sử bệnh lý của từng bé.</p>
+    </div>
+    <div class="header-actions">
+      <a href="{{ url_for('pet_form') }}" class="btn btn-primary btn-sm">➕ Thêm thú cưng mới</a>
+    </div>
+  </div>
+
+  <div class="pet-cards-grid">
+    {% for pet in pets %}
+      <div class="pet-full-card">
+        <div class="pet-full-card-header">
+          <div class="pet-avatar-frame">
+            {% if pet.image_path %}
+              <img src="{{ url_for('static', filename=pet.image_path) }}" alt="{{ pet.name }}">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/default-pet.svg') }}" alt="Pet">
+            {% endif %}
+          </div>
+          <div class="pet-card-title-group">
+            <h3>{{ pet.name }}</h3>
+            <span class="badge-species">{{ pet.species }}</span>
+          </div>
+        </div>
+
+        <div class="pet-full-card-body">
+          <div class="pet-info-grid">
+            <div class="info-cell">
+              <span class="label">Giống:</span>
+              <strong>{{ pet.breed or 'Chưa xác định' }}</strong>
+            </div>
+            <div class="info-cell">
+              <span class="label">Giới tính:</span>
+              <strong>{{ pet.gender or 'Chưa rõ' }}</strong>
+            </div>
+            <div class="info-cell">
+              <span class="label">Ngày sinh:</span>
+              <strong>{{ pet.birth_date or 'Chưa rõ' }}</strong>
+            </div>
+            <div class="info-cell">
+              <span class="label">Cân nặng:</span>
+              <strong>{{ pet.weight or '—' }} kg</strong>
+            </div>
+          </div>
+
+          {% if pet.allergies %}
+            <div class="pet-warning-chip">
+              ⚠️ <strong>Dị ứng:</strong> {{ pet.allergies }}
+            </div>
+          {% endif %}
+
+          {% if pet.medical_history %}
+            <div class="pet-history-snippet">
+              <small class="text-muted">Tiền sử bệnh:</small>
+              <p>{{ pet.medical_history }}</p>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="pet-full-card-footer">
+          <a href="{{ url_for('vaccinations', pet_id=pet.id) }}" class="btn btn-outline-primary btn-sm">
+            💉 Sổ tiêm phòng
+          </a>
+          <a href="{{ url_for('pet_form', pet_id=pet.id) }}" class="btn btn-outline btn-sm">
+            ✏️ Sửa
+          </a>
+          <form method="post" action="{{ url_for('delete_pet', pet_id=pet.id) }}" class="inline-form" data-confirm="Bạn có chắc chắn muốn xóa hồ sơ của bé {{ pet.name }} không? Dữ liệu không thể khôi phục sau khi xóa.">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <button class="btn btn-outline-danger btn-sm" type="submit">
+              🗑️ Xóa
+            </button>
+          </form>
+        </div>
+      </div>
+    {% else %}
+      <div class="col-12">
+        <div class="empty-state card-empty text-center py-5">
+          <div class="empty-icon">🐾</div>
+          <h3>Chưa có hồ sơ thú cưng nào</h3>
+          <p class="text-muted">Hãy thêm thông tin bé yêu ngay để dễ dàng đặt lịch và theo dõi sức khỏe trọn đời.</p>
+          <a href="{{ url_for('pet_form') }}" class="btn btn-primary mt-3">+ Thêm thú cưng đầu tiên</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

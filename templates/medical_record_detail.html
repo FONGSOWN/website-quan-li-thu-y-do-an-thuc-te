@@ -1,1 +1,136 @@
-{% extends 'portal.html' %}{% block portal_content %}<section class="login-card wide-card"><h1>Bệnh án: {{ appointment.pet_name }}</h1><p>Bác sĩ: {{ record.doctor_name }} · Khám lúc: {{ record.examined_at }}</p><p><strong>Cân nặng:</strong> {{ record.weight or '—' }} kg · <strong>Nhiệt độ:</strong> {{ record.temperature or '—' }} °C · <strong>Nhịp tim:</strong> {{ record.heart_rate or '—' }}</p><h2>Triệu chứng</h2><p>{{ record.symptoms or 'Chưa ghi nhận' }}</p><h2>Chẩn đoán</h2><p>{{ record.diagnosis or 'Chưa ghi nhận' }}</p><h2>Toa thuốc và dặn dò</h2><p>{{ record.prescription or 'Chưa ghi nhận' }}</p>{% if record.follow_up_date %}<p><strong>Tái khám:</strong> {{ record.follow_up_date }}</p>{% endif %}{% if record.attachment_path %}<p><a href="{{ url_for('static',filename=record.attachment_path) }}" target="_blank">Xem ảnh đính kèm</a></p>{% endif %}</section>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Bệnh án Điện tử: {{ appointment.pet_name }} | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container max-w-850">
+  <div class="no-print d-flex justify-between align-center mb-4">
+    <a href="{{ url_for('appointments') if current_user.role == 'CUSTOMER' else url_for('doctor_dashboard') }}" class="btn btn-outline btn-sm">
+      ← Quay lại
+    </a>
+    <div class="action-buttons-inline">
+      <button onclick="window.print()" class="btn btn-primary btn-sm">
+        🖨️ In / Lưu PDF Bệnh án
+      </button>
+    </div>
+  </div>
+
+  <!-- Medical Record Sheet -->
+  <article class="medical-record-sheet">
+    <!-- Header -->
+    <div class="record-sheet-header">
+      <div class="clinic-brand-left">
+        <div class="d-flex align-center gap-2">
+          <span style="font-size:2rem;">🐾</span>
+          <div>
+            <h2 class="m-0" style="color:var(--primary,#0284c7);">PetCare Animal Hospital</h2>
+            <small class="text-muted">Trung tâm Chăm sóc & Điều trị Thú cưng Chuẩn Quốc tế</small>
+          </div>
+        </div>
+        <p class="clinic-sub-info mt-1">
+          📍 123 Đường Hoa Sen, Q.1, TP. HCM · 📞 Hotline: 0900 123 456
+        </p>
+      </div>
+      <div class="record-badge-right text-right">
+        <span class="badge-emr">HỒ SƠ BỆNH ÁN ĐIỆN TỬ</span>
+        <strong class="d-block mt-1">Mã ca: #EMR-{{ appointment.id }}</strong>
+        <small class="text-muted">Ngày khám: {{ appointment.appointment_date }}</small>
+      </div>
+    </div>
+
+    <hr class="record-divider">
+
+    <!-- Patient & Owner Info Grid -->
+    <div class="record-patient-grid">
+      <div class="patient-info-box">
+        <h4>THÔNG TIN BỆNH NHÂN</h4>
+        <p><strong>Tên thú cưng:</strong> {{ appointment.pet_name }}</p>
+        <p><strong>Dịch vụ chỉ định:</strong> {{ appointment.service }}</p>
+        <p><strong>Bác sĩ thăm khám:</strong> {{ record.doctor_name }} ({{ record.doctor_degree or 'Bác sĩ Thú y' }})</p>
+      </div>
+
+      <div class="patient-info-box">
+        <h4>THÔNG TIN CHỦ NUÔI</h4>
+        <p><strong>Họ và tên:</strong> {{ appointment.full_name }}</p>
+        <p><strong>Số điện thoại:</strong> {{ appointment.phone }}</p>
+        <p><strong>Thời gian thực hiện:</strong> {{ record.examined_at }}</p>
+      </div>
+    </div>
+
+    <!-- Vital Signs -->
+    <div class="record-vitals-strip">
+      <div class="vital-badge">
+        <span class="vital-label">Cân nặng</span>
+        <strong class="vital-val">{{ record.weight or '—' }} kg</strong>
+      </div>
+      <div class="vital-badge">
+        <span class="vital-label">Thân nhiệt</span>
+        <strong class="vital-val">{{ record.temperature or '—' }} °C</strong>
+      </div>
+      <div class="vital-badge">
+        <span class="vital-label">Nhịp tim</span>
+        <strong class="vital-val">{{ record.heart_rate or '—' }} bpm</strong>
+      </div>
+    </div>
+
+    <!-- Clinical Details -->
+    <div class="record-clinical-body">
+      <section class="clinical-section">
+        <h3>1. Triệu chứng lâm sàng</h3>
+        <div class="clinical-content">
+          {{ record.symptoms or 'Không ghi nhận triệu chứng bất thường.' }}
+        </div>
+      </section>
+
+      <section class="clinical-section">
+        <h3>2. Chẩn đoán y khoa</h3>
+        <div class="clinical-content diagnosis-box">
+          <strong>{{ record.diagnosis or 'Chưa ghi nhận chẩn đoán.' }}</strong>
+        </div>
+      </section>
+
+      <section class="clinical-section">
+        <h3>3. Toa thuốc & Phác đồ điều trị</h3>
+        <div class="clinical-content prescription-box">
+          <pre class="prescription-pre">{{ record.prescription or 'Không chỉ định dùng thuốc.' }}</pre>
+        </div>
+      </section>
+
+      {% if record.follow_up_date %}
+        <section class="clinical-section follow-up-alert">
+          <div class="d-flex align-center gap-2">
+            <span style="font-size:1.5rem;">🗓️</span>
+            <div>
+              <strong>Lịch hẹn tái khám dự kiến:</strong>
+              <p class="m-0 text-primary font-bold">{{ record.follow_up_date }}</p>
+            </div>
+          </div>
+        </section>
+      {% endif %}
+
+      {% if record.attachment_path %}
+        <section class="clinical-section no-print">
+          <h3>4. Ảnh chẩn đoán hình ảnh / Kết quả cận lâm sàng</h3>
+          <div class="attachment-preview mt-2">
+            <img src="{{ url_for('static', filename=record.attachment_path) }}" alt="Ảnh kết quả xét nghiệm" class="record-image-full">
+          </div>
+        </section>
+      {% endif %}
+    </div>
+
+    <!-- Signatures -->
+    <div class="record-sheet-footer">
+      <div class="sig-block text-center">
+        <p><strong>Chủ nuôi xác nhận</strong></p>
+        <div class="sig-space"></div>
+        <p>{{ appointment.full_name }}</p>
+      </div>
+
+      <div class="sig-block text-center">
+        <p><strong>Bác sĩ phụ trách điều trị</strong></p>
+        <div class="sig-space"></div>
+        <p>{{ record.doctor_name }}</p>
+      </div>
+    </div>
+  </article>
+</div>
+{% endblock %}

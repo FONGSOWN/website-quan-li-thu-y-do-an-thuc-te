@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <circle cx="60" cy="60" r="58" fill="#E0F2FE" stroke="#0284C7" stroke-width="3"/>
+  <!-- Doctor head -->
+  <circle cx="60" cy="45" r="20" fill="#0284C7"/>
+  <!-- Stethoscope / Medical Coat -->
+  <path d="M26 102 C26 78 42 70 60 70 C78 70 94 78 94 102 Z" fill="#0369A1"/>
+  <!-- White Coat Collar V-neck -->
+  <path d="M48 70 L60 92 L72 70 Z" fill="#F8FAFC"/>
+  <!-- Stethoscope tube -->
+  <path d="M44 76 C44 95 76 95 76 76" stroke="#10B981" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <circle cx="60" cy="94" r="5" fill="#10B981"/>
+</svg>
+

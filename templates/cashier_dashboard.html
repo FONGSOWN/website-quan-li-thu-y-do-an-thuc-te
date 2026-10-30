@@ -1,1 +1,134 @@
-{% extends 'portal.html' %}{% block portal_content %}<h1>Bàn làm việc thu ngân</h1><h2>Lịch chờ duyệt</h2><table class="data-table"><tr><th>Khách</th><th>Thú cưng</th><th>Ngày</th><th></th></tr>{% for appointment in pending_approval %}<tr><td>{{ appointment.full_name }}</td><td>{{ appointment.pet_name }}</td><td>{{ appointment.appointment_date }} {{ appointment.time_slot or '' }}</td><td><form method="post" action="{{ url_for('approve_appointment',appointment_id=appointment.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="btn btn-primary">Xác nhận</button></form></td></tr>{% else %}<tr><td colspan="4">Không có lịch chờ duyệt.</td></tr>{% endfor %}</table><h2>Ca chờ thanh toán</h2><table class="data-table"><tr><th>Khách</th><th>Thú cưng</th><th>Dịch vụ</th><th></th></tr>{% for appointment in pending %}<tr><td>{{ appointment.full_name }}</td><td>{{ appointment.pet_name }}</td><td>{{ appointment.service }}</td><td><a class="btn btn-primary" href="{{ url_for('create_invoice',appointment_id=appointment.id) }}">Lập hóa đơn</a></td></tr>{% else %}<tr><td colspan="4">Không có ca chờ thanh toán.</td></tr>{% endfor %}</table>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Cổng Thu ngân & Duyệt lịch | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">QUẦY TIẾP ĐÓN & THU NGÂN</span>
+      <h1>Quản lý Tiếp nhận & Thanh toán Viện phí</h1>
+      <p class="text-muted">Xác nhận lịch hẹn khám mới và xuất hóa đơn cho các ca khám đã hoàn thành</p>
+    </div>
+  </div>
+
+  <!-- Metric Counters -->
+  <div class="stats-grid mb-4">
+    <div class="stat-block-modern card-orange">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ pending_approval|length }}">{{ pending_approval|length }}</strong>
+        <span class="stat-label">Lịch hẹn chờ duyệt</span>
+      </div>
+    </div>
+
+    <div class="stat-block-modern card-blue">
+      <div class="stat-icon">💳</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ pending|length }}">{{ pending|length }}</strong>
+        <span class="stat-label">Ca khám chờ lập hóa đơn</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 1: Lịch hẹn chờ duyệt -->
+  <div class="table-card-section mb-5">
+    <div class="section-card-header mb-3">
+      <div class="header-titles">
+        <h2>1. Lịch hẹn đặt online đang chờ xác nhận</h2>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table-modern">
+        <thead>
+          <tr>
+            <th>Mã / Thời gian</th>
+            <th>Khách hàng</th>
+            <th>Thú cưng</th>
+            <th>Dịch vụ</th>
+            <th>Ghi chú</th>
+            <th class="text-right">Thao tác duyệt</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in pending_approval %}
+            <tr>
+              <td>
+                <span class="appt-id-badge">#{{ appt.id }}</span>
+                <strong class="d-block mt-1">{{ appt.appointment_date }}</strong>
+                <small class="text-muted">{{ appt.time_slot or 'Linh hoạt' }}</small>
+              </td>
+              <td>
+                <strong>{{ appt.full_name }}</strong>
+                <small class="d-block text-muted">📞 {{ appt.phone }}</small>
+              </td>
+              <td><strong>{{ appt.pet_name }}</strong></td>
+              <td><span class="service-pill">{{ appt.service }}</span></td>
+              <td><small class="text-muted">{{ appt.note or '—' }}</small></td>
+              <td class="text-right">
+                <form method="post" action="{{ url_for('approve_appointment', appointment_id=appt.id) }}" class="inline-form">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                  <button type="submit" class="btn btn-success btn-xs">
+                    ✓ Xác nhận lịch
+                  </button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">Hiện không có lịch hẹn nào đang chờ duyệt.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 2: Ca khám đã hoàn thành chờ thanh toán -->
+  <div class="table-card-section mb-5">
+    <div class="section-card-header mb-3">
+      <div class="header-titles">
+        <h2>2. Ca khám đã hoàn tất — Chờ lập hóa đơn thanh toán</h2>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table-modern">
+        <thead>
+          <tr>
+            <th>Mã ca</th>
+            <th>Chủ nuôi & SĐT</th>
+            <th>Thú cưng</th>
+            <th>Dịch vụ đã khám</th>
+            <th>Phí cơ sở</th>
+            <th class="text-right">Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in pending %}
+            <tr>
+              <td><span class="appt-id-badge">#{{ appt.id }}</span></td>
+              <td>
+                <strong>{{ appt.full_name }}</strong>
+                <small class="d-block text-muted">📞 {{ appt.phone }}</small>
+              </td>
+              <td><strong>{{ appt.pet_name }}</strong></td>
+              <td><span class="service-pill">{{ appt.service }}</span></td>
+              <td class="font-bold text-primary">{{ '{:,.0f}'.format(appt.service_price or 0) }}đ</td>
+              <td class="text-right">
+                <a href="{{ url_for('create_invoice', appointment_id=appt.id) }}" class="btn btn-primary btn-xs">
+                  💳 Lập hóa đơn & Thu tiền
+                </a>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">Tất cả các ca khám hoàn tất đều đã được lập hóa đơn.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

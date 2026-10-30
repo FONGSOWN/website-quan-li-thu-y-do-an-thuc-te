@@ -1,23 +1,75 @@
 {% extends 'base.html' %}
 {% block body %}
+<!-- Top Emergency Banner -->
+<div class="top-bar">
+  <div class="container top-bar-content">
+    <div class="top-bar-item">
+      <span class="pulse-dot"></span>
+      <strong>Hotline Cấp cứu 24/7:</strong> <a href="tel:0900123456" class="top-phone">0900 123 456</a>
+    </div>
+    <div class="top-bar-item hide-mobile">
+      <span>📍 123 Đường Hoa Sen, Quận 1, TP. Hồ Chí Minh</span>
+      <span class="sep">|</span>
+      <span>🕐 Giờ mở cửa: 08:00 – 20:00 (Cấp cứu 24/24)</span>
+    </div>
+  </div>
+</div>
+
 <header class="site-header">
   <div class="container nav-wrap">
     <a class="logo" href="{{ url_for('index') }}">
-      <span class="logo-icon">🐾</span> PetCare
+      <div class="logo-icon-wrap">
+        <svg viewBox="0 0 40 40" width="34" height="34" fill="none">
+          <rect width="40" height="40" rx="10" fill="#0284c7"/>
+          <path d="M20 12v16M12 20h16" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="14" cy="14" r="2.5" fill="#10b981"/>
+          <circle cx="26" cy="14" r="2.5" fill="#10b981"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="brand-title">PetCare</span>
+        <span class="brand-sub">Trung tâm Y tế Thú cưng</span>
+      </div>
     </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Mở menu" aria-expanded="false">
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Mở menu điều hướng" aria-expanded="false">
       <span class="hamburger"></span>
       <span class="hamburger"></span>
       <span class="hamburger"></span>
     </button>
+
     <nav id="mainNav">
       <a href="{{ url_for('index') }}" {% if request.endpoint == 'index' %}class="active"{% endif %}>Trang chủ</a>
       <a href="{{ url_for('about') }}" {% if request.endpoint == 'about' %}class="active"{% endif %}>Giới thiệu</a>
-      <a href="{{ url_for('services') }}" {% if request.endpoint == 'services' %}class="active"{% endif %}>Dịch vụ</a>
-      <a href="{{ url_for('doctors') }}" {% if request.endpoint == 'doctors' %}class="active"{% endif %}>Bác sĩ</a>
+      <a href="{{ url_for('services') }}" {% if request.endpoint == 'services' %}class="active"{% endif %}>Dịch vụ & Bảng giá</a>
+      <a href="{{ url_for('doctors') }}" {% if request.endpoint in ('doctors', 'doctor_detail') %}class="active"{% endif %}>Đội ngũ Bác sĩ</a>
       <a href="{{ url_for('book_appointment') }}" {% if request.endpoint == 'book_appointment' %}class="active"{% endif %}>Đặt lịch</a>
       <a href="{{ url_for('contact') }}" {% if request.endpoint == 'contact' %}class="active"{% endif %}>Liên hệ</a>
-      <a class="nav-cta" href="{{ url_for('book_appointment') }}">Đặt lịch ngay</a>
+
+      <div class="nav-right-actions">
+        {% if current_user %}
+          <div class="user-pill-dropdown">
+            <a href="{{ url_for('dashboard') }}" class="user-pill">
+              <span class="user-role-badge badge-{{ current_user.role.lower() }}">
+                {% if current_user.role == 'DOCTOR' %}Bác sĩ
+                {% elif current_user.role == 'ADMIN' %}Quản trị
+                {% elif current_user.role == 'CASHIER' %}Thu ngân
+                {% else %}Khách hàng{% endif %}
+              </span>
+              <span class="user-name">{{ current_user.full_name }}</span>
+            </a>
+            <form method="post" action="{{ url_for('logout') }}" class="inline-form">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <button class="btn btn-outline-danger btn-sm" title="Đăng xuất">Đăng xuất</button>
+            </form>
+          </div>
+        {% else %}
+          <div class="auth-buttons">
+            <a class="btn btn-outline" href="{{ url_for('login') }}">Đăng nhập</a>
+            <a class="btn btn-primary" href="{{ url_for('book_appointment') }}">Đặt lịch ngay</a>
+          </div>
+        {% endif %}
+      </div>
     </nav>
   </div>
 </header>
@@ -30,34 +82,65 @@
   <div class="container footer-grid">
     <div class="footer-brand">
       <a class="logo logo-light" href="{{ url_for('index') }}">
-        <span class="logo-icon">🐾</span> PetCare
+        <div class="logo-icon-wrap">
+          <svg viewBox="0 0 40 40" width="32" height="32" fill="none">
+            <rect width="40" height="40" rx="10" fill="#10b981"/>
+            <path d="M20 12v16M12 20h16" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title" style="color:#ffffff;">PetCare</span>
+          <span class="brand-sub" style="color:#94a3b8;">Bệnh viện Thú y Hiện đại</span>
+        </div>
       </a>
-      <p>Yêu thương bé nhỏ,<br>chăm sóc bằng cả trái tim.</p>
-      <p class="footer-note">© {{ current_year }} PetCare. Website minh họa phục vụ học tập.</p>
+      <p class="footer-desc">
+        Hệ thống phòng khám và bệnh viện thú y chuẩn quốc tế. Cung cấp dịch vụ chăm sóc y tế toàn diện, phẫu thuật ngoại khoa, tiêm chủng và cấp cứu 24/7 cho thú cưng.
+      </p>
+      <div class="footer-cert">
+        <span class="cert-badge">🩺 Bác sĩ chuyên khoa đầu ngành</span>
+        <span class="cert-badge">🛡️ Cơ sở đạt chuẩn vô trùng y tế</span>
+      </div>
     </div>
+
     <div class="footer-links">
-      <h4>Điều hướng</h4>
+      <h4>Khám phá</h4>
       <ul>
         <li><a href="{{ url_for('index') }}">Trang chủ</a></li>
-        <li><a href="{{ url_for('about') }}">Giới thiệu</a></li>
-        <li><a href="{{ url_for('services') }}">Dịch vụ</a></li>
+        <li><a href="{{ url_for('about') }}">Về chúng tôi</a></li>
+        <li><a href="{{ url_for('services') }}">Dịch vụ y tế</a></li>
         <li><a href="{{ url_for('doctors') }}">Đội ngũ bác sĩ</a></li>
+        <li><a href="{{ url_for('policy') }}">Chính sách & Điều khoản</a></li>
       </ul>
     </div>
+
     <div class="footer-links">
-      <h4>Hỗ trợ</h4>
+      <h4>Cổng chức năng</h4>
       <ul>
-        <li><a href="{{ url_for('book_appointment') }}">Đặt lịch khám</a></li>
-        <li><a href="{{ url_for('contact') }}">Liên hệ</a></li>
-          <li><a href="{{ url_for('login') }}">Đăng nhập</a></li>
+        <li><a href="{{ url_for('book_appointment') }}">Đặt lịch khám trực tuyến</a></li>
+        <li><a href="{{ url_for('login') }}">Đăng nhập khách hàng</a></li>
+        <li><a href="{{ url_for('login') }}?role=doctor">Cổng Bác sĩ & Y tế</a></li>
+        <li><a href="{{ url_for('login') }}?role=admin">Khu vực Quản trị viên</a></li>
+        <li><a href="{{ url_for('register') }}">Đăng ký thành viên</a></li>
       </ul>
     </div>
+
     <div class="footer-contact">
-      <h4>Thông tin</h4>
-      <p>📍 123 Đường Hoa Sen, TP. HCM</p>
-      <p>📞 0900 123 456</p>
-      <p>✉️ hello@petcare.example</p>
-      <p>🕐 08:00 – 20:00 mỗi ngày</p>
+      <h4>Trung tâm hỗ trợ</h4>
+      <p>📍 <strong>Trụ sở chính:</strong> 123 Đường Hoa Sen, P. Bến Nghé, Quận 1, TP. HCM</p>
+      <p>📞 <strong>Hotline:</strong> 0900 123 456 (24/7)</p>
+      <p>✉️ <strong>Email:</strong> hotro@petcare.vn</p>
+      <p>🕐 <strong>Giờ làm việc:</strong> Thứ Hai – Chủ Nhật: 08:00 – 20:00 (Cấp cứu 24/24)</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-flex">
+      <p>© {{ current_year }} PetCare International Animal Hospital. Đồ án xây dựng Website Quản lý Thú y hoàn chỉnh.</p>
+      <div class="footer-bottom-links">
+        <a href="{{ url_for('policy') }}">Chính sách bảo mật</a>
+        <span>•</span>
+        <a href="{{ url_for('policy') }}">Điều khoản dịch vụ</a>
+      </div>
     </div>
   </div>
 </footer>

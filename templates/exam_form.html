@@ -1,1 +1,120 @@
-{% extends 'portal.html' %}{% block portal_content %}<section class="login-card wide-card"><h1>Phiếu khám: {{ appointment.pet_name }}</h1><p>{{ appointment.full_name }} · {{ appointment.appointment_date }} {{ appointment.time_slot }}</p><form method="post" enctype="multipart/form-data" class="stack-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Cân nặng (kg)<input type="number" step="0.1" name="weight" value="{{ record.weight if record else '' }}"></label><label>Nhiệt độ (°C)<input type="number" step="0.1" name="temperature" value="{{ record.temperature if record else '' }}"></label><label>Nhịp tim<input type="number" name="heart_rate" value="{{ record.heart_rate if record else '' }}"></label><label>Triệu chứng<textarea name="symptoms">{{ record.symptoms if record else '' }}</textarea></label><label>Chẩn đoán<textarea name="diagnosis">{{ record.diagnosis if record else '' }}</textarea></label><label>Toa thuốc / hướng dẫn<textarea name="prescription">{{ record.prescription if record else '' }}</textarea></label><label>Ngày tái khám<input type="date" name="follow_up_date" value="{{ record.follow_up_date if record and record.follow_up_date else '' }}"></label><label>Ảnh chẩn đoán<input type="file" name="attachment" accept=".png,.jpg,.jpeg,.webp"></label><button class="btn btn-primary">Hoàn tất và lưu bệnh án</button></form></section>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Phiếu khám bệnh: {{ appointment.pet_name }} | Bác sĩ PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container max-w-900">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">LÂM SÀNG & BỆNH ÁN ĐIỆN TỬ</span>
+      <h1>Phiếu khám bệnh: {{ appointment.pet_name }}</h1>
+      <p class="text-muted">
+        Chủ nuôi: <strong>{{ appointment.full_name }}</strong> (📞 {{ appointment.phone }}) · Lịch hẹn: {{ appointment.appointment_date }} ({{ appointment.time_slot or 'Không chỉ định' }})
+      </p>
+    </div>
+    <div class="header-actions">
+      {% if appointment.pet_id %}
+        <a href="{{ url_for('doctor_pet_history', pet_id=appointment.pet_id) }}" class="btn btn-outline-info btn-sm">📋 Xem bệnh sử cũ</a>
+      {% endif %}
+      <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline btn-sm">← Ca khám hôm nay</a>
+    </div>
+  </div>
+
+  <div class="exam-form-card">
+    <form method="post" enctype="multipart/form-data" class="stack-form modern-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+      <!-- Pet Info Strip -->
+      <div class="patient-info-strip mb-4">
+        <div class="patient-badge">
+          <span class="patient-icon">🐾</span>
+          <div>
+            <strong>{{ appointment.pet_name }}</strong>
+            <small class="d-block text-muted">Dịch vụ: {{ appointment.service }}</small>
+          </div>
+        </div>
+        {% if appointment.note %}
+          <div class="patient-note">
+            <strong>Ghi chú của chủ nuôi:</strong> {{ appointment.note }}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Vital Signs Grid -->
+      <h3 class="form-section-title">1. Chỉ số sinh tồn (Vital Signs)</h3>
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label>Cân nặng (kg)</label>
+          <div class="input-with-unit">
+            <input type="number" step="0.1" name="weight" value="{{ record.weight if record else (pet.weight if pet else '') }}" placeholder="0.0" class="form-control">
+            <span class="unit-tag">kg</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Thân nhiệt (°C)</label>
+          <div class="input-with-unit">
+            <input type="number" step="0.1" name="temperature" value="{{ record.temperature if record else '' }}" placeholder="38.5" class="form-control">
+            <span class="unit-tag">°C</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Nhịp tim (bpm)</label>
+          <div class="input-with-unit">
+            <input type="number" name="heart_rate" value="{{ record.heart_rate if record else '' }}" placeholder="120" class="form-control">
+            <span class="unit-tag">bpm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clinical Findings -->
+      <h3 class="form-section-title mt-4">2. Thăm khám lâm sàng</h3>
+      <div class="form-group">
+        <label>Triệu chứng lâm sàng quan sát được</label>
+        <textarea name="symptoms" rows="3" class="form-control" placeholder="Mô tả tình trạng mắt, mũi, niêm mạc, lông da, phân, nước tiểu, trạng thái tinh thần...">{{ record.symptoms if record else '' }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Chẩn đoán bệnh lý / Kết luận của bác sĩ <span class="req-star">*</span></label>
+        <textarea name="diagnosis" rows="3" class="form-control" placeholder="Ghi rõ chẩn đoán bệnh lý (ví dụ: Viêm da dị ứng, Rối loạn tiêu hóa cấp, Viêm phế quản...)" required>{{ record.diagnosis if record else '' }}</textarea>
+      </div>
+
+      <!-- Treatment & Prescription -->
+      <h3 class="form-section-title mt-4">3. Phác đồ điều trị & Toa thuốc</h3>
+      <div class="form-group">
+        <label>Toa thuốc, liệu trình và hướng dẫn chăm sóc tại nhà <span class="req-star">*</span></label>
+        <textarea name="prescription" rows="4" class="form-control" placeholder="Tên thuốc, liều lượng, số lần uống trong ngày, chế độ kiêng cữ dinh dưỡng..." required>{{ record.prescription if record else '' }}</textarea>
+      </div>
+
+      <!-- Follow-up & Attachments -->
+      <h3 class="form-section-title mt-4">4. Hẹn tái khám & Chẩn đoán hình ảnh</h3>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Ngày hẹn tái khám (nếu có)</label>
+          <input type="date" name="follow_up_date" value="{{ record.follow_up_date if record and record.follow_up_date else '' }}" class="form-control">
+          <small class="text-muted">Hệ thống sẽ tự động nhắc lịch cho chủ nuôi.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Ảnh kết quả siêu âm / X-Quang / cận cảnh vết thương</label>
+          <input type="file" name="attachment" accept=".png,.jpg,.jpeg,.webp" class="form-control-file">
+          {% if record and record.attachment_path %}
+            <div class="mt-2">
+              <a href="{{ url_for('static', filename=record.attachment_path) }}" target="_blank" class="small-link">
+                🖼️ Đã có ảnh đính kèm hiện tại (Nhấp để xem)
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-actions mt-5">
+        <button type="submit" class="btn btn-primary btn-lg">
+          ✅ Hoàn tất ca khám & Lưu bệnh án
+        </button>
+        <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline btn-lg">Hủy bỏ</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

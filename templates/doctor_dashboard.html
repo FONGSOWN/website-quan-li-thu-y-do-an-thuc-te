@@ -1,1 +1,227 @@
-{% extends 'portal.html' %}{% block portal_content %}<h1>Ca khám hôm nay</h1><table class="data-table"><tr><th>Giờ</th><th>Chủ nuôi</th><th>Thú cưng</th><th>Dịch vụ</th><th></th></tr>{% for appointment in appointments %}<tr><td>{{ appointment.time_slot }}</td><td>{{ appointment.full_name }}</td><td>{{ appointment.pet_name }}</td><td>{{ appointment.service }}</td><td><a class="btn btn-primary" href="{{ url_for('doctor_exam',appointment_id=appointment.id) }}">Khám bệnh</a></td></tr>{% else %}<tr><td colspan="5">Không có ca khám nào hôm nay.</td></tr>{% endfor %}</table>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Dashboard Bác sĩ | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="doctor-dashboard-wrap">
+  <!-- Welcome Banner -->
+  <div class="doctor-hero-banner">
+    <div class="doctor-hero-content">
+      <span class="eyebrow-light">CỔNG LÂM SÀNG BÁC SĨ THÚ Y</span>
+      <h1>Bác sĩ {{ current_user.full_name }}</h1>
+      <p class="hero-desc">{{ current_user.degree or 'Bác sĩ Thú y' }} · Chuyên khoa: {{ current_user.specialty or 'Nội - Ngoại khoa tổng quát' }}</p>
+    </div>
+    <div class="doctor-hero-action">
+      <a href="{{ url_for('doctor_profile') }}" class="btn btn-light btn-sm">⚙️ Hồ sơ chuyên môn</a>
+      <a href="{{ url_for('doctor_schedules') }}" class="btn btn-outline-light btn-sm">📅 Lịch trực</a>
+    </div>
+  </div>
+
+  <!-- Metric Counters -->
+  <div class="stats-grid">
+    <div class="stat-block-modern card-blue">
+      <div class="stat-icon">📅</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ today_count }}">{{ today_count }}</strong>
+        <span class="stat-label">Ca khám hôm nay</span>
+      </div>
+    </div>
+
+    <div class="stat-block-modern card-orange">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ pending_count }}">{{ pending_count }}</strong>
+        <span class="stat-label">Đang chờ / Đang khám</span>
+      </div>
+    </div>
+
+    <div class="stat-block-modern card-green">
+      <div class="stat-icon">✅</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ completed_count }}">{{ completed_count }}</strong>
+        <span class="stat-label">Ca đã hoàn thành</span>
+      </div>
+    </div>
+
+    <div class="stat-block-modern card-purple">
+      <div class="stat-icon">🐾</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ total_assigned }}">{{ total_assigned }}</strong>
+        <span class="stat-label">Tổng ca phân công</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="doctor-main-grid">
+    <!-- Left Column: Appointment List -->
+    <div class="doctor-appointments-section">
+      <div class="section-card-header">
+        <div class="header-titles">
+          <h2>Danh sách Ca khám & Bệnh nhân</h2>
+          <p class="text-muted">Quản lý lịch khám, theo dõi tình trạng và cập nhật bệnh án thú cưng</p>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <form method="get" action="{{ url_for('doctor_dashboard') }}" class="filter-bar">
+        <div class="filter-group">
+          <label>Thời gian:</label>
+          <select name="date_filter" class="form-control-sm" onchange="this.form.submit()">
+            <option value="today" {% if date_filter == 'today' %}selected{% endif %}>Hôm nay ({{ today_date }})</option>
+            <option value="tomorrow" {% if date_filter == 'tomorrow' %}selected{% endif %}>Ngày mai</option>
+            <option value="week" {% if date_filter == 'week' %}selected{% endif %}>7 ngày tới</option>
+            <option value="all" {% if date_filter == 'all' %}selected{% endif %}>Tất cả các ca</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Trạng thái:</label>
+          <select name="status_filter" class="form-control-sm" onchange="this.form.submit()">
+            <option value="all" {% if status_filter == 'all' %}selected{% endif %}>Tất cả trạng thái</option>
+            {% for st in statuses %}
+              <option value="{{ st }}" {% if status_filter == st %}selected{% endif %}>{{ st }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="filter-group search-group">
+          <input type="text" name="q" value="{{ query_text }}" placeholder="Tìm tên chủ nuôi, thú cưng, SĐT..." class="form-control-sm">
+          <button type="submit" class="btn btn-sm btn-primary">Tìm</button>
+          {% if query_text or date_filter != 'today' or status_filter != 'all' %}
+            <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-sm btn-outline">Xóa lọc</a>
+          {% endif %}
+        </div>
+      </form>
+
+      <!-- Appointments Table -->
+      <div class="table-responsive">
+        <table class="data-table-modern">
+          <thead>
+            <tr>
+              <th>Giờ & Ngày</th>
+              <th>Thú cưng</th>
+              <th>Chủ nuôi</th>
+              <th>Dịch vụ</th>
+              <th>Trạng thái</th>
+              <th class="text-right">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for appt in appointments %}
+              <tr>
+                <td>
+                  <div class="time-badge">
+                    <strong>{{ appt.time_slot or 'Linh hoạt' }}</strong>
+                    <small>{{ appt.appointment_date }}</small>
+                  </div>
+                </td>
+                <td>
+                  <div class="pet-cell">
+                    <div class="pet-mini-avatar">
+                      {% if appt.pet_image %}
+                        <img src="{{ url_for('static', filename=appt.pet_image) }}" alt="{{ appt.pet_name }}">
+                      {% else %}
+                        <span>🐾</span>
+                      {% endif %}
+                    </div>
+                    <div>
+                      <strong>{{ appt.pet_name }}</strong>
+                      <small>{{ appt.species or 'Thú cưng' }}{% if appt.breed %} · {{ appt.breed }}{% endif %}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <strong>{{ appt.full_name }}</strong>
+                  <small class="d-block text-muted">📞 {{ appt.phone }}</small>
+                </td>
+                <td>
+                  <span class="service-pill">{{ appt.service }}</span>
+                  {% if appt.note %}
+                    <small class="d-block text-muted" title="{{ appt.note }}">💬 {{ appt.note[:40] }}{% if appt.note|length > 40 %}...{% endif %}</small>
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="status-badge status-{{ appt.status.lower().replace(' ', '-') }}">
+                    {{ appt.status }}
+                  </span>
+                </td>
+                <td class="text-right">
+                  <div class="action-buttons-inline">
+                    {% if appt.pet_id %}
+                      <a href="{{ url_for('doctor_pet_history', pet_id=appt.pet_id) }}" class="btn btn-outline-info btn-xs" title="Xem tiền sử bệnh án">
+                        📋 Bệnh sử
+                      </a>
+                    {% endif %}
+
+                    {% if appt.status in ('Đã xác nhận', 'Đang khám') %}
+                      <a href="{{ url_for('doctor_exam', appointment_id=appt.id) }}" class="btn btn-primary btn-xs">
+                        🩺 Khám bệnh
+                      </a>
+                    {% elif appt.status == 'Đã hoàn thành' %}
+                      <a href="{{ url_for('medical_record_detail', appointment_id=appt.id) }}" class="btn btn-outline-success btn-xs">
+                        👁️ Bệnh án
+                      </a>
+                      <a href="{{ url_for('doctor_exam', appointment_id=appt.id) }}" class="btn btn-outline-secondary btn-xs" title="Chỉnh sửa bệnh án">
+                        ✏️ Sửa
+                      </a>
+                    {% else %}
+                      <span class="text-muted text-xs">{{ appt.status }}</span>
+                    {% endif %}
+                  </div>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <div class="empty-state">
+                    <div class="empty-icon">📅</div>
+                    <h3>Không có ca khám nào phù hợp</h3>
+                    <p class="text-muted">Không tìm thấy ca khám nào theo điều kiện lọc hiện tại của bác sĩ.</p>
+                    <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline btn-sm">Xem tất cả ca khám hôm nay</a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right Column: Doctor Schedules & Quick Info -->
+    <div class="doctor-side-widget">
+      <div class="widget-card">
+        <div class="widget-header">
+          <h3>📅 Lịch trực 7 ngày tới</h3>
+          <a href="{{ url_for('doctor_schedules') }}" class="small-link">Xem tất cả</a>
+        </div>
+        <ul class="schedule-timeline">
+          {% for sched in schedules %}
+            <li class="timeline-item {% if sched.schedule_date == today_date %}today-item{% endif %}">
+              <div class="timeline-date">
+                <strong>{{ sched.schedule_date }}</strong>
+                {% if sched.schedule_date == today_date %}<span class="badge-today">Hôm nay</span>{% endif %}
+              </div>
+              <div class="timeline-shift">
+                <span class="shift-badge shift-{{ sched.shift.lower().replace(' ', '-') }}">{{ sched.shift }}</span>
+              </div>
+            </li>
+          {% else %}
+            <li class="text-muted py-2">Chưa có lịch trực trong tuần tới.</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="widget-card card-tips">
+        <div class="widget-header">
+          <h3>💡 Hướng dẫn khám lâm sàng</h3>
+        </div>
+        <ul class="tips-list">
+          <li>Kiểm tra và lưu các chỉ số sinh tồn (thân nhiệt, nhịp tim, cân nặng).</li>
+          <li>Xem lại <strong>Bệnh sử</strong> của thú cưng trước khi kê đơn.</li>
+          <li>Đính kèm ảnh kết quả xét nghiệm, siêu âm nếu có.</li>
+          <li>Ghi rõ hướng dẫn dùng thuốc và lịch tái khám để hệ thống tự động thông báo cho chủ nuôi.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

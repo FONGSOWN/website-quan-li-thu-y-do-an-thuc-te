@@ -1,146 +1,133 @@
 {% extends 'site.html' %}
-{% block title %}Dịch vụ | PetCare – Trung tâm thú y{% endblock %}
+{% block title %}Dịch vụ Y tế & Bảng giá | PetCare{% endblock %}
 
 {% block content %}
-
-{# ── PAGE HERO ─────────────────────────────────────────────────────── #}
+<!-- Page Hero -->
 <section class="page-hero">
-  <div class="container">
-    <span class="eyebrow">Dịch vụ PetCare</span>
-    <h1>Chăm sóc đúng lúc<br>cho từng bé</h1>
-    <p>PetCare cung cấp 4 nhóm dịch vụ chăm sóc toàn diện, phù hợp với nhu cầu của từng loài và từng giai đoạn phát triển. Giá và liệu trình sẽ được tư vấn cụ thể sau khi tiếp nhận lịch hẹn.</p>
+  <div class="container text-center">
+    <span class="eyebrow">DỊCH VỤ TOÀN DIỆN</span>
+    <h1>Bảng giá Dịch vụ & Chăm sóc Thú y</h1>
+    <p class="hero-lead">Cam kết chi phí minh bạch, tư vấn rõ ràng và sử dụng thuốc, vật tư y tế chính hãng chất lượng cao.</p>
   </div>
 </section>
 
-{# ── DỊCH VỤ CHI TIẾT ─────────────────────────────────────────────── #}
+<!-- Services Grid -->
 <section class="section">
   <div class="container">
-
-    {# Service 1: Khám sức khỏe #}
-    <div class="service-detail" id="kham-suc-khoe">
-      <div class="service-detail-img">
-        <img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?auto=format&fit=crop&w=800&q=80"
-             alt="Bác sĩ đang khám cho thú cưng" loading="lazy">
-      </div>
-      <div class="service-detail-copy">
-        <div class="service-tag mint">🩺 Dịch vụ 01</div>
-        <h2>Khám sức khỏe tổng quát</h2>
-        <p>Kiểm tra toàn diện các chỉ số sức khỏe của thú cưng: cân nặng, nhiệt độ, nhịp tim, tình trạng lông da, mắt, tai, răng miệng và hệ tiêu hóa.</p>
-        <ul class="service-features">
-          <li>Khám lâm sàng toàn thân</li>
-          <li>Phát hiện sớm dấu hiệu bất thường</li>
-          <li>Tư vấn chế độ dinh dưỡng và vận động phù hợp</li>
-          <li>Hẹn lịch tái khám định kỳ</li>
-        </ul>
-        <p class="demo-note">Giá tham khảo: 150.000 – 300.000 đ/lần (liên hệ để được báo giá chính xác)</p>
-        <a class="btn btn-primary" href="{{ url_for('book_appointment', service='Khám sức khỏe') }}">Đặt lịch dịch vụ này</a>
-      </div>
+    <div class="section-heading text-center">
+      <span class="eyebrow">CHUYÊN KHOA Y TẾ</span>
+      <h2>Các dịch vụ y khoa chủ lực tại PetCare</h2>
     </div>
 
-    {# Service 2: Tiêm phòng #}
-    <div class="service-detail reverse" id="tiem-phong">
-      <div class="service-detail-img">
-        <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=800&q=80"
-             alt="Tiêm phòng cho thú cưng" loading="lazy">
-      </div>
-      <div class="service-detail-copy">
-        <div class="service-tag peach">💉 Dịch vụ 02</div>
-        <h2>Tiêm phòng theo lịch</h2>
-        <p>Tiêm phòng đúng lịch là cách bảo vệ thú cưng hiệu quả nhất trước các bệnh truyền nhiễm nguy hiểm. Bác sĩ PetCare sẽ lập lịch tiêm phù hợp với độ tuổi và tiền sử sức khỏe.</p>
-        <ul class="service-features">
-          <li>Tư vấn lịch tiêm theo từng giai đoạn phát triển</li>
-          <li>Vaccine phòng dại, care, parvo và các bệnh thường gặp</li>
-          <li>Theo dõi phản ứng sau tiêm tại chỗ 15–30 phút</li>
-          <li>Cấp giấy chứng nhận tiêm phòng nếu cần</li>
-        </ul>
-        <p class="demo-note">Giá tham khảo: tùy loại vaccine (liên hệ để được tư vấn chi tiết)</p>
-        <a class="btn btn-primary" href="{{ url_for('book_appointment', service='Tiêm phòng') }}">Đặt lịch dịch vụ này</a>
-      </div>
-    </div>
+    <div class="service-detail-grid">
+      <article class="service-detail-card">
+        <div class="service-detail-icon">🩺</div>
+        <div class="service-detail-body">
+          <h3>Khám sức khỏe Tổng quát & Tầm soát Bệnh</h3>
+          <p>Kiểm tra hệ thống tuần hoàn, hô hấp, mắt, tai, răng miệng, tiêu hóa và cân nặng. Đưa ra lời khuyên dinh dưỡng và chế độ vận động phù hợp theo từng giai đoạn phát triển của thú cưng.</p>
+          <ul class="service-checklist">
+            <li>Đo sinh hiệu (nhiệt độ, nhịp tim, nhịp thở)</li>
+            <li>Khám lâm sàng các cơ quan nội tạng</li>
+            <li>Tư vấn dinh dưỡng và chăm sóc hành vi</li>
+          </ul>
+          <div class="service-price-row">
+            <span class="price-value">150.000đ / lần</span>
+            <a href="{{ url_for('book_appointment') }}?service=Khám+sức+khỏe" class="btn btn-primary btn-sm">Đặt lịch dịch vụ</a>
+          </div>
+        </div>
+      </article>
 
-    {# Service 3: Tắm và vệ sinh #}
-    <div class="service-detail" id="tam-ve-sinh">
-      <div class="service-detail-img">
-        <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=800&q=80"
-             alt="Tắm và chăm sóc thú cưng" loading="lazy">
-      </div>
-      <div class="service-detail-copy">
-        <div class="service-tag yellow">🛁 Dịch vụ 03</div>
-        <h2>Tắm và vệ sinh chuyên sâu</h2>
-        <p>Dịch vụ tắm, sấy, chải lông kết hợp vệ sinh tai, cắt móng và làm sạch vùng nhạy cảm. Sản phẩm sử dụng lành tính, an toàn với da nhạy cảm của thú cưng.</p>
-        <ul class="service-features">
-          <li>Tắm sạch, sấy khô và chải lông kỹ lưỡng</li>
-          <li>Vệ sinh tai, mắt an toàn</li>
-          <li>Cắt tỉa móng đúng kỹ thuật</li>
-          <li>Sử dụng sản phẩm không kích ứng, phù hợp từng loài</li>
-        </ul>
-        <p class="demo-note">Giá tham khảo: 100.000 – 250.000 đ tùy kích thước (liên hệ để báo giá)</p>
-        <a class="btn btn-primary" href="{{ url_for('book_appointment', service='Tắm và vệ sinh') }}">Đặt lịch dịch vụ này</a>
-      </div>
-    </div>
+      <article class="service-detail-card">
+        <div class="service-detail-icon">💉</div>
+        <div class="service-detail-body">
+          <h3>Tiêm phòng Vắc-xin & Tẩy giun Định kỳ</h3>
+          <p>Sử dụng 100% vắc-xin nhập khẩu chính ngạch từ Mỹ và Châu Âu (Zoetis, Boehringer Ingelheim, Virbac). Cấp sổ theo dõi tiêm phòng có mã vạch và nhắc lịch tự động.</p>
+          <ul class="service-checklist">
+            <li>Vắc-xin 5 bệnh, 7 bệnh cho chó</li>
+            <li>Vắc-xin 4 bệnh cho mèo và phòng dại bắt buộc</li>
+            <li>Khám sàng lọc miễn phí trước khi tiêm</li>
+          </ul>
+          <div class="service-price-row">
+            <span class="price-value">200.000đ / mũi</span>
+            <a href="{{ url_for('book_appointment') }}?service=Tiêm+phòng" class="btn btn-primary btn-sm">Đặt lịch dịch vụ</a>
+          </div>
+        </div>
+      </article>
 
-    {# Service 4: Điều trị #}
-    <div class="service-detail reverse" id="dieu-tri">
-      <div class="service-detail-img">
-        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80"
-             alt="Điều trị thú cưng" loading="lazy">
-      </div>
-      <div class="service-detail-copy">
-        <div class="service-tag lavender">💊 Dịch vụ 04</div>
-        <h2>Điều trị và theo dõi bệnh</h2>
-        <p>Tiếp nhận thú cưng bệnh, chẩn đoán và đề xuất phác đồ điều trị phù hợp. Bác sĩ theo dõi sát quá trình hồi phục và tư vấn chăm sóc tại nhà.</p>
-        <ul class="service-features">
-          <li>Khám và chẩn đoán lâm sàng chi tiết</li>
-          <li>Kê đơn và hướng dẫn dùng thuốc đúng cách</li>
-          <li>Theo dõi tái khám sau điều trị</li>
-          <li>Tư vấn chăm sóc và kiêng cữ tại nhà</li>
-        </ul>
-        <p class="demo-note">Phí điều trị tùy theo chẩn đoán (tư vấn miễn phí khi đặt lịch)</p>
-        <a class="btn btn-primary" href="{{ url_for('book_appointment', service='Điều trị thú cưng') }}">Đặt lịch dịch vụ này</a>
-      </div>
-    </div>
+      <article class="service-detail-card">
+        <div class="service-detail-icon">🔬</div>
+        <div class="service-detail-body">
+          <h3>Điều trị Bệnh lý & Nội trú</h3>
+          <p>Tiếp nhận điều trị các bệnh truyền nhiễm nguy hiểm (Care, Parvo, Giảm bạch cầu...), các bệnh lý về gan, thận, viêm phế quản và các rối loạn tiêu hóa cấp tính.</p>
+          <ul class="service-checklist">
+            <li>Phác đồ điều trị kháng thể đặc hiệu</li>
+            <li>Phòng cách ly lưu trú điều trị riêng biệt</li>
+            <li>Bác sĩ túc trực theo dõi truyền dịch 24/24</li>
+          </ul>
+          <div class="service-price-row">
+            <span class="price-value">Từ 300.000đ</span>
+            <a href="{{ url_for('book_appointment') }}?service=Điều+trị+thú+cưng" class="btn btn-primary btn-sm">Đặt lịch dịch vụ</a>
+          </div>
+        </div>
+      </article>
 
+      <article class="service-detail-card">
+        <div class="service-detail-icon">🛁</div>
+        <div class="service-detail-body">
+          <h3>Tắm Trị liệu, Vệ sinh & Spa Grooming</h3>
+          <p>Dịch vụ chăm sóc lông da chuyên nghiệp, loại bỏ ve rận, bọ chét, làm sạch tai, vắt tuyến hôi và cắt mài móng an toàn bởi đội ngũ kỹ thuật viên giàu kinh nghiệm.</p>
+          <ul class="service-checklist">
+            <li>Sữa tắm trị liệu hữu cơ phù hợp từng loại da</li>
+            <li>Massage thư giãn và sấy tạo phồng bông</li>
+            <li>Vệ sinh tai, khử khuẩn kẽ móng</li>
+          </ul>
+          <div class="service-price-row">
+            <span class="price-value">Từ 120.000đ</span>
+            <a href="{{ url_for('book_appointment') }}?service=Tắm+và+vệ+sinh" class="btn btn-primary btn-sm">Đặt lịch dịch vụ</a>
+          </div>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
-{# ── FAQ ────────────────────────────────────────────────────────────── #}
+<!-- Price List Table from DB -->
 <section class="section section-soft">
-  <div class="container">
-    <div class="section-heading">
-      <span class="eyebrow">Câu hỏi thường gặp</span>
-      <h2>Bạn cần biết điều này</h2>
+  <div class="container max-w-800">
+    <div class="section-heading text-center">
+      <span class="eyebrow">BẢNG GIÁ NIÊM YẾT</span>
+      <h2>Biểu phí Dịch vụ Niêm yết tại Phòng khám</h2>
+      <p>Bảng giá công khai, không phát sinh chi phí ẩn khi thăm khám.</p>
     </div>
-    <div class="faq-grid">
-      <div class="faq-item">
-        <h4>Tôi cần chuẩn bị gì trước khi đến khám?</h4>
-        <p>Mang theo hồ sơ tiêm phòng (nếu có) và ghi chú các triệu chứng bất thường bạn đã quan sát. Không cần nhịn ăn trừ khi được bác sĩ chỉ định.</p>
-      </div>
-      <div class="faq-item">
-        <h4>Có thể đến không đặt lịch trước không?</h4>
-        <p>PetCare ưu tiên khách hàng có lịch hẹn. Trường hợp khẩn cấp, bạn có thể liên hệ trước qua điện thoại để được hỗ trợ sớm nhất.</p>
-      </div>
-      <div class="faq-item">
-        <h4>PetCare có khám cho loài nào?</h4>
-        <p>Chúng tôi phục vụ chó, mèo và một số tiểu động vật phổ biến. Vui lòng ghi rõ loài thú cưng khi đặt lịch để bác sĩ chuẩn bị phù hợp.</p>
-      </div>
-      <div class="faq-item">
-        <h4>Thời gian chờ trung bình là bao lâu?</h4>
-        <p>Khách có đặt lịch thường được tiếp nhận trong vòng 10–15 phút. Chúng tôi sắp xếp lịch hợp lý để không có tình trạng chờ quá lâu.</p>
-      </div>
+
+    <div class="price-table-card">
+      <table class="data-table-modern">
+        <thead>
+          <tr>
+            <th>Tên dịch vụ y tế</th>
+            <th class="text-right">Mức giá niêm yết</th>
+            <th class="text-right">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for svc in service_list %}
+            <tr>
+              <td>
+                <strong>{{ svc.name }}</strong>
+              </td>
+              <td class="text-right">
+                <span class="price-tag-badge">{{ '{:,.0f}'.format(svc.price) }} VNĐ</span>
+              </td>
+              <td class="text-right">
+                <a href="{{ url_for('book_appointment') }}?service={{ svc.name }}" class="btn btn-outline-primary btn-xs">
+                  Đặt lịch
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
-
-{# ── CTA ────────────────────────────────────────────────────────────── #}
-<section class="cta-section">
-  <div class="container">
-    <span class="eyebrow">Bắt đầu ngay</span>
-    <h2>Đặt lịch dịch vụ cho bé</h2>
-    <p>Chỉ 2 phút điền form, nhân viên PetCare sẽ liên hệ xác nhận.</p>
-    <div class="cta-actions">
-      <a class="btn btn-primary btn-lg" href="{{ url_for('book_appointment') }}">Đặt lịch ngay</a>
-    </div>
-  </div>
-</section>
-
 {% endblock %}

@@ -1,0 +1,130 @@
+{% extends 'portal.html' %}
+{% block title %}Hồ sơ Bệnh sử {{ pet.name }} | Bác sĩ PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">HỒ SƠ BỆNH SỬ THÚ CƯNG</span>
+      <h1>Bệnh sử thú cưng: {{ pet.name }}</h1>
+      <p class="text-muted">Chủ nuôi: <strong>{{ pet.owner_name }}</strong> · 📞 {{ pet.customer_phone }}</p>
+    </div>
+    <div class="header-actions">
+      <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline btn-sm">← Quay lại Ca khám</a>
+    </div>
+  </div>
+
+  <!-- Pet Overview Card -->
+  <div class="pet-summary-banner mb-4">
+    <div class="pet-summary-avatar">
+      {% if pet.image_path %}
+        <img src="{{ url_for('static', filename=pet.image_path) }}" alt="{{ pet.name }}">
+      {% else %}
+        <img src="{{ url_for('static', filename='images/default-pet.svg') }}" alt="Pet">
+      {% endif %}
+    </div>
+    <div class="pet-summary-info">
+      <h2>{{ pet.name }} <span class="badge-species">{{ pet.species }}</span></h2>
+      <div class="pet-meta-row">
+        <span><strong>Giống:</strong> {{ pet.breed or 'Chưa rõ' }}</span>
+        <span><strong>Giới tính:</strong> {{ pet.gender or 'Chưa rõ' }}</span>
+        <span><strong>Ngày sinh:</strong> {{ pet.birth_date or 'Chưa rõ' }}</span>
+        <span><strong>Cân nặng:</strong> {{ pet.weight or '—' }} kg</span>
+      </div>
+      {% if pet.allergies %}
+        <div class="pet-alert-box alert-warning">
+          <strong>⚠️ Dị ứng ghi nhận:</strong> {{ pet.allergies }}
+        </div>
+      {% endif %}
+      {% if pet.medical_history %}
+        <div class="pet-history-note">
+          <strong>Tiền sử bệnh lý:</strong> {{ pet.medical_history }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="history-grid-2">
+    <!-- Medical Records Timeline -->
+    <div class="history-col">
+      <h3 class="column-title">📋 Lịch sử các lần khám bệnh ({{ records|length }})</h3>
+      {% for rec in records %}
+        <div class="record-timeline-card">
+          <div class="record-date-badge">
+            <strong>Ngày: {{ rec.appointment_date }}</strong>
+            <span class="badge-doctor">BS: {{ rec.doctor_name }}</span>
+          </div>
+          <div class="record-body">
+            <p><strong>Dịch vụ:</strong> {{ rec.service }}</p>
+            <div class="vitals-row">
+              <span>Nhiệt độ: <strong>{{ rec.temperature or '—' }}°C</strong></span>
+              <span>Cân nặng: <strong>{{ rec.weight or '—' }}kg</strong></span>
+              <span>Nhịp tim: <strong>{{ rec.heart_rate or '—' }} bpm</strong></span>
+            </div>
+            <div class="record-field">
+              <span class="label">Triệu chứng:</span>
+              <p>{{ rec.symptoms or 'Không ghi nhận' }}</p>
+            </div>
+            <div class="record-field highlight-field">
+              <span class="label">Chẩn đoán:</span>
+              <p><strong>{{ rec.diagnosis or 'Không ghi nhận' }}</strong></p>
+            </div>
+            <div class="record-field">
+              <span class="label">Toa thuốc / Điều trị:</span>
+              <p>{{ rec.prescription or 'Không ghi nhận' }}</p>
+            </div>
+            {% if rec.follow_up_date %}
+              <div class="record-field text-primary">
+                <span class="label">Tái khám:</span> {{ rec.follow_up_date }}
+              </div>
+            {% endif %}
+            {% if rec.attachment_path %}
+              <div class="record-attachment">
+                <a href="{{ url_for('static', filename=rec.attachment_path) }}" target="_blank" class="btn btn-sm btn-outline-info">
+                  🖼️ Xem ảnh xét nghiệm / chẩn đoán
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% else %}
+        <div class="empty-state card-empty">
+          <p>Bé chưa có lịch sử khám bệnh trước đây tại phòng khám.</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Vaccinations History -->
+    <div class="history-col">
+      <h3 class="column-title">💉 Sổ tiêm phòng vắc-xin ({{ vaccinations|length }})</h3>
+      <div class="vaccination-table-card">
+        <table class="data-table-modern">
+          <thead>
+            <tr>
+              <th>Vắc-xin</th>
+              <th>Ngày tiêm</th>
+              <th>Hẹn tái tiêm</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for vacc in vaccinations %}
+              <tr>
+                <td><strong>{{ vacc.vaccine_name }}</strong></td>
+                <td>{{ vacc.vaccinated_on }}</td>
+                <td>{{ vacc.due_on or '—' }}</td>
+                <td><small>{{ vacc.note or '—' }}</small></td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="4" class="text-center py-3 text-muted">Chưa ghi nhận mũi tiêm nào.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

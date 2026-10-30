@@ -1,1 +1,74 @@
-{% extends 'base.html' %}{% block title %}Đăng ký | PetCare{% endblock %}{% block body %}<main class="auth-page"><section class="login-card wide-card"><h1>Tạo tài khoản khách hàng</h1>{% include 'flashes.html' %}<form method="post" class="stack-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Họ tên<input name="full_name" required></label><label>Tên đăng nhập<input name="username" required></label><label>Email<input type="email" name="email" required></label><label>Số điện thoại<input name="phone" required></label><label>Địa chỉ<input name="address"></label><label>Mật khẩu (ít nhất 8 ký tự)<input type="password" name="password" minlength="8" required></label><button class="btn btn-primary">Đăng ký</button></form></section></main>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Đăng ký tài khoản Khách hàng | PetCare{% endblock %}
+
+{% block body %}
+<main class="auth-page-modern">
+  <div class="auth-box-container">
+    <div class="auth-header text-center">
+      <a class="logo logo-center" href="{{ url_for('index') }}">
+        <div class="logo-icon-wrap">
+          <svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+            <rect width="40" height="40" rx="10" fill="#0284c7"/>
+            <path d="M20 12v16M12 20h16" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title">PetCare</span>
+          <span class="brand-sub">Hệ thống Y tế Thú y</span>
+        </div>
+      </a>
+      <h1 class="auth-title">Đăng ký tài khoản Chủ nuôi</h1>
+      <p class="auth-subtitle">Trở thành thành viên PetCare để quản lý sức khỏe thú cưng trọn đời</p>
+    </div>
+
+    <div class="login-card-modern">
+      {% include 'flashes.html' %}
+
+      <form method="post" action="{{ url_for('register') }}" class="stack-form modern-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        <div class="form-group">
+          <label>Họ và tên của bạn <span class="req-star">*</span></label>
+          <input type="text" name="full_name" class="form-control" placeholder="Nguyễn Văn A" required autofocus>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Tên đăng nhập <span class="req-star">*</span></label>
+            <input type="text" name="username" class="form-control" placeholder="nguyenvana" required>
+          </div>
+
+          <div class="form-group">
+            <label>Số điện thoại <span class="req-star">*</span></label>
+            <input type="tel" name="phone" class="form-control" placeholder="0901234567" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Địa chỉ Email <span class="req-star">*</span></label>
+          <input type="email" name="email" class="form-control" placeholder="nguyenvana@gmail.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Địa chỉ nơi ở</label>
+          <input type="text" name="address" class="form-control" placeholder="Số nhà, đường, phường/xã, quận/huyện...">
+        </div>
+
+        <div class="form-group">
+          <label>Mật khẩu đăng nhập (tối thiểu 8 ký tự) <span class="req-star">*</span></label>
+          <input type="password" name="password" minlength="8" class="form-control" placeholder="Nhập mật khẩu an toàn" required>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg mt-3" type="submit">
+          Đăng ký tài khoản ngay
+        </button>
+      </form>
+
+      <div class="auth-footer-links text-center mt-4">
+        <p>Đã có tài khoản? <a href="{{ url_for('login') }}" class="font-bold text-primary">Đăng nhập ngay</a></p>
+        <p><a href="{{ url_for('index') }}" class="back-link">← Quay lại trang chủ PetCare</a></p>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

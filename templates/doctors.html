@@ -1,84 +1,125 @@
 {% extends 'site.html' %}
-{% block title %}Đội ngũ bác sĩ | PetCare{% endblock %}
+{% block title %}Đội ngũ Bác sĩ Thú y | PetCare{% endblock %}
 
 {% block content %}
-
-{# ── PAGE HERO ─────────────────────────────────────────────────────── #}
+<!-- Page Hero -->
 <section class="page-hero">
-  <div class="container">
-    <span class="eyebrow">Đội ngũ chuyên môn</span>
-    <h1>Những người bạn<br>đáng tin cậy</h1>
-    <p>Đội ngũ bác sĩ PetCare được đào tạo bài bản, có kinh nghiệm thực tiễn và đặc biệt yêu thích nghề chăm sóc động vật. Thông tin và hình ảnh bên dưới là dữ liệu minh họa cho dự án học tập.</p>
+  <div class="container text-center">
+    <span class="eyebrow">CHUYÊN GIA Y TẾ ĐẦU NGÀNH</span>
+    <h1>Đội ngũ Bác sĩ Thú y PetCare</h1>
+    <p class="hero-lead">
+      Tất cả bác sĩ tại PetCare đều tốt nghiệp chính quy từ các trường đại học thú y hàng đầu, có nhiều năm kinh nghiệm lâm sàng và đặc biệt yêu thương động vật bằng cả trái tim.
+    </p>
+    <div class="hero-stats-row">
+      <div class="hero-stat-pill"><strong>100%</strong> Bác sĩ có chứng chỉ hành nghề</div>
+      <div class="hero-stat-pill"><strong>5 – 10+</strong> Năm kinh nghiệm chuyên môn</div>
+      <div class="hero-stat-pill"><strong>24/7</strong> Sẵn sàng cấp cứu y tế</div>
+    </div>
   </div>
 </section>
 
-{# ── DANH SÁCH BÁC SĨ ─────────────────────────────────────────────── #}
+<!-- Doctor Full List -->
 <section class="section">
   <div class="container">
     <div class="section-heading">
-      <span class="eyebrow">Gặp gỡ đội ngũ</span>
-      <h2>Bác sĩ của chúng tôi</h2>
-      <p class="demo-label">⚠️ Thông tin và hình ảnh bên dưới là dữ liệu minh họa, không phải thông tin thực tế.</p>
+      <span class="eyebrow">DANH SÁCH BÁC SĨ CHUYÊN KHOA</span>
+      <h2>Gặp gỡ những người bạn đồng hành của bé yêu</h2>
+      <p>Nhấp vào từng bác sĩ để xem chi tiết quá trình công tác, bằng cấp chuyên sâu và đặt lịch trực tiếp.</p>
     </div>
+
     <div class="doctor-grid-full">
       {% for doctor in doctors %}
-      <article class="doctor-card-full">
-        <div class="doctor-avatar" aria-hidden="true">👨‍⚕️</div>
-        <div class="doctor-info-full">
-          <h2>{{ doctor.name }}</h2>
-          <p class="doctor-role">{{ doctor.role }}</p>
-          <p class="doctor-specialty-tag">{{ doctor.specialty }}</p>
-          <div class="doctor-bio"><p>Thăm khám tận tâm, giải thích rõ ràng và theo dõi sức khỏe thú cưng theo từng ca.</p></div>
-        </div>
-      </article>
+        <article class="doctor-card-horizontal">
+          <div class="doctor-card-photo">
+            {% if doctor.avatar %}
+              <img src="{{ url_for('static', filename=doctor.avatar) }}" alt="{{ doctor.name }}" loading="lazy">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/default-doctor.svg') }}" alt="{{ doctor.name }}" loading="lazy">
+            {% endif %}
+            <span class="exp-badge">{{ doctor.experience_years }}+ Năm KN</span>
+          </div>
+
+          <div class="doctor-card-details">
+            <div class="doctor-badge-row">
+              <span class="degree-pill">{{ doctor.degree or doctor.role }}</span>
+              <span class="status-active-pill">● Đang nhận lịch khám</span>
+            </div>
+
+            <h2 class="doctor-name">
+              <a href="{{ url_for('doctor_detail', doctor_id=doctor.id) }}">{{ doctor.name }}</a>
+            </h2>
+
+            <p class="doctor-specialty-highlight">🩺 {{ doctor.specialty }}</p>
+
+            <p class="doctor-bio-excerpt">{{ doctor.bio }}</p>
+
+            <div class="doctor-meta-footer">
+              <div class="doctor-contact-chip">
+                <span>📞 Tư vấn:</span> <strong>{{ doctor.phone }}</strong>
+              </div>
+              <div class="doctor-actions-group">
+                <a href="{{ url_for('doctor_detail', doctor_id=doctor.id) }}" class="btn btn-outline btn-sm">
+                  Xem chi tiết hồ sơ →
+                </a>
+                <a href="{{ url_for('book_appointment') }}?doctor_id={{ doctor.id }}" class="btn btn-primary btn-sm">
+                  Đặt lịch khám
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
       {% endfor %}
     </div>
   </div>
 </section>
 
-{# ── TẠI SAO ĐỘI NGŨ ─────────────────────────────────────────────── #}
+<!-- Standards & Commitment -->
 <section class="section section-soft">
   <div class="container">
-    <div class="section-heading">
-      <span class="eyebrow">Tiêu chuẩn chuyên môn</span>
-      <h2>Cam kết chất lượng đội ngũ</h2>
+    <div class="section-heading text-center">
+      <span class="eyebrow">TIÊU CHUẨN Y KHOA</span>
+      <h2>Cam kết chất lượng điều trị tại PetCare</h2>
+      <p>Sức khỏe và sự an toàn của thú cưng luôn là nguyên tắc cao nhất trong mọi quyết định y khoa.</p>
     </div>
+
     <div class="standards-grid">
       <div class="standard-item">
         <div class="standard-icon">🎓</div>
-        <h4>Đào tạo bài bản</h4>
-        <p>Tốt nghiệp từ các trường thú y uy tín trong và ngoài nước.</p>
+        <h4>Đào tạo chuyên sâu</h4>
+        <p>Bác sĩ thường xuyên tu nghiệp và cập nhật phác đồ điều trị quốc tế mới nhất.</p>
       </div>
+
       <div class="standard-item">
-        <div class="standard-icon">📚</div>
-        <h4>Cập nhật liên tục</h4>
-        <p>Tham gia hội thảo và khóa đào tạo định kỳ để cập nhật phương pháp điều trị mới nhất.</p>
+        <div class="standard-icon">🔬</div>
+        <h4>Trang thiết bị hiện đại</h4>
+        <p>Hệ thống máy sinh hóa máu, X-Quang kỹ thuật số và máy siêu âm màu chuyên dụng cho thú y.</p>
       </div>
+
       <div class="standard-item">
         <div class="standard-icon">❤️</div>
-        <h4>Yêu nghề thật sự</h4>
-        <p>Không chỉ làm việc vì chuyên môn – đội ngũ PetCare thực sự yêu thương động vật.</p>
+        <h4>Ân cần & Tận tâm</h4>
+        <p>Khám chữa nhẹ nhàng, giảm tối đa sự căng thẳng, sợ hãi cho các bé chó mèo.</p>
       </div>
+
       <div class="standard-item">
         <div class="standard-icon">🤝</div>
-        <h4>Tôn trọng chủ nuôi</h4>
-        <p>Lắng nghe, giải thích rõ ràng và cùng quyết định với chủ nuôi về kế hoạch điều trị.</p>
+        <h4>Tư vấn minh bạch</h4>
+        <p>Giải thích rõ ràng tình trạng bệnh và phác đồ điều trị trước khi tiến hành.</p>
       </div>
     </div>
   </div>
 </section>
 
-{# ── CTA ────────────────────────────────────────────────────────────── #}
+<!-- CTA -->
 <section class="cta-section">
-  <div class="container">
-    <span class="eyebrow">Gặp gỡ trực tiếp</span>
-    <h2>Đặt lịch để gặp bác sĩ phù hợp</h2>
-    <p>Khi đặt lịch, bạn có thể ghi chú yêu cầu về bác sĩ hoặc loại dịch vụ cần tư vấn.</p>
+  <div class="container text-center">
+    <span class="eyebrow-light">ĐẶT LỊCH HẸN TRỰC TUYẾN</span>
+    <h2>Bé yêu đang cần chăm sóc y tế?</h2>
+    <p>Hãy để các bác sĩ chuyên khoa tại PetCare đồng hành và bảo vệ sức khỏe cho thú cưng của bạn.</p>
     <div class="cta-actions">
-      <a class="btn btn-primary btn-lg" href="{{ url_for('book_appointment') }}">Đặt lịch ngay</a>
-      <a class="btn btn-outline-light btn-lg" href="{{ url_for('contact') }}">Đặt câu hỏi trước</a>
+      <a class="btn btn-primary btn-lg" href="{{ url_for('book_appointment') }}">Đặt lịch khám ngay</a>
+      <a class="btn btn-outline-light btn-lg" href="{{ url_for('contact') }}">Liên hệ tư vấn</a>
     </div>
   </div>
 </section>
-
 {% endblock %}

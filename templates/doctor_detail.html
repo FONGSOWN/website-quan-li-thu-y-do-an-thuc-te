@@ -1,0 +1,139 @@
+{% extends 'site.html' %}
+{% block title %}{{ doctor.full_name }} — {{ doctor.degree or 'Bác sĩ Thú y' }} | PetCare{% endblock %}
+
+{% block content %}
+<!-- Doctor Profile Hero -->
+<section class="doctor-detail-hero">
+  <div class="container">
+    <div class="doctor-detail-grid">
+      <!-- Doctor Portrait -->
+      <div class="doctor-portrait-wrap">
+        <div class="portrait-card">
+          {% if doctor.avatar %}
+            <img src="{{ url_for('static', filename=doctor.avatar) }}" alt="{{ doctor.full_name }}" class="doctor-full-img">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/default-doctor.svg') }}" alt="{{ doctor.full_name }}" class="doctor-full-img">
+          {% endif %}
+          <div class="doctor-experience-tag">
+            <strong>{{ doctor.experience_years or 5 }}+ Năm</strong>
+            <span>Kinh nghiệm y khoa</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctor Information -->
+      <div class="doctor-bio-content">
+        <span class="eyebrow">{{ doctor.degree or 'Bác sĩ Chuyên khoa' }}</span>
+        <h1 class="doctor-name-title">{{ doctor.full_name }}</h1>
+        <p class="doctor-specialty-lead">🩺 {{ doctor.specialty or 'Bác sĩ Thú y Tổng quát & Điều trị' }}</p>
+
+        <div class="doctor-highlights-row">
+          <div class="highlight-item">
+            <span class="highlight-icon">🎓</span>
+            <div>
+              <strong>Bằng cấp chuyên môn</strong>
+              <p>{{ doctor.degree or 'Bác sĩ Thú y Chính quy' }}</p>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">📞</span>
+            <div>
+              <strong>Tư vấn y tế</strong>
+              <p>{{ doctor.phone or '0900 123 456' }}</p>
+            </div>
+          </div>
+          <div class="highlight-item">
+            <span class="highlight-icon">⭐</span>
+            <div>
+              <strong>Đánh giá dịch vụ</strong>
+              <p>4.9 / 5.0 (Hơn 500 lượt khám)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="doctor-bio-narrative">
+          <h3>Tiểu sử & Quá trình công tác</h3>
+          <p>{{ doctor.bio or 'Bác sĩ được đào tạo bài bản, có nhiều năm kinh nghiệm lâm sàng trong chẩn đoán, phẫu thuật và chăm sóc sức khỏe toàn diện cho thú cưng.' }}</p>
+        </div>
+
+        <div class="doctor-cta-actions">
+          <a href="{{ url_for('book_appointment') }}?doctor_id={{ doctor.id }}" class="btn btn-primary btn-lg">
+            🗓️ Đặt lịch khám với {{ doctor.full_name }}
+          </a>
+          <a href="{{ url_for('contact') }}" class="btn btn-outline btn-lg">
+            💬 Gửi câu hỏi tư vấn
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Doctor Schedule Section -->
+<section class="section section-soft">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">LỊCH LÀM VIỆC DỰ KIẾN</span>
+      <h2>Lịch trực trong tuần tới</h2>
+      <p>Chọn ngày trực để đặt lịch khám nhanh chóng và thuận tiện nhất.</p>
+    </div>
+
+    <div class="schedule-cards-grid">
+      {% for sched in schedules %}
+        <div class="schedule-day-card">
+          <div class="sched-date">{{ sched.schedule_date }}</div>
+          <div class="sched-shift shift-{{ sched.shift.lower().replace(' ', '-') }}">
+            Ca: <strong>{{ sched.shift }}</strong>
+          </div>
+          <div class="sched-hours">
+            {% if sched.shift == 'Sáng' %}08:00 – 11:30
+            {% elif sched.shift == 'Chiều' %}13:30 – 17:00
+            {% else %}08:00 – 17:00{% endif %}
+          </div>
+          <a href="{{ url_for('book_appointment') }}?doctor_id={{ doctor.id }}&date={{ sched.schedule_date }}" class="btn btn-outline-primary btn-xs mt-2">
+            Đặt ca này →
+          </a>
+        </div>
+      {% else %}
+        <div class="col-12 text-center py-4">
+          <p class="text-muted">Bác sĩ luôn sẵn sàng tiếp nhận theo lịch hẹn linh hoạt. Vui lòng bấm "Đặt lịch khám" để kiểm tra khung giờ trống.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Other Doctors -->
+<section class="section">
+  <div class="container">
+    <div class="section-heading">
+      <span class="eyebrow">ĐỒNG NGHIỆP CÙNG KHOA</span>
+      <h2>Các bác sĩ khác tại PetCare</h2>
+    </div>
+
+    <div class="doctor-grid">
+      {% for other in other_doctors %}
+        <article class="doctor-card">
+          <div class="doctor-photo-frame">
+            {% if other.avatar %}
+              <img src="{{ url_for('static', filename=other.avatar) }}" alt="{{ other.full_name }}" loading="lazy">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/default-doctor.svg') }}" alt="{{ other.full_name }}" loading="lazy">
+            {% endif %}
+          </div>
+          <div class="doctor-info">
+            <span class="doctor-degree-tag">{{ other.degree or 'Bác sĩ Thú y' }}</span>
+            <h3>{{ other.full_name }}</h3>
+            <p class="doctor-specialty">{{ other.specialty }}</p>
+            <div class="doctor-card-actions">
+              <a href="{{ url_for('doctor_detail', doctor_id=other.id) }}" class="btn btn-outline btn-sm">Xem hồ sơ</a>
+              <a href="{{ url_for('book_appointment') }}?doctor_id={{ other.id }}" class="btn btn-primary btn-sm">Đặt lịch</a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+

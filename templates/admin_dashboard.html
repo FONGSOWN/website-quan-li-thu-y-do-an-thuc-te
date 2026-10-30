@@ -1,1 +1,256 @@
-{% extends 'portal.html' %}{% block portal_content %}<div class="section-heading"><span class="eyebrow">Quản trị hệ thống</span><h1>Quản lý trung tâm</h1><a class="btn btn-primary" href="{{ url_for('admin_appointment_form') }}">+ Lịch hẹn thủ công</a></div><div class="stats-grid"><div class="stat-block"><strong>{{ metrics.customers }}</strong><span>Khách hàng</span></div><div class="stat-block"><strong>{{ metrics.pets }}</strong><span>Thú cưng</span></div><div class="stat-block"><strong>{{ metrics.appointments }}</strong><span>Lịch hẹn</span></div><div class="stat-block"><strong>{{ '{:,.0f}'.format(metrics.revenue) }}đ</strong><span>Doanh thu</span></div></div><section class="login-card wide-card"><h2>Doanh thu theo ngày</h2><canvas id="revenueChart"></canvas></section><h2>Lịch hẹn mới</h2><table class="data-table"><tr><th>Khách</th><th>Thú cưng</th><th>Ngày</th><th>Trạng thái</th><th></th></tr>{% for appointment in appointments %}<tr><td>{{ appointment.full_name }}</td><td>{{ appointment.pet_name }}</td><td>{{ appointment.appointment_date }}</td><td>{{ appointment.status }}</td><td><a href="{{ url_for('admin_appointment_form',appointment_id=appointment.id) }}">Sửa</a></td></tr>{% else %}<tr><td colspan="5">Chưa có lịch hẹn.</td></tr>{% endfor %}</table><h2>Tin nhắn gần đây</h2>{% for message in messages %}<article class="service-card"><strong>{{ message.full_name }}</strong><p>{{ message.message }}</p><form class="inline-form" method="post" action="{{ url_for('mark_message_read',message_id=message.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="link-button">Đã đọc</button></form></article>{% endfor %}<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script>const data={{ chart|safe }};new Chart(document.querySelector('#revenueChart'),{type:'bar',data:{labels:data.map(row=>row.label),datasets:[{label:'Doanh thu (đ)',data:data.map(row=>row.value),backgroundColor:'#2f9e7b'}]}});</script>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Dashboard Quản trị | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">TỔNG QUAN HỆ THỐNG</span>
+      <h1>Trung tâm Quản trị Bệnh viện PetCare</h1>
+      <p class="text-muted">Theo dõi chỉ số hoạt động, duyệt lịch hẹn và quản lý vận hành phòng khám</p>
+    </div>
+    <div class="header-actions">
+      <a class="btn btn-primary btn-sm" href="{{ url_for('admin_appointment_form') }}">➕ Thêm lịch hẹn thủ công</a>
+      <a class="btn btn-outline btn-sm" href="{{ url_for('admin_schedules') }}">📅 Phân ca trực bác sĩ</a>
+    </div>
+  </div>
+
+  <!-- Metric Counters -->
+  <div class="stats-grid mb-4">
+    <div class="stat-block-modern card-blue">
+      <div class="stat-icon">👥</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ metrics.customers }}">{{ metrics.customers }}</strong>
+        <span class="stat-label">Khách hàng thành viên</span>
+      </div>
+    </div>
+
+    <div class="stat-block-modern card-green">
+      <div class="stat-icon">🐾</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ metrics.pets }}">{{ metrics.pets }}</strong>
+        <span class="stat-label">Hồ sơ thú cưng</span>
+      </div>
+    </div>
+
+    <div class="stat-block-modern card-orange">
+      <div class="stat-icon">🗓️</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ metrics.appointments }}">{{ metrics.appointments }}</strong>
+        <span class="stat-label">Tổng ca đặt lịch</span>
+      </div>
+    </div>
+
+    <div class="stat-block-modern card-purple">
+      <div class="stat-icon">💰</div>
+      <div class="stat-details">
+        <strong class="stat-number">{{ '{:,.0f}'.format(metrics.revenue) }}đ</strong>
+        <span class="stat-label">Tổng doanh thu y tế</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue Chart Section -->
+  <div class="chart-card-section mb-4">
+    <div class="card-header-flex">
+      <div>
+        <h3>📈 Biểu đồ Doanh thu khám chữa bệnh (7 ngày gần nhất)</h3>
+        <p class="text-muted text-sm">Thống kê doanh thu từ các hóa đơn đã thanh toán</p>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap">
+      <canvas id="revenueChart" height="90"></canvas>
+    </div>
+  </div>
+
+  <!-- Appointments Management Section -->
+  <div class="management-section mb-4">
+    <div class="section-card-header mb-3">
+      <div class="header-titles">
+        <h2>Quản lý Lịch hẹn Khám bệnh</h2>
+        <p class="text-muted">Tìm kiếm, phân công bác sĩ, duyệt và cập nhật trạng thái các ca khám</p>
+      </div>
+    </div>
+
+    <!-- Search & Filter Form for Admin -->
+    <form method="get" action="{{ url_for('admin_dashboard') }}" class="filter-bar mb-3">
+      <div class="filter-group">
+        <label>Trạng thái:</label>
+        <select name="status" class="form-control-sm" onchange="this.form.submit()">
+          <option value="">Tất cả trạng thái</option>
+          {% for st in statuses %}
+            <option value="{{ st }}" {% if status_filter == st %}selected{% endif %}>{{ st }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="filter-group search-group">
+        <input type="text" name="q" value="{{ q }}" placeholder="Tìm theo tên khách, thú cưng, SĐT..." class="form-control-sm">
+        <button type="submit" class="btn btn-sm btn-primary">Tìm kiếm</button>
+        {% if q or status_filter %}
+          <a href="{{ url_for('admin_dashboard') }}" class="btn btn-sm btn-outline">Bỏ lọc</a>
+        {% endif %}
+      </div>
+    </form>
+
+    <div class="table-responsive">
+      <table class="data-table-modern">
+        <thead>
+          <tr>
+            <th>Mã / Ngày</th>
+            <th>Chủ nuôi</th>
+            <th>Thú cưng</th>
+            <th>Dịch vụ</th>
+            <th>Bác sĩ</th>
+            <th>Trạng thái</th>
+            <th class="text-right">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appointment in appointments %}
+            <tr>
+              <td>
+                <span class="appt-id-badge">#{{ appointment.id }}</span>
+                <strong class="d-block mt-1">{{ appointment.appointment_date }}</strong>
+                <small class="text-muted">{{ appointment.time_slot or 'Linh hoạt' }}</small>
+              </td>
+              <td>
+                <strong>{{ appointment.full_name }}</strong>
+                <small class="d-block text-muted">📞 {{ appointment.phone }}</small>
+              </td>
+              <td>
+                <strong>{{ appointment.pet_name }}</strong>
+              </td>
+              <td>
+                <span class="service-pill">{{ appointment.service }}</span>
+              </td>
+              <td>
+                {{ appointment.doctor_name or 'Chưa phân công' }}
+              </td>
+              <td>
+                <span class="status-badge status-{{ appointment.status.lower().replace(' ', '-') }}">
+                  {{ appointment.status }}
+                </span>
+              </td>
+              <td class="text-right">
+                <div class="action-buttons-inline">
+                  <a href="{{ url_for('admin_appointment_form', appointment_id=appointment.id) }}" class="btn btn-outline btn-xs">
+                    ✏️ Sửa
+                  </a>
+
+                  <!-- Status quick update form -->
+                  <form method="post" action="{{ url_for('update_appointment_status', appointment_id=appointment.id) }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    {% if appointment.status == 'Chờ duyệt' %}
+                      <input type="hidden" name="status" value="Đã xác nhận">
+                      <button type="submit" class="btn btn-outline-success btn-xs">✓ Duyệt</button>
+                    {% elif appointment.status == 'Đã xác nhận' %}
+                      <input type="hidden" name="status" value="Đang khám">
+                      <button type="submit" class="btn btn-outline-primary btn-xs">Khám</button>
+                    {% endif %}
+                  </form>
+
+                  <form method="post" action="{{ url_for('delete_appointment', appointment_id=appointment.id) }}" class="inline-form" data-confirm="Bạn có chắc chắn muốn xóa lịch hẹn #{{ appointment.id }} không?">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-outline-danger btn-xs" title="Xóa lịch hẹn">🗑️</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="7" class="text-center py-4 text-muted">Không có lịch hẹn nào.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Messages Section -->
+  <div class="messages-section">
+    <div class="section-card-header mb-3">
+      <div class="header-titles">
+        <h2>Tin nhắn liên hệ mới từ khách hàng</h2>
+        <p class="text-muted">Các câu hỏi và yêu cầu tư vấn gửi qua website</p>
+      </div>
+    </div>
+
+    <div class="messages-grid">
+      {% for msg in messages %}
+        <div class="message-card-modern {% if not msg.is_read %}unread-card{% endif %}">
+          <div class="msg-header">
+            <div>
+              <strong>{{ msg.full_name }}</strong>
+              <small class="text-muted d-block">✉️ {{ msg.email }} · {{ msg.created_at }}</small>
+            </div>
+            <div>
+              {% if not msg.is_read %}
+                <span class="badge-unread">Mới</span>
+              {% else %}
+                <span class="badge-read">Đã đọc</span>
+              {% endif %}
+            </div>
+          </div>
+          <p class="msg-body">{{ msg.message }}</p>
+          <div class="msg-actions">
+            {% if not msg.is_read %}
+              <form class="inline-form" method="post" action="{{ url_for('mark_message_read', message_id=msg.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="btn btn-xs btn-outline-primary">✓ Đánh dấu đã đọc</button>
+              </form>
+            {% endif %}
+            <form class="inline-form" method="post" action="{{ url_for('delete_message', message_id=msg.id) }}" data-confirm="Xóa tin nhắn này?">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <button class="btn btn-xs btn-outline-danger">🗑️ Xóa</button>
+            </form>
+          </div>
+        </div>
+      {% else %}
+        <p class="text-muted py-2">Không có tin nhắn liên hệ mới.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const chartEl = document.querySelector('#revenueChart');
+  if (chartEl) {
+    const rawData = {{ chart|safe }};
+    const labels = rawData.map(r => r.label);
+    const values = rawData.map(r => r.value);
+    
+    new Chart(chartEl, {
+      type: 'bar',
+      data: {
+        labels: labels.length > 0 ? labels : ['Hôm nay'],
+        datasets: [{
+          label: 'Doanh thu thực tế (VNĐ)',
+          data: values.length > 0 ? values : [0],
+          backgroundColor: '#0284c7',
+          borderColor: '#0369a1',
+          borderWidth: 1,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(val) { return Number(val).toLocaleString('vi-VN') + ' đ'; }
+            }
+          }
+        }
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

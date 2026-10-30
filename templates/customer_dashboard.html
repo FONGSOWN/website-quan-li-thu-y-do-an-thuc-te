@@ -1,1 +1,148 @@
-{% extends 'portal.html' %}{% block portal_content %}<section class="section-heading"><span class="eyebrow">Cổng khách hàng</span><h1>Xin chào, {{ current_user.full_name }}</h1><a class="btn btn-primary" href="{{ url_for('book_appointment') }}">Đặt lịch khám</a></section><div class="stats-grid"><div class="stat-block"><strong>{{ pets|length }}</strong><span>Thú cưng</span></div><div class="stat-block"><strong>{{ appointments|length }}</strong><span>Lịch hẹn gần đây</span></div></div><h2>Thú cưng của tôi</h2><div class="card-grid">{% for pet in pets %}<article class="service-card"><h3>{{ pet.name }}</h3><p>{{ pet.species }} · {{ pet.breed }}</p><a href="{{ url_for('vaccinations',pet_id=pet.id) }}">Sổ tiêm phòng</a></article>{% else %}<p>Chưa có hồ sơ thú cưng.</p>{% endfor %}</div>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Cổng Khách hàng | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <!-- Welcome Banner -->
+  <div class="customer-hero-banner mb-4">
+    <div class="customer-hero-text">
+      <span class="eyebrow-light">HỒ SƠ KHÁCH HÀNG</span>
+      <h1>Xin chào, {{ current_user.full_name }}!</h1>
+      <p>Cổng quản lý sức khỏe, lịch hẹn khám và sổ theo dõi tiêm phòng cho các bé yêu của bạn.</p>
+    </div>
+    <div class="customer-hero-actions">
+      <a href="{{ url_for('book_appointment') }}" class="btn btn-light btn-sm">➕ Đặt lịch khám mới</a>
+      <a href="{{ url_for('pet_form') }}" class="btn btn-outline-light btn-sm">🐾 Thêm thú cưng</a>
+    </div>
+  </div>
+
+  <!-- Metric Counters -->
+  <div class="stats-grid mb-4">
+    <div class="stat-block-modern card-blue">
+      <div class="stat-icon">🐾</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ pets|length }}">{{ pets|length }}</strong>
+        <span class="stat-label">Thú cưng đã đăng ký</span>
+      </div>
+    </div>
+
+    <div class="stat-block-modern card-green">
+      <div class="stat-icon">🗓️</div>
+      <div class="stat-details">
+        <strong class="stat-number counter" data-target="{{ appointments|length }}">{{ appointments|length }}</strong>
+        <span class="stat-label">Lịch hẹn gần đây</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- My Pets Grid -->
+  <div class="section-card-header mb-3">
+    <div class="header-titles">
+      <h2>Thú cưng của tôi</h2>
+      <p class="text-muted">Theo dõi tình trạng sức khỏe và sổ tiêm vắc-xin từng bé</p>
+    </div>
+    <div class="header-actions">
+      <a href="{{ url_for('pets') }}" class="btn btn-outline btn-sm">Xem tất cả thú cưng →</a>
+    </div>
+  </div>
+
+  <div class="pet-cards-grid mb-5">
+    {% for pet in pets %}
+      <div class="pet-profile-card">
+        <div class="pet-card-image-wrap">
+          {% if pet.image_path %}
+            <img src="{{ url_for('static', filename=pet.image_path) }}" alt="{{ pet.name }}" loading="lazy">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/default-pet.svg') }}" alt="Pet" loading="lazy">
+          {% endif %}
+          <span class="pet-species-chip">{{ pet.species }}</span>
+        </div>
+        <div class="pet-card-content">
+          <h3>{{ pet.name }}</h3>
+          <p class="pet-breed-text">{{ pet.breed or 'Giống chưa xác định' }}{% if pet.gender %} · {{ pet.gender }}{% endif %}</p>
+          <div class="pet-quick-meta">
+            <span>⚖️ {{ pet.weight or '—' }} kg</span>
+            <span>🎂 {{ pet.birth_date or 'Chưa rõ tuổi' }}</span>
+          </div>
+          <div class="pet-card-actions mt-3">
+            <a href="{{ url_for('vaccinations', pet_id=pet.id) }}" class="btn btn-outline-primary btn-xs">
+              💉 Sổ tiêm phòng
+            </a>
+            <a href="{{ url_for('pet_form', pet_id=pet.id) }}" class="btn btn-outline btn-xs">
+              ✏️ Sửa hồ sơ
+            </a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="col-12">
+        <div class="empty-state card-empty text-center py-5">
+          <div class="empty-icon">🐾</div>
+          <h3>Bạn chưa tạo hồ sơ thú cưng nào</h3>
+          <p class="text-muted">Tạo hồ sơ thú cưng ngay để dễ dàng đặt lịch và theo dõi bệnh án điện tử.</p>
+          <a href="{{ url_for('pet_form') }}" class="btn btn-primary mt-3">+ Thêm thú cưng đầu tiên</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Recent Appointments -->
+  <div class="section-card-header mb-3">
+    <div class="header-titles">
+      <h2>Lịch hẹn khám gần nhất</h2>
+      <p class="text-muted">Tình trạng các ca khám đã đặt</p>
+    </div>
+    <div class="header-actions">
+      <a href="{{ url_for('appointments') }}" class="btn btn-outline btn-sm">Xem tất cả lịch hẹn →</a>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="data-table-modern">
+      <thead>
+        <tr>
+          <th>Ngày & Giờ</th>
+          <th>Thú cưng</th>
+          <th>Dịch vụ</th>
+          <th>Bác sĩ phụ trách</th>
+          <th>Trạng thái</th>
+          <th class="text-right">Chi tiết</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for appt in appointments %}
+          <tr>
+            <td>
+              <strong class="d-block">{{ appt.appointment_date }}</strong>
+              <small class="text-muted">{{ appt.time_slot or 'Linh hoạt' }}</small>
+            </td>
+            <td><strong>{{ appt.pet_name }}</strong></td>
+            <td>{{ appt.service }}</td>
+            <td>{{ appt.doctor_name or 'Trung tâm điều phối' }}</td>
+            <td>
+              <span class="status-badge status-{{ appt.status.lower().replace(' ', '-') }}">
+                {{ appt.status }}
+              </span>
+            </td>
+            <td class="text-right">
+              {% if appt.status == 'Đã hoàn thành' %}
+                <a href="{{ url_for('medical_record_detail', appointment_id=appt.id) }}" class="btn btn-outline-success btn-xs">
+                  👁️ Xem bệnh án
+                </a>
+              {% else %}
+                <a href="{{ url_for('appointments') }}" class="btn btn-outline btn-xs">Chi tiết</a>
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="6" class="text-center py-4 text-muted">
+              Chưa có lịch hẹn nào. <a href="{{ url_for('book_appointment') }}" class="text-primary underline">Đặt lịch khám ngay</a>.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

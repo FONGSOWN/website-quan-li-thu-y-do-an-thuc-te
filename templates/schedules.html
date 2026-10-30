@@ -1,1 +1,94 @@
-{% extends 'portal.html' %}{% block portal_content %}<section class="login-card wide-card"><h1>Quản lý lịch trực bác sĩ</h1><form method="post" class="stack-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Bác sĩ<select name="doctor_id" required>{% for doctor in doctors %}<option value="{{ doctor.id }}">{{ doctor.full_name }}</option>{% else %}<option value="">Chưa có bác sĩ</option>{% endfor %}</select></label><label>Ngày trực<input type="date" name="schedule_date" required></label><label>Ca trực<select name="shift"><option>Sáng</option><option>Chiều</option><option selected>Cả ngày</option></select></label><button class="btn btn-primary">Lưu lịch trực</button></form></section><table class="data-table"><tr><th>Bác sĩ</th><th>Ngày</th><th>Ca</th></tr>{% for schedule in schedules %}<tr><td>{{ schedule.full_name }}</td><td>{{ schedule.schedule_date }}</td><td>{{ schedule.shift }}</td></tr>{% else %}<tr><td colspan="3">Chưa có lịch trực.</td></tr>{% endfor %}</table>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Phân ca Lịch trực Bác sĩ | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">ĐIỀU PHỐI LÂM SÀNG</span>
+      <h1>Phân ca & Lịch trực Bác sĩ Thú y</h1>
+      <p class="text-muted">Sắp xếp ca trực để tự động hiển thị khung giờ trống trên trang đặt lịch khám</p>
+    </div>
+  </div>
+
+  <div class="staff-layout-grid mb-5">
+    <div class="staff-form-col">
+      <div class="form-card-modern">
+        <h3>📅 Đăng ký ca trực mới</h3>
+        <p class="text-muted text-sm mb-3">Chọn bác sĩ, ngày và ca làm việc tương ứng.</p>
+
+        <form method="post" action="{{ url_for('admin_schedules') }}" class="stack-form modern-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+          <div class="form-group">
+            <label>Bác sĩ phụ trách <span class="req-star">*</span></label>
+            <select name="doctor_id" class="form-control" required>
+              {% for doc in doctors %}
+                <option value="{{ doc.id }}">{{ doc.full_name }}</option>
+              {% else %}
+                <option value="">Chưa có bác sĩ trong hệ thống</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Ngày trực <span class="req-star">*</span></label>
+            <input type="date" name="schedule_date" value="{{ today_date }}" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Ca làm việc <span class="req-star">*</span></label>
+            <select name="shift" class="form-control">
+              <option value="Sáng">Ca Sáng (08:00 – 11:30)</option>
+              <option value="Chiều">Ca Chiều (13:30 – 17:00)</option>
+              <option value="Cả ngày" selected>Cả ngày (08:00 – 17:00)</option>
+            </select>
+          </div>
+
+          <div class="form-actions mt-3">
+            <button type="submit" class="btn btn-primary btn-block">💾 Lưu lịch trực bác sĩ</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="staff-list-col">
+      <div class="table-responsive">
+        <table class="data-table-modern">
+          <thead>
+            <tr>
+              <th>Bác sĩ</th>
+              <th>Ngày trực</th>
+              <th>Ca làm việc</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sched in schedules %}
+              <tr {% if sched.schedule_date == today_date %}class="highlight-row"{% endif %}>
+                <td>
+                  <strong>👨‍⚕️ {{ sched.full_name }}</strong>
+                </td>
+                <td>
+                  <strong>{{ sched.schedule_date }}</strong>
+                  {% if sched.schedule_date == today_date %}
+                    <span class="badge-today">Hôm nay</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <span class="shift-badge shift-{{ sched.shift.lower().replace(' ', '-') }}">
+                    {{ sched.shift }}
+                  </span>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="3" class="text-center py-4 text-muted">Chưa có lịch trực nào được phân bổ.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

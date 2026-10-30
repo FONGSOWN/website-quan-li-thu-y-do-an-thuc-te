@@ -1,0 +1,104 @@
+{% extends 'portal.html' %}
+{% block title %}Hồ sơ chuyên môn Bác sĩ | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container max-w-900">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">HỒ SƠ BÁC SĨ THÚ Y</span>
+      <h1>Thông tin Chuyên môn & Tài khoản</h1>
+      <p class="text-muted">Cập nhật bằng cấp, chuyên khoa, ảnh đại diện và thông tin hiển thị trên website</p>
+    </div>
+    <div class="header-actions">
+      <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline btn-sm">← Quay lại Ca khám</a>
+    </div>
+  </div>
+
+  <div class="profile-card-modern">
+    <form method="post" enctype="multipart/form-data" class="stack-form modern-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+      <!-- Avatar Preview & Upload -->
+      <div class="avatar-upload-row">
+        <div class="doctor-avatar-preview">
+          {% if doctor.avatar %}
+            <img src="{{ url_for('static', filename=doctor.avatar) }}" alt="{{ doctor.full_name }}" id="avatarPreview">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/default-doctor.svg') }}" alt="Default Avatar" id="avatarPreview">
+          {% endif %}
+        </div>
+        <div class="avatar-upload-meta">
+          <label class="form-label font-bold">Ảnh chân dung Bác sĩ</label>
+          <p class="text-sm text-muted">Tải ảnh chụp trang phục y tế chuyên nghiệp (PNG, JPG, WEBP, tối đa 5MB).</p>
+          <input type="file" name="avatar" accept=".png,.jpg,.jpeg,.webp" class="form-control-file" onchange="previewImage(this)">
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Họ và tên bác sĩ <span class="req-star">*</span></label>
+          <input type="text" name="full_name" value="{{ doctor.full_name }}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label>Học vị / Chức danh</label>
+          <input type="text" name="degree" value="{{ doctor.degree }}" placeholder="Ví dụ: Bác sĩ Chuyên khoa I, Thạc sĩ Thú y" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Chuyên khoa chính</label>
+          <input type="text" name="specialty" value="{{ doctor.specialty }}" placeholder="Ví dụ: Ngoại khoa & Phẫu thuật, Da liễu thú cưng" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Số năm kinh nghiệm</label>
+          <input type="number" name="experience_years" value="{{ doctor.experience_years }}" min="0" max="50" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Số điện thoại liên hệ</label>
+          <input type="text" name="phone" value="{{ doctor.phone }}" placeholder="Số điện thoại di động" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Tên đăng nhập (Cố định)</label>
+          <input type="text" value="{{ doctor.username }}" class="form-control" disabled readonly>
+          <small class="text-muted">Tên đăng nhập do Quản trị viên cấp.</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Tiểu sử chuyên môn & Giới thiệu</label>
+        <textarea name="bio" rows="4" class="form-control" placeholder="Mô tả tóm tắt quá trình đào tạo, kinh nghiệm công tác, chứng chỉ và các lĩnh vực thế mạnh...">{{ doctor.bio }}</textarea>
+      </div>
+
+      <hr class="form-divider">
+
+      <h3 class="section-subtitle">Đổi mật khẩu tài khoản</h3>
+      <div class="form-group">
+        <label>Mật khẩu mới (để trống nếu không đổi)</label>
+        <input type="password" name="new_password" minlength="8" placeholder="Nhập ít nhất 8 ký tự để đổi mật khẩu" class="form-control">
+      </div>
+
+      <div class="form-actions mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">💾 Lưu thông tin Bác sĩ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function previewImage(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('avatarPreview').src = e.target.result;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+</script>
+{% endblock %}
+

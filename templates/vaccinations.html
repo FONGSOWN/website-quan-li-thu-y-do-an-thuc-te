@@ -1,1 +1,100 @@
-{% extends 'portal.html' %}{% block portal_content %}<h1>Sổ tiêm phòng: {{ pet.name }}</h1><section class="login-card wide-card"><form method="post" class="stack-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Tên vắc-xin<input name="vaccine_name" required></label><label>Ngày tiêm<input type="date" name="vaccinated_on" required></label><label>Ngày nhắc lại<input type="date" name="due_on"></label><label>Ghi chú<textarea name="note"></textarea></label><button class="btn btn-primary">Thêm mũi tiêm</button></form></section><table class="data-table"><tr><th>Vắc-xin</th><th>Ngày tiêm</th><th>Nhắc lại</th><th>Ghi chú</th></tr>{% for item in vaccinations %}<tr><td>{{ item.vaccine_name }}</td><td>{{ item.vaccinated_on }}</td><td>{{ item.due_on or '—' }}</td><td>{{ item.note }}</td></tr>{% else %}<tr><td colspan="4">Chưa có dữ liệu tiêm phòng.</td></tr>{% endfor %}</table>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Sổ tiêm phòng: {{ pet.name }} | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">SỔ TIÊM CHỦNG ĐIỆN TỬ</span>
+      <h1>Sổ tiêm phòng của bé {{ pet.name }}</h1>
+      <p class="text-muted">Ghi nhận và theo dõi đầy đủ các mũi vắc-xin bảo vệ sức khỏe cho thú cưng</p>
+    </div>
+    <div class="header-actions">
+      <a href="{{ url_for('pets') }}" class="btn btn-outline btn-sm">← Quay lại Thú cưng</a>
+    </div>
+  </div>
+
+  <div class="vaccination-layout-grid mb-5">
+    <!-- Form thêm mũi tiêm -->
+    <div class="vacc-form-col">
+      <div class="form-card-modern">
+        <h3>💉 Thêm mũi tiêm mới</h3>
+        <p class="text-muted text-sm mb-3">Ghi nhận mũi vắc-xin vừa tiêm hoặc cập nhật sổ tiêm cũ.</p>
+
+        <form method="post" action="{{ url_for('vaccinations', pet_id=pet.id) }}" class="stack-form modern-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+          <div class="form-group">
+            <label>Tên vắc-xin / Mũi tiêm <span class="req-star">*</span></label>
+            <input type="text" name="vaccine_name" class="form-control" placeholder="Ví dụ: Vắc-xin 7 bệnh Vanguard, Vắc-xin Dại..." required>
+          </div>
+
+          <div class="form-group">
+            <label>Ngày tiêm chủng <span class="req-star">*</span></label>
+            <input type="date" name="vaccinated_on" value="{{ today_date }}" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Ngày hẹn tiêm nhắc lại (dự kiến)</label>
+            <input type="date" name="due_on" class="form-control">
+            <small class="text-muted">Hệ thống sẽ gửi thông báo trước ngày tiêm nhắc lại.</small>
+          </div>
+
+          <div class="form-group">
+            <label>Ghi chú phản ứng sau tiêm hoặc số lô vắc-xin</label>
+            <textarea name="note" rows="2" class="form-control" placeholder="Ví dụ: Sốt nhẹ sau tiêm, lô thuốc #A123..."></textarea>
+          </div>
+
+          <div class="form-actions mt-3">
+            <button type="submit" class="btn btn-primary btn-block">+ Lưu thông tin mũi tiêm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Danh sách mũi tiêm đã có -->
+    <div class="vacc-list-col">
+      <div class="table-responsive">
+        <table class="data-table-modern">
+          <thead>
+            <tr>
+              <th>Loại vắc-xin</th>
+              <th>Ngày đã tiêm</th>
+              <th>Hạn tiêm nhắc lại</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for vacc in vaccinations %}
+              <tr>
+                <td>
+                  <strong>💉 {{ vacc.vaccine_name }}</strong>
+                </td>
+                <td>{{ vacc.vaccinated_on }}</td>
+                <td>
+                  {% if vacc.due_on %}
+                    <span class="due-date-pill">{{ vacc.due_on }}</span>
+                  {% else %}
+                    <span class="text-muted">—</span>
+                  {% endif %}
+                </td>
+                <td><small>{{ vacc.note or '—' }}</small></td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="4" class="text-center py-5">
+                  <div class="empty-state">
+                    <div class="empty-icon">💉</div>
+                    <h3>Bé {{ pet.name }} chưa có lịch sử tiêm phòng</h3>
+                    <p class="text-muted">Hãy thêm thông tin các mũi vắc-xin đã tiêm ở cột bên cạnh.</p>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

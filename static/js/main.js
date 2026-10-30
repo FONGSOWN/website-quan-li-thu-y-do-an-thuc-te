@@ -2,12 +2,13 @@
  * PetCare – Main JavaScript
  * Handles: mobile nav, date validation, form submit loading state,
  *          confirm dialogs, flash auto-dismiss, status badges,
- *          URL query pre-select, and smooth scroll reveal animations.
+ *          URL query pre-select, animated number counters,
+ *          portal sidebar toggle, and smooth scroll reveal animations.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ── MOBILE NAVIGATION ──────────────────────────────────────────── */
+  /* ── MOBILE SITE NAVIGATION ───────────────────────────────────────── */
   const menuToggle = document.getElementById('menuToggle');
   const mainNav    = document.getElementById('mainNav');
 
@@ -40,7 +41,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ── DATE INPUT: Chỉ áp dụng cho form đặt lịch của khách hàng ───── */
+  /* ── PORTAL SIDEBAR TOGGLE (FOR MOBILE / TABLET) ─────────────────── */
+  const portalToggle  = document.getElementById('portalSidebarToggle');
+  const portalSidebar = document.getElementById('portalSidebar');
+
+  if (portalToggle && portalSidebar) {
+    portalToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      portalSidebar.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (portalSidebar.classList.contains('open') && !portalSidebar.contains(e.target) && !portalToggle.contains(e.target)) {
+        portalSidebar.classList.remove('open');
+      }
+    });
+  }
+
+  /* ── DATE INPUT: Form đặt lịch của khách hàng ────────────────────── */
   const clientBookingDate = document.querySelector('#bookingForm #appointmentDate');
   if (clientBookingDate) {
     const now = new Date();
@@ -58,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ── FORM: Ngăn double-submit chỉ khi form đã pass validation ──── */
+  /* ── FORM: Ngăn double-submit chỉ khi form đã pass validation ────── */
   const bookingForm = document.getElementById('bookingForm');
   if (bookingForm) {
     bookingForm.addEventListener('submit', function (event) {
@@ -76,10 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ── CONFIRM BEFORE DELETE / DESTRUCTIVE ACTION ─────────────────── */
+  /* ── CONFIRM BEFORE DELETE / DESTRUCTIVE ACTION ───────────────────── */
   document.querySelectorAll('form[data-confirm]').forEach(form => {
     form.addEventListener('submit', event => {
-      const msg = form.dataset.confirm || 'Bạn có chắc chắn không?';
+      const msg = form.dataset.confirm || 'Bạn có chắc chắn thực hiện thao tác này không?';
       if (!window.confirm(msg)) {
         event.preventDefault();
       }
@@ -94,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (text === 'Đã hủy')       badge.classList.add('status-da-huy');
   });
 
-  /* ── FLASH AUTO-DISMISS ─────────────────────────────────────────── */
+  /* ── FLASH AUTO-DISMISS ───────────────────────────────────────────── */
   document.querySelectorAll('.flash').forEach(flash => {
     const delay = flash.classList.contains('error') ? 9000 : 6500;
     setTimeout(() => {
@@ -103,25 +121,75 @@ document.addEventListener('DOMContentLoaded', () => {
     }, delay);
   });
 
-  /* ── PRE-SELECT SERVICE FROM URL PARAM ──────────────────────────── */
+  /* ── PRE-SELECT SERVICE FROM URL PARAM ────────────────────────────── */
   const serviceSelect = document.getElementById('serviceSelect');
   if (serviceSelect) {
     const params = new URLSearchParams(window.location.search);
     const svc = params.get('service');
     if (svc) {
       for (const opt of serviceSelect.options) {
-        if (opt.value === svc) { opt.selected = true; break; }
+        if (opt.value === svc || opt.textContent.includes(svc)) {
+          opt.selected = true;
+          break;
+        }
       }
     }
   }
 
-  /* ── SCROLL REVEAL ANIMATIONS ────────────────────────────────────── */
+  /* ── ANIMATED NUMBER COUNTERS ─────────────────────────────────────── */
+  const counterElements = document.querySelectorAll('.counter');
+  if (counterElements.length > 0 && 'IntersectionObserver' in window) {
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseFloat(el.getAttribute('data-target') || el.innerText.replace(/[^0-9.]/g, ''));
+          if (!isNaN(target) && target > 0) {
+            let start = 0;
+            const duration = 1600; // ms
+            const startTime = performance.now();
+            const originalText = el.innerText;
+            const hasPlus = originalText.includes('+');
+            const hasPercent = originalText.includes('%');
+            
+            function updateCounter(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              // Ease-out cubic
+              const ease = 1 - Math.pow(1 - progress, 3);
+              const currentVal = Math.floor(start + (target - start) * ease);
+              
+              let formatted = currentVal >= 1000 ? currentVal.toLocaleString('vi-VN') : currentVal;
+              if (hasPercent && progress >= 1 && target % 1 !== 0) {
+                formatted = target.toFixed(1);
+              }
+              if (hasPlus) formatted += '+';
+              if (hasPercent) formatted += '%';
+              
+              el.innerText = formatted;
+              if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+              } else {
+                el.innerText = originalText;
+              }
+            }
+            requestAnimationFrame(updateCounter);
+          }
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    counterElements.forEach(el => counterObserver.observe(el));
+  }
+
+  /* ── SCROLL REVEAL ANIMATIONS ──────────────────────────────────────── */
   const animTargets = document.querySelectorAll(
-    '.service-card, .doctor-card, .process-step, .why-card, .review-card, .mvv-card, .stat-block, .service-detail, .contact-detail, .quick-contact-card'
+    '.service-card, .service-card-modern, .doctor-card, .doctor-home-card, .doctor-card-horizontal, .step-card, .process-step, .why-card, .review-box, .review-card, .mvv-card, .stat-block, .stat-block-modern, .facility-card, .standard-item'
   );
 
   if ('IntersectionObserver' in window && animTargets.length > 0) {
-    const observer = new IntersectionObserver((entries, obs) => {
+    const revealObserver = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('reveal-in');
@@ -130,12 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }, {
       threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
+      rootMargin: '0px 0px -30px 0px'
     });
 
     animTargets.forEach(el => {
       el.classList.add('reveal-init');
-      observer.observe(el);
+      revealObserver.observe(el);
     });
   }
 

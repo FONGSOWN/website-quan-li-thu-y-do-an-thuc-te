@@ -1,1 +1,122 @@
-{% extends 'portal.html' %}{% block portal_content %}<section class="invoice" id="invoice"><h1>🐾 PETCARE — PHIẾU THANH TOÁN</h1><p>Mã hóa đơn: #{{ invoice.id }} · {{ invoice.paid_at }}</p><p>Khách hàng: {{ invoice.full_name }} · Thú cưng: {{ invoice.pet_name }}</p><table class="data-table"><tr><th>Khoản thu</th><th>Số tiền</th></tr><tr><td>Tiền khám</td><td>{{ '{:,.0f}'.format(invoice.examination_fee) }} đ</td></tr><tr><td>Tiền thuốc</td><td>{{ '{:,.0f}'.format(invoice.medicine_fee) }} đ</td></tr>{% for item in items %}<tr><td>{{ item.description }}</td><td>{{ '{:,.0f}'.format(item.amount) }} đ</td></tr>{% endfor %}<tr><th>Tổng thanh toán</th><th>{{ '{:,.0f}'.format(invoice.total_amount) }} đ</th></tr></table><p>Phương thức: {{ invoice.payment_method }}</p><button class="btn btn-primary no-print" onclick="window.print()">In / Lưu PDF</button></section>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Hóa đơn y tế #{{ invoice.id }} | PetCare{% endblock %}
+
+{% block body %}
+<div class="print-page-wrap">
+  <div class="no-print d-flex justify-between align-center mb-4 container" style="padding-top:20px;">
+    <a href="javascript:history.back()" class="btn btn-outline btn-sm">← Quay lại</a>
+    <button onclick="window.print()" class="btn btn-primary btn-sm">🖨️ In / Lưu Hóa đơn PDF</button>
+  </div>
+
+  <div class="invoice-paper-sheet">
+    <!-- Invoice Header -->
+    <div class="invoice-header-row">
+      <div class="clinic-brand-invoice">
+        <div class="d-flex align-center gap-2">
+          <span style="font-size:2.5rem;">🐾</span>
+          <div>
+            <h2 class="m-0 text-primary">PetCare Animal Hospital</h2>
+            <small class="text-muted font-bold">Bệnh viện & Trung tâm Y tế Thú y Quốc tế</small>
+          </div>
+        </div>
+        <p class="text-sm text-muted mt-2">
+          📍 123 Đường Hoa Sen, Q.1, TP. Hồ Chí Minh<br>
+          📞 Hotline: 0900 123 456 · ✉️ ketoan@petcare.vn
+        </p>
+      </div>
+
+      <div class="invoice-meta-invoice text-right">
+        <h1 class="invoice-title">HÓA ĐƠN Y TẾ</h1>
+        <p class="m-0"><strong>Số HĐ:</strong> #INV-{{ invoice.id }}</p>
+        <p class="m-0"><strong>Ngày lập:</strong> {{ invoice.paid_at }}</p>
+        <p class="m-0"><strong>Thanh toán:</strong> <span class="badge-payment">{{ invoice.payment_method }}</span></p>
+      </div>
+    </div>
+
+    <hr class="invoice-divider">
+
+    <!-- Customer & Pet Info -->
+    <div class="invoice-info-grid">
+      <div>
+        <h4 class="text-muted text-xs uppercase">Khách hàng</h4>
+        <strong class="d-block">{{ invoice.full_name }}</strong>
+        <span class="text-sm">Điện thoại: {{ invoice.phone }}</span>
+      </div>
+      <div>
+        <h4 class="text-muted text-xs uppercase">Bệnh nhân thú cưng</h4>
+        <strong class="d-block">{{ invoice.pet_name }}</strong>
+        <span class="text-sm">Dịch vụ: {{ invoice.service }}</span>
+      </div>
+      <div>
+        <h4 class="text-muted text-xs uppercase">Bác sĩ phụ trách</h4>
+        <strong class="d-block">{{ invoice.doctor_name or 'Đội ngũ Bác sĩ PetCare' }}</strong>
+        <span class="text-sm">Ngày khám: {{ invoice.appointment_date }}</span>
+      </div>
+    </div>
+
+    <!-- Items Table -->
+    <table class="invoice-items-table mt-4">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Nội dung chi phí / Khoản mục y tế</th>
+          <th class="text-right">Thành tiền (VNĐ)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>
+            <strong>Phí khám chuyên khoa & dịch vụ chính</strong>
+            <small class="d-block text-muted">{{ invoice.service }}</small>
+          </td>
+          <td class="text-right">{{ '{:,.0f}'.format(invoice.examination_fee) }} đ</td>
+        </tr>
+        {% if invoice.medicine_fee > 0 %}
+          <tr>
+            <td>2</td>
+            <td>
+              <strong>Tiền thuốc điều trị & vật tư y tế</strong>
+            </td>
+            <td class="text-right">{{ '{:,.0f}'.format(invoice.medicine_fee) }} đ</td>
+          </tr>
+        {% endif %}
+        {% for item in items %}
+          <tr>
+            <td>{{ loop.index + 2 }}</td>
+            <td>{{ item.description }}</td>
+            <td class="text-right">{{ '{:,.0f}'.format(item.amount) }} đ</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="2" class="text-right"><strong>TỔNG TIỀN THANH TOÁN:</strong></td>
+          <td class="text-right"><strong class="grand-total">{{ '{:,.0f}'.format(invoice.total_amount) }} VNĐ</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="invoice-note mt-4">
+      <p><em>* Cảm ơn quý khách đã tin tưởng dịch vụ chăm sóc thú cưng tại PetCare!</em></p>
+      <p class="text-xs text-muted">Mọi thắc mắc về hóa đơn xin vui lòng liên hệ phòng tài chính trong vòng 24 giờ sau khi thanh toán.</p>
+    </div>
+
+    <!-- Footer Signatures -->
+    <div class="invoice-signatures-row mt-5">
+      <div class="sig-col text-center">
+        <p><strong>Người nộp tiền</strong></p>
+        <small>(Ký và ghi rõ họ tên)</small>
+        <div class="sig-space-invoice"></div>
+        <p>{{ invoice.full_name }}</p>
+      </div>
+      <div class="sig-col text-center">
+        <p><strong>Người lập phiếu & Thu ngân</strong></p>
+        <small>(Ký và đóng dấu đã thu tiền)</small>
+        <div class="sig-space-invoice"></div>
+        <p>PetCare Cashier</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

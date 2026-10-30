@@ -1,1 +1,171 @@
-{% extends 'base.html' %}{% block title %}Đăng nhập | PetCare{% endblock %}{% block body %}<main class="auth-page"><section class="login-card"><h1>Đăng nhập PetCare</h1>{% include 'flashes.html' %}<form method="post" class="stack-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Tên đăng nhập<input name="username" required autofocus></label><label>Mật khẩu<input type="password" name="password" required></label><button class="btn btn-primary">Đăng nhập</button></form><p><a href="{{ url_for('register') }}">Tạo tài khoản khách hàng</a> · <a href="{{ url_for('forgot_password') }}">Quên mật khẩu?</a></p></section></main>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Đăng nhập hệ thống | PetCare{% endblock %}
+
+{% block body %}
+<main class="auth-page-modern">
+  <div class="auth-box-container">
+    <!-- Brand Header -->
+    <div class="auth-header text-center">
+      <a class="logo logo-center" href="{{ url_for('index') }}">
+        <div class="logo-icon-wrap">
+          <svg viewBox="0 0 40 40" width="36" height="36" fill="none">
+            <rect width="40" height="40" rx="10" fill="#0284c7"/>
+            <path d="M20 12v16M12 20h16" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title">PetCare</span>
+          <span class="brand-sub">Hệ thống Y tế Thú y</span>
+        </div>
+      </a>
+      <h1 class="auth-title">Đăng nhập tài khoản</h1>
+      <p class="auth-subtitle">Chọn đúng vai trò để truy cập cổng làm việc tương ứng</p>
+    </div>
+
+    <!-- Role Selection Tabs -->
+    <div class="auth-role-tabs" id="roleTabs">
+      <button type="button" class="tab-btn {% if request.args.get('role') != 'doctor' and request.args.get('role') != 'admin' %}active{% endif %}" data-role="customer">
+        <span>🐾</span> Khách hàng
+      </button>
+      <button type="button" class="tab-btn {% if request.args.get('role') == 'doctor' %}active{% endif %}" data-role="doctor">
+        <span>👨‍⚕️</span> Bác sĩ & Y tế
+      </button>
+      <button type="button" class="tab-btn {% if request.args.get('role') == 'admin' %}active{% endif %}" data-role="admin">
+        <span>🛡️</span> Quản trị viên
+      </button>
+    </div>
+
+    <!-- Main Login Card -->
+    <div class="login-card-modern">
+      {% include 'flashes.html' %}
+
+      <div class="role-badge-indicator" id="roleBadge">
+        <span class="badge-dot"></span>
+        <span id="roleBadgeText">Cổng Chủ nuôi & Khách hàng</span>
+      </div>
+
+      <form method="post" action="{{ url_for('login') }}" class="stack-form modern-form" id="loginForm">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        <div class="form-group">
+          <label for="usernameInput">Tên đăng nhập <span class="req-star">*</span></label>
+          <div class="input-with-icon">
+            <span class="input-icon">👤</span>
+            <input id="usernameInput" name="username" class="form-control" placeholder="Nhập tên đăng nhập" required autofocus>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="label-with-link">
+            <label for="passwordInput">Mật khẩu <span class="req-star">*</span></label>
+            <a href="{{ url_for('forgot_password') }}" class="small-link">Quên mật khẩu?</a>
+          </div>
+          <div class="input-with-icon">
+            <span class="input-icon">🔒</span>
+            <input id="passwordInput" type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
+            <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Hiện/Ẩn mật khẩu">👁️</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg" type="submit">
+          Đăng nhập hệ thống
+        </button>
+      </form>
+
+      <div class="auth-footer-links text-center">
+        <p>Chưa có tài khoản chủ nuôi? <a href="{{ url_for('register') }}" class="font-bold text-primary">Đăng ký ngay</a></p>
+        <p><a href="{{ url_for('index') }}" class="back-link">← Quay lại trang chủ PetCare</a></p>
+      </div>
+    </div>
+
+    <!-- Demo Account Quick Selector for Testing -->
+    <div class="demo-accounts-card">
+      <div class="demo-card-header">
+        <span class="badge-demo">DÀNH CHO ĐỒ ÁN / KIỂM THỬ</span>
+        <strong>Tài khoản thử nghiệm sẵn có</strong>
+      </div>
+      <p class="demo-guide">Nhấp vào một vai trò bên dưới để tự động điền tài khoản đăng nhập:</p>
+
+      <div class="demo-btns-grid">
+        <button type="button" class="demo-account-pill" onclick="fillAccount('doctor_minh_anh', 'Doctor@123', 'doctor', 'Bác sĩ thú y (BS. Nguyễn Minh Anh)')">
+          <span class="demo-icon">👨‍⚕️</span>
+          <div class="demo-info">
+            <strong>Bác sĩ thú y</strong>
+            <small>doctor_minh_anh / Doctor@123</small>
+          </div>
+        </button>
+
+        <button type="button" class="demo-account-pill" onclick="fillAccount('admin', 'admin@123', 'admin', 'Quản trị viên PetCare')">
+          <span class="demo-icon">🛡️</span>
+          <div class="demo-info">
+            <strong>Quản trị viên</strong>
+            <small>admin / admin@123</small>
+          </div>
+        </button>
+
+        <button type="button" class="demo-account-pill" onclick="fillAccount('son', 'Customer@123', 'customer', 'Khách hàng (Dương Như Phong Sơn)')">
+          <span class="demo-icon">🐾</span>
+          <div class="demo-info">
+            <strong>Khách hàng có sẵn</strong>
+            <small>son / Customer@123</small>
+          </div>
+        </button>
+
+        <button type="button" class="demo-account-pill" onclick="fillAccount('cashier', 'Cashier@123', 'admin', 'Thu ngân & Duyệt lịch')">
+          <span class="demo-icon">💳</span>
+          <div class="demo-info">
+            <strong>Thu ngân</strong>
+            <small>cashier / Cashier@123</small>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+function fillAccount(username, password, role, title) {
+  document.getElementById('usernameInput').value = username;
+  document.getElementById('passwordInput').value = password;
+  
+  // Update Tab visual
+  document.querySelectorAll('#roleTabs .tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.role === role);
+  });
+  
+  // Update Role badge
+  const badge = document.getElementById('roleBadgeText');
+  if (role === 'doctor') badge.textContent = 'Cổng Bác sĩ & Y tế: ' + title;
+  else if (role === 'admin') badge.textContent = 'Cổng Quản trị: ' + title;
+  else badge.textContent = 'Cổng Khách hàng: ' + title;
+}
+
+// Tab Switching
+document.querySelectorAll('#roleTabs .tab-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('#roleTabs .tab-btn').forEach(b => b.classList.remove('active'));
+    button.classList.add('active');
+    const role = button.dataset.role;
+    const badge = document.getElementById('roleBadgeText');
+    if (role === 'doctor') {
+      badge.textContent = 'Cổng Bác sĩ & Nhân viên y tế';
+    } else if (role === 'admin') {
+      badge.textContent = 'Khu vực Quản trị viên hệ thống';
+    } else {
+      badge.textContent = 'Cổng Chủ nuôi & Khách hàng';
+    }
+  });
+});
+
+// Toggle Password Visibility
+const toggleBtn = document.getElementById('togglePasswordBtn');
+const passInput = document.getElementById('passwordInput');
+if (toggleBtn && passInput) {
+  toggleBtn.addEventListener('click', () => {
+    const isPass = passInput.type === 'password';
+    passInput.type = isPass ? 'text' : 'password';
+    toggleBtn.textContent = isPass ? '🙈' : '👁️';
+  });
+}
+</script>
+{% endblock %}

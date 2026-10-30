@@ -1,2 +1,109 @@
 {% extends 'portal.html' %}
-{% block portal_content %}<div class="section-heading"><h1>Lịch sử lịch hẹn</h1><a class="btn btn-primary" href="{{ url_for('book_appointment') }}">Đặt lịch mới</a></div><table class="data-table"><tr><th>Ngày/Giờ</th><th>Thú cưng</th><th>Bác sĩ</th><th>Trạng thái</th><th>Thao tác</th></tr>{% for appointment in appointments %}<tr><td>{{ appointment.appointment_date }} {{ appointment.time_slot or '' }}</td><td>{{ appointment.pet_name }}</td><td>{{ appointment.doctor_name or 'Chưa phân công' }}</td><td><span class="status">{{ appointment.status }}</span></td><td>{% if appointment.status == 'Đã hoàn thành' %}<a href="{{ url_for('medical_record_detail',appointment_id=appointment.id) }}">Bệnh án</a>{% endif %}{% if appointment.status in ['Chờ duyệt','Đã xác nhận'] %}<form class="inline-form" method="post" action="{{ url_for('cancel_appointment',appointment_id=appointment.id) }}" data-confirm="Hủy lịch hẹn này?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="link-button danger">Hủy</button></form>{% endif %}{% if appointment.invoice_id %}<a href="{{ url_for('print_invoice',invoice_id=appointment.invoice_id) }}">Hóa đơn</a>{% endif %}</td></tr>{% else %}<tr><td colspan="5">Chưa có lịch hẹn.</td></tr>{% endfor %}</table>{% endblock %}
+{% block title %}Lịch hẹn & Bệnh án của tôi | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">HỒ SƠ KHÁM CHỮA BỆNH</span>
+      <h1>Lịch hẹn khám & Kết quả Bệnh án</h1>
+      <p class="text-muted">Theo dõi tiến trình các ca khám, xem lại bệnh án điện tử và hóa đơn chi phí.</p>
+    </div>
+    <div class="header-actions">
+      <a href="{{ url_for('book_appointment') }}" class="btn btn-primary btn-sm">➕ Đặt lịch khám mới</a>
+    </div>
+  </div>
+
+  <div class="appointments-table-card">
+    <div class="table-responsive">
+      <table class="data-table-modern">
+        <thead>
+          <tr>
+            <th>Mã / Thời gian</th>
+            <th>Thú cưng</th>
+            <th>Dịch vụ yêu cầu</th>
+            <th>Bác sĩ chuyên trách</th>
+            <th>Trạng thái</th>
+            <th class="text-right">Hồ sơ & Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appt in appointments %}
+            <tr>
+              <td>
+                <span class="appt-id-badge">#{{ appt.id }}</span>
+                <strong class="d-block mt-1">{{ appt.appointment_date }}</strong>
+                <small class="text-muted">Giờ: {{ appt.time_slot or 'Linh hoạt' }}</small>
+              </td>
+              <td>
+                <div class="d-flex align-center gap-2">
+                  <span class="pet-icon-mini">🐾</span>
+                  <div>
+                    <strong>{{ appt.pet_name }}</strong>
+                    {% if appt.note %}
+                      <small class="d-block text-muted" title="{{ appt.note }}">💬 {{ appt.note[:30] }}...</small>
+                    {% endif %}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="service-pill">{{ appt.service }}</span>
+              </td>
+              <td>
+                {% if appt.doctor_name %}
+                  <div class="doctor-chip-sm">
+                    <span>👨‍⚕️</span>
+                    <span>{{ appt.doctor_name }}</span>
+                  </div>
+                {% else %}
+                  <span class="text-muted text-sm">Chờ phân công</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="status-badge status-{{ appt.status.lower().replace(' ', '-') }}">
+                  {{ appt.status }}
+                </span>
+              </td>
+              <td class="text-right">
+                <div class="action-buttons-inline">
+                  {% if appt.status == 'Đã hoàn thành' %}
+                    <a href="{{ url_for('medical_record_detail', appointment_id=appt.id) }}" class="btn btn-success btn-xs" title="Xem toa thuốc và bệnh án điện tử">
+                      📋 Bệnh án
+                    </a>
+                  {% endif %}
+
+                  {% if appt.invoice_id %}
+                    <a href="{{ url_for('print_invoice', invoice_id=appt.invoice_id) }}" class="btn btn-outline-secondary btn-xs" target="_blank" title="In / Lưu hóa đơn PDF">
+                      🧾 Hóa đơn
+                    </a>
+                  {% endif %}
+
+                  {% if appt.status in ('Chờ duyệt', 'Đã xác nhận') %}
+                    <form method="post" action="{{ url_for('cancel_appointment', appointment_id=appt.id) }}" class="inline-form" data-confirm="Bạn có chắc chắn muốn hủy lịch hẹn khám này không?">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                      <button class="btn btn-outline-danger btn-xs" type="submit">
+                        ✕ Hủy lịch
+                      </button>
+                    </form>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="6" class="text-center py-5">
+                <div class="empty-state">
+                  <div class="empty-icon">🗓️</div>
+                  <h3>Bạn chưa có lịch hẹn khám nào</h3>
+                  <p class="text-muted">Hãy đặt lịch ngay để bé yêu được các bác sĩ chuyên khoa kiểm tra sức khỏe.</p>
+                  <a href="{{ url_for('book_appointment') }}" class="btn btn-primary mt-3">Đặt lịch khám ngay</a>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

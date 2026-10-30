@@ -1,129 +1,90 @@
 {% extends 'site.html' %}
-{% block title %}Liên hệ | PetCare{% endblock %}
+{% block title %}Liên hệ & Chỉ đường | PetCare{% endblock %}
 
 {% block content %}
-
-{# ── PAGE HERO ─────────────────────────────────────────────────────── #}
 <section class="page-hero">
-  <div class="container">
-    <span class="eyebrow">Liên hệ với chúng tôi</span>
-    <h1>Chúng tôi luôn<br>sẵn sàng lắng nghe</h1>
-    <p>Có câu hỏi về dịch vụ, muốn tư vấn trước khi đặt lịch, hay cần hỗ trợ gấp? Hãy liên hệ với PetCare qua bất kỳ kênh nào bên dưới.</p>
+  <div class="container text-center">
+    <span class="eyebrow">KẾT NỐI VỚI CHÚNG TÔI</span>
+    <h1>Liên hệ Bệnh viện Thú y PetCare</h1>
+    <p class="hero-lead">Chúng tôi luôn sẵn sàng lắng nghe, giải đáp mọi thắc mắc và tiếp nhận các ca cấp cứu 24/7.</p>
   </div>
 </section>
 
-{# ── NỘI DUNG CHÍNH ────────────────────────────────────────────────── #}
 <section class="section">
-  <div class="container contact-grid">
-
-    {# ── LEFT: THÔNG TIN LIÊN LẠC ─────────────────────────────────── #}
-    <div class="contact-info-col">
-      <h2>Thông tin liên hệ</h2>
-      <p>Nội dung form được lưu thật vào cơ sở dữ liệu để nhân viên xem xét và phản hồi. Thông tin liên hệ dưới đây là minh họa.</p>
-
-      <div class="contact-detail">
-        <span>📍</span>
-        <div>
-          <strong>Địa chỉ</strong>
-          <p>123 Đường Hoa Sen, Phường 10, Quận 6<br>TP. Hồ Chí Minh <em>(Minh họa)</em></p>
-        </div>
-      </div>
-
-      <div class="contact-detail">
-        <span>📞</span>
-        <div>
-          <strong>Điện thoại</strong>
-          <p>0900 123 456 <em>(Minh họa)</em></p>
-        </div>
-      </div>
-
-      <div class="contact-detail">
-        <span>✉️</span>
-        <div>
-          <strong>Email</strong>
-          <p>hello@petcare.example <em>(Minh họa)</em></p>
-        </div>
-      </div>
-
-      <div class="contact-detail">
-        <span>🕐</span>
-        <div>
-          <strong>Giờ làm việc</strong>
-          <p>Thứ Hai – Thứ Sáu: 08:00 – 20:00<br>Thứ Bảy – Chủ Nhật: 08:00 – 18:00</p>
-        </div>
-      </div>
-
-      <div class="contact-map-placeholder">
-        <div class="map-note">
-          <span>🗺️</span>
-          <p>Bản đồ sẽ được tích hợp khi triển khai thực tế với địa chỉ chính xác.</p>
-          <a class="btn btn-light btn-small" href="{{ url_for('book_appointment') }}">Đặt lịch thay thế →</a>
-        </div>
-      </div>
-    </div>
-
-    {# ── RIGHT: FORM ───────────────────────────────────────────────── #}
-    <div>
-      <form class="contact-form" method="post" id="contactForm">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <h2>Gửi lời nhắn</h2>
-        <p class="form-subtitle">Chúng tôi sẽ phản hồi trong vòng 1 ngày làm việc.</p>
-
-        <label>
-          Họ và tên <span class="req-star">*</span>
-          <input name="full_name" required maxlength="120" placeholder="Nguyễn Văn A"
-                 autocomplete="name">
-        </label>
-
-        <label>
-          Địa chỉ email <span class="req-star">*</span>
-          <input name="email" type="email" required maxlength="200"
-                 placeholder="email@example.com"
-                 autocomplete="email">
-        </label>
-
-        <label>
-          Nội dung tin nhắn <span class="req-star">*</span>
-          <textarea name="message" required maxlength="3000" rows="6"
-                    placeholder="Câu hỏi, phản hồi hoặc yêu cầu tư vấn của bạn..."></textarea>
-        </label>
-
-        <button class="btn btn-primary" type="submit">Gửi tin nhắn</button>
-        <p class="privacy-note">🔒 Thông tin được bảo mật và chỉ dùng để phản hồi yêu cầu của bạn.</p>
-      </form>
-    </div>
-
-  </div>
-</section>
-
-{# ── QUICK CONTACT CARDS ───────────────────────────────────────────── #}
-<section class="section section-soft">
   <div class="container">
-    <div class="section-heading">
-      <span class="eyebrow">Hỗ trợ nhanh</span>
-      <h2>Cần hỗ trợ ngay?</h2>
-    </div>
-    <div class="quick-contact-grid">
-      <div class="quick-contact-card">
-        <div class="quick-icon">🗓️</div>
-        <h4>Đặt lịch khám</h4>
-        <p>Điền form đặt lịch trực tuyến, nhân viên xác nhận sớm nhất có thể.</p>
-        <a class="btn btn-primary btn-small" href="{{ url_for('book_appointment') }}">Đặt lịch ngay</a>
+    <div class="contact-layout-grid">
+      <!-- Contact Information Cards -->
+      <div class="contact-info-col">
+        <div class="contact-card-modern">
+          <div class="contact-icon-box">📍</div>
+          <div class="contact-details">
+            <h3>Địa chỉ Trụ sở chính</h3>
+            <p>123 Đường Hoa Sen, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh</p>
+            <small class="text-muted">Có bãi đỗ xe ô tô và khu vực chờ rộng rãi cho thú cưng</small>
+          </div>
+        </div>
+
+        <div class="contact-card-modern">
+          <div class="contact-icon-box emergency-box">📞</div>
+          <div class="contact-details">
+            <h3>Đường dây nóng Cấp cứu</h3>
+            <p><a href="tel:0900123456" class="phone-link">0900 123 456</a> (Trực cấp cứu 24/24)</p>
+            <p>Tư vấn đặt lịch: <strong>(028) 3822 9999</strong></p>
+          </div>
+        </div>
+
+        <div class="contact-card-modern">
+          <div class="contact-icon-box">✉️</div>
+          <div class="contact-details">
+            <h3>Hòm thư điện tử</h3>
+            <p>hotro@petcare.vn</p>
+            <p>khieunai@petcare.vn</p>
+          </div>
+        </div>
+
+        <div class="contact-card-modern">
+          <div class="contact-icon-box">🕐</div>
+          <div class="contact-details">
+            <h3>Thời gian làm việc</h3>
+            <p><strong>Khám thường:</strong> 08:00 – 20:00 (Từ Thứ Hai đến Chủ Nhật)</p>
+            <p><strong>Cấp cứu & Lưu trú:</strong> Hoạt động 24/7 không nghỉ lễ Tết</p>
+          </div>
+        </div>
       </div>
-      <div class="quick-contact-card">
-        <div class="quick-icon">📞</div>
-        <h4>Gọi điện thoại</h4>
-        <p>Liên hệ trực tiếp trong giờ làm việc để được tư vấn ngay lập tức.</p>
-        <p class="demo-note">0900 123 456 (Minh họa)</p>
-      </div>
-      <div class="quick-contact-card">
-        <div class="quick-icon">✉️</div>
-        <h4>Gửi email</h4>
-        <p>Gửi email và nhận phản hồi trong 1 ngày làm việc.</p>
-        <p class="demo-note">hello@petcare.example (Minh họa)</p>
+
+      <!-- Contact Message Form -->
+      <div class="contact-form-col">
+        <div class="form-card-modern">
+          <h2>Gửi tin nhắn hoặc Yêu cầu tư vấn</h2>
+          <p class="text-muted mb-4">Điền thông tin bên dưới, nhân viên chăm sóc khách hàng của PetCare sẽ phản hồi trong vòng 30 phút.</p>
+
+          <form method="post" action="{{ url_for('contact') }}" class="stack-form modern-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <div class="form-group">
+              <label>Họ và tên của bạn <span class="req-star">*</span></label>
+              <input type="text" name="full_name" class="form-control" placeholder="Nhập họ và tên" required>
+            </div>
+
+            <div class="form-group">
+              <label>Địa chỉ Email <span class="req-star">*</span></label>
+              <input type="email" name="email" class="form-control" placeholder="vidu@email.com" required>
+            </div>
+
+            <div class="form-group">
+              <label>Nội dung câu hỏi hoặc yêu cầu tư vấn <span class="req-star">*</span></label>
+              <textarea name="message" rows="5" class="form-control" placeholder="Mô tả chi tiết câu hỏi của bạn về dịch vụ, triệu chứng của thú cưng..." required></textarea>
+            </div>
+
+            <div class="form-actions mt-4">
+              <button type="submit" class="btn btn-primary btn-block btn-lg">
+                ✉️ Gửi tin nhắn ngay
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </section>
-
 {% endblock %}

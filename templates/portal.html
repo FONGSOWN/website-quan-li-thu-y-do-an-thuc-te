@@ -1,7 +1,161 @@
 {% extends 'base.html' %}
 {% block body %}
-<header class="admin-header"><div class="container admin-nav"><a class="logo" href="{{ url_for('dashboard') }}">🐾 PetCare</a><nav class="admin-actions">
-{% if current_user.role == 'CUSTOMER' %}<a href="{{ url_for('pets') }}">Thú cưng</a><a href="{{ url_for('appointments') }}">Lịch hẹn</a>{% elif current_user.role == 'DOCTOR' %}<a href="{{ url_for('doctor_dashboard') }}">Ca khám</a>{% elif current_user.role == 'CASHIER' %}<a href="{{ url_for('cashier_dashboard') }}">Thu ngân</a>{% elif current_user.role == 'ADMIN' %}<a href="{{ url_for('admin_dashboard') }}">Quản trị</a><a href="{{ url_for('admin_staff') }}">Nhân sự</a><a href="{{ url_for('admin_services') }}">Dịch vụ</a><a href="{{ url_for('admin_schedules') }}">Lịch trực</a>{% endif %}
-<a href="{{ url_for('notifications') }}">🔔 {{ unread_notifications }}</a><a href="{{ url_for('profile') }}">{{ current_user.full_name }}</a><form method="post" action="{{ url_for('logout') }}" class="inline-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="link-button">Đăng xuất</button></form></nav></div></header>
-<main class="admin-page"><div class="container">{% include 'flashes.html' %}{% block portal_content %}{% endblock %}</div></main>
+<div class="portal-layout">
+  <!-- Portal Sidebar -->
+  <aside class="portal-sidebar" id="portalSidebar">
+    <div class="sidebar-brand">
+      <a class="logo" href="{{ url_for('dashboard') }}">
+        <div class="logo-icon-wrap">
+          <svg viewBox="0 0 40 40" width="30" height="30" fill="none">
+            <rect width="40" height="40" rx="8" fill="#0284c7"/>
+            <path d="M20 12v16M12 20h16" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="brand-title">PetCare</span>
+          <span class="brand-sub">
+            {% if current_user.role == 'DOCTOR' %}Cổng Bác sĩ
+            {% elif current_user.role == 'ADMIN' %}Quản trị viên
+            {% elif current_user.role == 'CASHIER' %}Thu ngân
+            {% else %}Cổng Khách hàng{% endif %}
+          </span>
+        </div>
+      </a>
+    </div>
+
+    <!-- User Profile Summary in Sidebar -->
+    <div class="sidebar-user-card">
+      <div class="user-avatar-small">
+        {% if current_user.avatar %}
+          <img src="{{ url_for('static', filename=current_user.avatar) }}" alt="{{ current_user.full_name }}">
+        {% elif current_user.role == 'DOCTOR' %}
+          <img src="{{ url_for('static', filename='images/default-doctor.svg') }}" alt="Avatar">
+        {% else %}
+          <div class="avatar-letter">{{ current_user.full_name[0] }}</div>
+        {% endif %}
+      </div>
+      <div class="sidebar-user-info">
+        <strong class="sidebar-user-name">{{ current_user.full_name }}</strong>
+        <span class="user-role-badge badge-{{ current_user.role.lower() }}">
+          {% if current_user.role == 'DOCTOR' %}Bác sĩ thú y
+          {% elif current_user.role == 'ADMIN' %}Quản trị viên
+          {% elif current_user.role == 'CASHIER' %}Thu ngân
+          {% else %}Khách hàng{% endif %}
+        </span>
+      </div>
+    </div>
+
+    <nav class="portal-nav-menu">
+      <div class="nav-section-title">CHỨC NĂNG CHÍNH</div>
+
+      {% if current_user.role == 'DOCTOR' %}
+        <a href="{{ url_for('doctor_dashboard') }}" class="portal-nav-item {% if request.endpoint == 'doctor_dashboard' %}active{% endif %}">
+          <span class="nav-icon">🩺</span> Ca khám & Lịch hẹn
+        </a>
+        <a href="{{ url_for('doctor_schedules') }}" class="portal-nav-item {% if request.endpoint == 'doctor_schedules' %}active{% endif %}">
+          <span class="nav-icon">📅</span> Lịch trực cá nhân
+        </a>
+        <a href="{{ url_for('doctor_profile') }}" class="portal-nav-item {% if request.endpoint == 'doctor_profile' %}active{% endif %}">
+          <span class="nav-icon">👨‍⚕️</span> Hồ sơ & Chuyên môn
+        </a>
+
+      {% elif current_user.role == 'CUSTOMER' %}
+        <a href="{{ url_for('dashboard') }}" class="portal-nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
+          <span class="nav-icon">📊</span> Tổng quan
+        </a>
+        <a href="{{ url_for('pets') }}" class="portal-nav-item {% if request.endpoint in ('pets', 'pet_form', 'vaccinations') %}active{% endif %}">
+          <span class="nav-icon">🐾</span> Thú cưng của tôi
+        </a>
+        <a href="{{ url_for('appointments') }}" class="portal-nav-item {% if request.endpoint in ('appointments', 'medical_record_detail') %}active{% endif %}">
+          <span class="nav-icon">🗓️</span> Lịch hẹn & Bệnh án
+        </a>
+        <a href="{{ url_for('book_appointment') }}" class="portal-nav-item">
+          <span class="nav-icon">➕</span> Đặt lịch khám mới
+        </a>
+        <a href="{{ url_for('profile') }}" class="portal-nav-item {% if request.endpoint == 'profile' %}active{% endif %}">
+          <span class="nav-icon">👤</span> Thông tin cá nhân
+        </a>
+
+      {% elif current_user.role == 'ADMIN' %}
+        <a href="{{ url_for('admin_dashboard') }}" class="portal-nav-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+          <span class="nav-icon">📈</span> Dashboard Quản trị
+        </a>
+        <a href="{{ url_for('admin_appointment_form') }}" class="portal-nav-item {% if request.endpoint == 'admin_appointment_form' %}active{% endif %}">
+          <span class="nav-icon">➕</span> Tạo lịch hẹn thủ công
+        </a>
+        <a href="{{ url_for('admin_staff') }}" class="portal-nav-item {% if request.endpoint == 'admin_staff' %}active{% endif %}">
+          <span class="nav-icon">👥</span> Quản lý Bác sĩ & Nhân sự
+        </a>
+        <a href="{{ url_for('admin_services') }}" class="portal-nav-item {% if request.endpoint == 'admin_services' %}active{% endif %}">
+          <span class="nav-icon">💊</span> Danh mục Dịch vụ
+        </a>
+        <a href="{{ url_for('admin_schedules') }}" class="portal-nav-item {% if request.endpoint == 'admin_schedules' %}active{% endif %}">
+          <span class="nav-icon">📅</span> Phân ca Lịch trực Bác sĩ
+        </a>
+        <a href="{{ url_for('profile') }}" class="portal-nav-item {% if request.endpoint == 'profile' %}active{% endif %}">
+          <span class="nav-icon">⚙️</span> Cấu hình tài khoản
+        </a>
+
+      {% elif current_user.role == 'CASHIER' %}
+        <a href="{{ url_for('cashier_dashboard') }}" class="portal-nav-item {% if request.endpoint in ('cashier_dashboard', 'create_invoice') %}active{% endif %}">
+          <span class="nav-icon">💳</span> Duyệt lịch & Hóa đơn
+        </a>
+        <a href="{{ url_for('profile') }}" class="portal-nav-item {% if request.endpoint == 'profile' %}active{% endif %}">
+          <span class="nav-icon">👤</span> Tài khoản cá nhân
+        </a>
+      {% endif %}
+
+      <div class="nav-section-title" style="margin-top:1.5rem;">HỆ THỐNG</div>
+      <a href="{{ url_for('notifications') }}" class="portal-nav-item {% if request.endpoint == 'notifications' %}active{% endif %}">
+        <span class="nav-icon">🔔</span> Thông báo
+        {% if unread_notifications > 0 %}
+          <span class="badge-count">{{ unread_notifications }}</span>
+        {% endif %}
+      </a>
+      <a href="{{ url_for('index') }}" class="portal-nav-item" target="_blank">
+        <span class="nav-icon">🌐</span> Xem Website công khai ↗
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <form method="post" action="{{ url_for('logout') }}" class="w-100">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button class="btn btn-outline-danger btn-block">
+          <span>🚪</span> Đăng xuất
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Portal Main Content Area -->
+  <div class="portal-body">
+    <!-- Top Bar inside Portal -->
+    <header class="portal-topbar">
+      <button class="portal-sidebar-toggle" id="portalSidebarToggle" aria-label="Toggle Sidebar">
+        <span>☰</span>
+      </button>
+
+      <div class="portal-title-area">
+        <span class="portal-breadcrumb">PetCare Management</span>
+      </div>
+
+      <div class="portal-topbar-actions">
+        <a href="{{ url_for('notifications') }}" class="icon-notification-btn" title="Thông báo">
+          🔔
+          {% if unread_notifications > 0 %}
+            <span class="notification-dot"></span>
+          {% endif %}
+        </a>
+        <div class="user-greeting">
+          <span>Xin chào, <strong>{{ current_user.full_name }}</strong></span>
+        </div>
+      </div>
+    </header>
+
+    <main class="portal-content-container">
+      {% include 'flashes.html' %}
+      {% block portal_content %}{% endblock %}
+    </main>
+  </div>
+</div>
 {% endblock %}

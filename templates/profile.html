@@ -1,1 +1,64 @@
-{% extends 'portal.html' %}{% block portal_content %}<section class="login-card wide-card"><h1>Hồ sơ cá nhân</h1><form method="post" class="stack-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Họ tên<input name="full_name" value="{{ current_user.full_name }}" required></label>{% if customer %}<label>Số điện thoại<input name="phone" value="{{ customer.phone }}" required></label><label>Địa chỉ<input name="address" value="{{ customer.address }}"></label>{% endif %}<label>Mật khẩu mới (bỏ trống nếu không đổi)<input type="password" name="new_password" minlength="8"></label><button class="btn btn-primary">Lưu thay đổi</button></form></section>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Hồ sơ cá nhân | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container max-w-800">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">TÀI KHOẢN CÁ NHÂN</span>
+      <h1>Thông tin Hồ sơ & Bảo mật</h1>
+      <p class="text-muted">Quản lý thông tin liên hệ và cài đặt mật khẩu tài khoản của bạn</p>
+    </div>
+  </div>
+
+  <div class="profile-card-modern">
+    <form method="post" action="{{ url_for('profile') }}" class="stack-form modern-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Tên đăng nhập (Cố định)</label>
+          <input type="text" value="{{ current_user.username }}" class="form-control" disabled readonly>
+          <small class="text-muted">Tên tài khoản không thể thay đổi.</small>
+        </div>
+
+        <div class="form-group">
+          <label>Vai trò hệ thống</label>
+          <input type="text" value="{{ current_user.role }}" class="form-control" disabled readonly>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Họ và tên hiển thị <span class="req-star">*</span></label>
+        <input type="text" name="full_name" value="{{ current_user.full_name }}" class="form-control" required>
+      </div>
+
+      {% if customer %}
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Số điện thoại liên hệ <span class="req-star">*</span></label>
+            <input type="tel" name="phone" value="{{ customer.phone }}" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Địa chỉ liên hệ</label>
+            <input type="text" name="address" value="{{ customer.address }}" class="form-control" placeholder="Số nhà, tên đường, quận/huyện...">
+          </div>
+        </div>
+      {% endif %}
+
+      <hr class="form-divider">
+
+      <h3 class="section-subtitle">Đổi mật khẩu tài khoản</h3>
+      <div class="form-group">
+        <label>Mật khẩu mới (để trống nếu không muốn đổi)</label>
+        <input type="password" name="new_password" minlength="8" placeholder="Nhập ít nhất 8 ký tự để thay đổi mật khẩu" class="form-control">
+      </div>
+
+      <div class="form-actions mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">💾 Lưu thay đổi hồ sơ</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

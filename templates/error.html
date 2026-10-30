@@ -2,20 +2,47 @@
 {% block title %}Lỗi {{ code }} | PetCare{% endblock %}
 
 {% block content %}
-<section class="error-page">
-  <div class="container">
-    <span class="eyebrow">Lỗi {{ code }}</span>
-    <h1>
-      {% if code == 404 %}Trang không tồn tại
-      {% elif code == 400 %}Yêu cầu không hợp lệ
-      {% elif code == 500 %}Hệ thống gặp sự cố
-      {% else %}Đã xảy ra lỗi
-      {% endif %}
+<section class="error-page-modern">
+  <div class="container text-center">
+    <div class="error-illustration-box">
+      <span class="error-code-badge">{{ code }}</span>
+      <div class="error-emoji-icon">
+        {% if code == 404 %}🔍
+        {% elif code == 403 %}🚫
+        {% elif code == 500 %}⚠️
+        {% else %}ℹ️{% endif %}
+      </div>
+    </div>
+
+    <h1 class="error-heading">
+      {% if code == 404 %}Không tìm thấy trang yêu cầu
+      {% elif code == 403 %}Truy cập bị từ chối (403 Forbidden)
+      {% elif code == 500 %}Hệ thống đang gặp sự cố tạm thời
+      {% else %}Yêu cầu không hợp lệ ({{ code }}){% endif %}
     </h1>
-    <p>{{ message }}</p>
-    <div style="display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:28px;">
-      <a class="btn btn-primary" href="{{ url_for('index') }}">Về trang chủ</a>
-      <a class="btn btn-light" href="javascript:history.back()">← Quay lại</a>
+
+    <p class="error-desc-text">
+      {% if code == 403 %}
+        Tài khoản của bạn không có đủ thẩm quyền để truy cập chức năng này. Vui lòng đăng nhập với vai trò phù hợp hoặc liên hệ Quản trị viên phòng khám.
+      {% elif code == 404 %}
+        Đường dẫn bạn truy cập có thể đã thay đổi hoặc không tồn tại trên hệ thống y tế PetCare.
+      {% else %}
+        {{ message or 'Đã xảy ra lỗi trong quá trình xử lý yêu cầu. Vui lòng thử lại sau giây lát.' }}
+      {% endif %}
+    </p>
+
+    <div class="error-nav-buttons">
+      <a class="btn btn-primary btn-lg" href="{{ url_for('index') }}">
+        🏠 Về trang chủ PetCare
+      </a>
+      <a class="btn btn-outline btn-lg" href="javascript:history.back()">
+        ← Quay lại trang trước
+      </a>
+      {% if code == 403 %}
+        <a class="btn btn-outline-danger btn-lg" href="{{ url_for('login') }}">
+          🔑 Đăng nhập lại với tài khoản khác
+        </a>
+      {% endif %}
     </div>
   </div>
 </section>

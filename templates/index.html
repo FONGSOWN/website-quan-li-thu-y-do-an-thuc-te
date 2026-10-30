@@ -1,262 +1,424 @@
 {% extends 'site.html' %}
-{% block title %}PetCare | Chăm sóc thú cưng chuyên nghiệp{% endblock %}
+{% block title %}PetCare — Bệnh viện & Trung tâm Y tế Thú y Hiện đại{% endblock %}
 
 {% block content %}
+<!-- Hero Section -->
+<section class="hero-modern">
+  <div class="container hero-layout">
+    <div class="hero-text-content">
+      <div class="hero-chip">
+        <span class="chip-dot"></span>
+        <span>Hệ thống Bệnh viện Thú y Chuẩn Quốc tế</span>
+      </div>
 
-{# ── HERO ────────────────────────────────────────────────────────────── #}
-<section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-copy">
-      <span class="eyebrow">Yêu thương bằng cả trái tim</span>
-      <h1>Chăm sóc bé yêu,<br><span>khỏe mạnh mỗi ngày</span></h1>
-      <p>PetCare đồng hành cùng gia đình trong hành trình chăm sóc sức khỏe của những người bạn bốn chân. Đội ngũ bác sĩ tận tâm, quy trình rõ ràng, không gian thân thiện.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="{{ url_for('book_appointment') }}">Đặt lịch khám</a>
-        <a class="btn btn-light" href="{{ url_for('services') }}">Xem dịch vụ</a>
+      <h1 class="hero-heading">
+        Chăm sóc bé yêu bằng cả <span class="text-gradient">trái tim & y đức</span>
+      </h1>
+
+      <p class="hero-paragraph">
+        PetCare đồng hành cùng bạn trên hành trình bảo vệ sức khỏe cho những người bạn bốn chân. Đội ngũ bác sĩ chuyên khoa giàu kinh nghiệm, trang thiết bị chẩn đoán hiện đại và quy trình vô trùng tuyệt đối.
+      </p>
+
+      <div class="hero-buttons">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('book_appointment') }}">
+          🗓️ Đặt lịch khám ngay
+        </a>
+        <a class="btn btn-outline btn-lg" href="{{ url_for('services') }}">
+          Xem bảng giá dịch vụ
+        </a>
       </div>
-      <div class="hero-badges">
-        <div class="hero-badge">
-          <strong>500+</strong>
-          <small>Lượt khám/tháng</small>
+
+      <!-- Live Counters in Hero -->
+      <div class="hero-metrics-bar">
+        <div class="metric-item">
+          <strong class="counter" data-target="15000">15.000+</strong>
+          <span>Lượt khám thành công</span>
         </div>
-        <div class="hero-badge">
-          <strong>3</strong>
-          <small>Bác sĩ chuyên môn</small>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <strong class="counter" data-target="99">99.2%</strong>
+          <span>Chủ nuôi hài lòng</span>
         </div>
-        <div class="hero-badge">
-          <strong>4</strong>
-          <small>Dịch vụ toàn diện</small>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <strong class="counter" data-target="24">24/7</strong>
+          <span>Cấp cứu sẵn sàng</span>
         </div>
       </div>
-      <p class="demo-note">* Số liệu và hình ảnh là dữ liệu minh họa cho website học tập.</p>
     </div>
-    <div class="hero-art">
-      <div class="image-frame">
-        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=85"
-             alt="Chú chó được PetCare chăm sóc" loading="lazy">
-      </div>
-      <div class="floating-card">
-        <div class="heart">❤️</div>
-        <div>
-          <strong>Khám định kỳ</strong>
-          <small>Lịch hẹn đơn giản, nhanh chóng</small>
+
+    <div class="hero-visual-content">
+      <div class="hero-image-card">
+        <img src="{{ url_for('static', filename='images/clinic/clinic_hero.jpg') }}" alt="Bác sĩ thú y chăm sóc chó cưng" class="main-hero-img">
+        <div class="hero-floating-badge badge-top-right">
+          <div class="floating-icon">🩺</div>
+          <div>
+            <strong>100% Chuyên nghiệp</strong>
+            <small>Đội ngũ bác sĩ tu nghiệp</small>
+          </div>
+        </div>
+        <div class="hero-floating-badge badge-bottom-left">
+          <div class="floating-icon">🛡️</div>
+          <div>
+            <strong>Phòng phẫu thuật vô trùng</strong>
+            <small>Tiêu chuẩn an toàn y tế</small>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-{# ── TRUST STRIP ──────────────────────────────────────────────────────── #}
+<!-- Trust Bar -->
 <section class="trust-strip">
-  <div class="container trust-items">
-    <span>✅ Đội ngũ tận tâm</span>
-    <span>🔬 Quy trình an toàn</span>
-    <span>💬 Tư vấn rõ ràng</span>
-    <span>🏠 Không gian sạch sẽ</span>
-    <span>🗓️ Đặt lịch dễ dàng</span>
+  <div class="container trust-items-grid">
+    <div class="trust-pill"><span>🩺</span> Đội ngũ Bác sĩ Đầu ngành</div>
+    <div class="trust-pill"><span>🔬</span> Thiết bị Chẩn đoán Kỹ thuật số</div>
+    <div class="trust-pill"><span>💉</span> Vắc-xin Nhập khẩu Chính hãng</div>
+    <div class="trust-pill"><span>🏥</span> Không gian Vô trùng Thân thiện</div>
+    <div class="trust-pill"><span>📱</span> Đặt lịch Online Tiện lợi</div>
   </div>
 </section>
 
-{# ── GIỚI THIỆU ───────────────────────────────────────────────────────── #}
+<!-- Giới thiệu phòng khám -->
 <section class="section">
-  <div class="container about-grid">
-    <div class="about-photo-wrap">
-      <img class="rounded-photo" 
-           src="https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&w=900&q=85"
-           alt="Chó tại trung tâm PetCare" loading="lazy">
+  <div class="container about-clinic-grid">
+    <div class="about-clinic-photos">
+      <div class="photo-main-frame">
+        <img src="{{ url_for('static', filename='images/clinic/clinic_room.jpg') }}" alt="Phòng khám PetCare" loading="lazy">
+      </div>
+      <div class="photo-sub-frame">
+        <img src="{{ url_for('static', filename='images/clinic/surgery_room.jpg') }}" alt="Phòng phẫu thuật thú y" loading="lazy">
+      </div>
     </div>
-    <div class="section-copy">
-      <span class="eyebrow">Về PetCare</span>
-      <h2>Nơi sức khỏe của bé luôn là ưu tiên</h2>
-      <p>Không gian sạch sẽ, quy trình rõ ràng và sự lắng nghe tận tâm giúp mỗi lần đến PetCare trở nên nhẹ nhàng hơn – với cả thú cưng lẫn chủ nuôi.</p>
-      <ul class="check-list">
-        <li>Tư vấn phù hợp với từng loài thú cưng</li>
-        <li>Theo dõi lịch chăm sóc định kỳ</li>
-        <li>Giải thích rõ ràng, dễ hiểu cho chủ nuôi</li>
-        <li>Trang thiết bị và dụng cụ được vệ sinh sạch sẽ</li>
-      </ul>
-      <a class="text-link" href="{{ url_for('about') }}">Tìm hiểu thêm về PetCare →</a>
+
+    <div class="about-clinic-info">
+      <span class="eyebrow">VỀ HỆ THỐNG PETCARE</span>
+      <h2>Nơi gửi trọn niềm tin cho sức khỏe thú cưng</h2>
+      <p class="lead-text">
+        Thú cưng không chỉ là động vật nuôi trong nhà, chúng là những thành viên vô giá trong gia đình bạn.
+      </p>
+      <p>
+        Tại PetCare, chúng tôi thiết kế môi trường y tế hiện đại, giảm stress và âu lo cho thú cưng khi đến khám. Từ khám tổng quát định kỳ đến phẫu thuật ngoại khoa phức tạp, mọi quy trình đều được thực hiện theo tiêu chuẩn thú y quốc tế.
+      </p>
+
+      <div class="clinic-features-list">
+        <div class="feature-item">
+          <span class="feature-check">✓</span>
+          <div>
+            <strong>Hồ sơ Bệnh án Điện tử:</strong>
+            <p>Lưu trữ toàn bộ lịch sử thăm khám, kết quả xét nghiệm và lịch tiêm chủng trọn đời.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-check">✓</span>
+          <div>
+            <strong>Hệ thống Xét nghiệm Nhanh:</strong>
+            <p>Cho kết quả sinh hóa máu, virus và ký sinh trùng chỉ trong 15 – 30 phút.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-check">✓</span>
+          <div>
+            <strong>Theo dõi Sau điều trị Tận tâm:</strong>
+            <p>Bác sĩ và điều dưỡng chủ động liên hệ nhắc lịch uống thuốc và tái khám định kỳ.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <a href="{{ url_for('about') }}" class="btn btn-outline">Tìm hiểu thêm về PetCare →</a>
+      </div>
     </div>
   </div>
 </section>
 
-{# ── DỊCH VỤ NỔI BẬT ──────────────────────────────────────────────────── #}
+<!-- Dịch vụ y tế nổi bật -->
 <section class="section section-soft">
   <div class="container">
-    <div class="section-heading">
-      <span class="eyebrow">Dịch vụ nổi bật</span>
-      <h2>Chăm sóc toàn diện cho bé</h2>
-      <p>Từ khám sức khỏe định kỳ đến điều trị chuyên sâu, PetCare cung cấp đầy đủ dịch vụ để đồng hành cùng thú cưng của bạn.</p>
+    <div class="section-heading text-center">
+      <span class="eyebrow">DỊCH VỤ TOÀN DIỆN</span>
+      <h2>Giải pháp y tế & chăm sóc chất lượng cao</h2>
+      <p>Cung cấp đầy đủ các chuyên khoa thăm khám, điều trị và làm đẹp chuyên nghiệp cho chó mèo.</p>
     </div>
-    <div class="service-grid">
-      {% for title, icon, text, color in [
-        ('Khám sức khỏe', '🩺', 'Kiểm tra tổng quát, phát hiện sớm bất thường và tư vấn chăm sóc phù hợp với từng độ tuổi.', 'mint'),
-        ('Tiêm phòng', '💉', 'Lập lịch tiêm phòng đúng chuẩn theo từng độ tuổi, theo dõi sức khỏe sau tiêm.', 'peach'),
-        ('Tắm và vệ sinh', '🛁', 'Chăm sóc lông, da, móng và vệ sinh tai nhẹ nhàng, an toàn với dụng cụ chuyên dụng.', 'yellow'),
-        ('Điều trị thú cưng', '💊', 'Tiếp nhận khám, đề xuất phác đồ điều trị và theo dõi sát sao sau điều trị.', 'lavender')
-      ] %}
-      <article class="service-card">
-        <div class="service-icon {{ color }}">{{ icon }}</div>
-        <h3>{{ title }}</h3>
-        <p>{{ text }}</p>
-        <a href="{{ url_for('book_appointment') }}">Đặt lịch dịch vụ →</a>
-      </article>
-      {% endfor %}
-    </div>
-    <div class="section-cta-inline">
-      <a class="btn btn-primary" href="{{ url_for('services') }}">Xem tất cả dịch vụ</a>
-    </div>
-  </div>
-</section>
 
-{# ── QUY TRÌNH ─────────────────────────────────────────────────────────── #}
-<section class="section">
-  <div class="container">
-    <div class="section-heading">
-      <span class="eyebrow">Quy trình khám</span>
-      <h2>Đơn giản – Rõ ràng – Tin cậy</h2>
-      <p>Chỉ 4 bước để hoàn tất một lần khám tại PetCare.</p>
-    </div>
-    <div class="process-grid">
-      <div class="process-step">
-        <div class="process-num">01</div>
-        <h4>Đặt lịch online</h4>
-        <p>Điền thông tin và chọn dịch vụ trên website. Nhân viên sẽ xác nhận trong vòng vài tiếng.</p>
-      </div>
-      <div class="process-step">
-        <div class="process-num">02</div>
-        <h4>Đến trung tâm</h4>
-        <p>Mang thú cưng đến đúng giờ. Không gian thân thiện và sạch sẽ giúp bé không lo lắng.</p>
-      </div>
-      <div class="process-step">
-        <div class="process-num">03</div>
-        <h4>Bác sĩ thăm khám</h4>
-        <p>Bác sĩ kiểm tra kỹ lưỡng và tư vấn kết quả trực tiếp, rõ ràng dễ hiểu.</p>
-      </div>
-      <div class="process-step">
-        <div class="process-num">04</div>
-        <h4>Theo dõi sau khám</h4>
-        <p>Hẹn tái khám nếu cần. PetCare hỗ trợ tư vấn sau điều trị qua điện thoại.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-{# ── ĐỘI NGŨ BÁC SĨ ───────────────────────────────────────────────────── #}
-<section class="section section-soft">
-  <div class="container">
-    <div class="section-heading">
-      <span class="eyebrow">Đội ngũ chuyên môn</span>
-      <h2>Những người bạn đáng tin cậy</h2>
-      <p>Dữ liệu bác sĩ là minh họa cho website học tập. Thông tin thực tế sẽ được cập nhật khi triển khai.</p>
-    </div>
-    <div class="doctor-grid">
-      {% for doctor in doctors %}
-      <article class="doctor-card">
-        <div class="doctor-avatar" aria-hidden="true">👨‍⚕️</div>
-        <div class="doctor-info">
-          <h3>{{ doctor.name }}</h3>
-          <p class="doctor-role">{{ doctor.role }}</p>
-          <span class="doctor-specialty">{{ doctor.specialty }}</span>
+    <div class="service-cards-grid">
+      <article class="service-card-modern">
+        <div class="service-card-icon icon-blue">🩺</div>
+        <h3>Khám & Chẩn đoán Lâm sàng</h3>
+        <p>Kiểm tra sức khỏe tổng quát, các bệnh nội khoa, tiêu hóa, hô hấp, tim mạch và dinh dưỡng chuyên biệt.</p>
+        <div class="service-card-footer">
+          <span class="service-price-tag">Từ 150.000đ</span>
+          <a href="{{ url_for('book_appointment') }}?service=Khám+sức+khỏe" class="service-link">Đặt lịch →</a>
         </div>
       </article>
+
+      <article class="service-card-modern">
+        <div class="service-card-icon icon-green">💉</div>
+        <h3>Tiêm phòng Vắc-xin & Tẩy giun</h3>
+        <p>Phác đồ vắc-xin 5 bệnh, 7 bệnh và phòng dại chuẩn quốc tế. Cấp sổ theo dõi tiêm phòng định kỳ trọn đời.</p>
+        <div class="service-card-footer">
+          <span class="service-price-tag">Từ 200.000đ</span>
+          <a href="{{ url_for('book_appointment') }}?service=Tiêm+phòng" class="service-link">Đặt lịch →</a>
+        </div>
+      </article>
+
+      <article class="service-card-modern">
+        <div class="service-card-icon icon-orange">🔬</div>
+        <h3>Phẫu thuật Ngoại khoa & Triệt sản</h3>
+        <p>Phẫu thuật mô mềm, chỉnh hình xương và triệt sản an toàn trong phòng mổ áp lực dương vô trùng.</p>
+        <div class="service-card-footer">
+          <span class="service-price-tag">Từ 850.000đ</span>
+          <a href="{{ url_for('book_appointment') }}" class="service-link">Đặt lịch →</a>
+        </div>
+      </article>
+
+      <article class="service-card-modern">
+        <div class="service-card-icon icon-purple">🛁</div>
+        <h3>Spa, Grooming & Vệ sinh</h3>
+        <p>Tắm trị liệu khử mùi, cắt tỉa lông tạo kiểu nghệ thuật, vệ sinh tai và cắt mài móng an toàn nhẹ nhàng.</p>
+        <div class="service-card-footer">
+          <span class="service-price-tag">Từ 120.000đ</span>
+          <a href="{{ url_for('book_appointment') }}?service=Tắm+và+vệ+sinh" class="service-link">Đặt lịch →</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{{ url_for('services') }}" class="btn btn-primary">Xem tất cả dịch vụ & Bảng giá chi tiết</a>
+    </div>
+  </div>
+</section>
+
+<!-- Đội ngũ bác sĩ thú y (YÊU CẦU 3) -->
+<section class="section">
+  <div class="container">
+    <div class="section-heading text-center">
+      <span class="eyebrow">ĐỘI NGŨ CHUYÊN GIA</span>
+      <h2>Bác sĩ Thú y Tận tâm & Giàu kinh nghiệm</h2>
+      <p>Gặp gỡ đội ngũ bác sĩ hàng đầu luôn đặt tình yêu thương và sự an toàn của thú cưng lên hàng đầu.</p>
+    </div>
+
+    <div class="doctor-home-grid">
+      {% for doctor in doctors[:4] %}
+        <article class="doctor-home-card">
+          <div class="doctor-photo-wrapper">
+            {% if doctor.avatar %}
+              <img src="{{ url_for('static', filename=doctor.avatar) }}" alt="{{ doctor.name }}" loading="lazy">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/default-doctor.svg') }}" alt="{{ doctor.name }}" loading="lazy">
+            {% endif %}
+            <span class="doctor-badge-exp">{{ doctor.experience_years }}+ năm kinh nghiệm</span>
+          </div>
+
+          <div class="doctor-home-body">
+            <span class="doctor-degree-label">{{ doctor.degree or doctor.role }}</span>
+            <h3 class="doctor-title-name">
+              <a href="{{ url_for('doctor_detail', doctor_id=doctor.id) }}">{{ doctor.name }}</a>
+            </h3>
+            <p class="doctor-specialty-text">🩺 {{ doctor.specialty }}</p>
+
+            <div class="doctor-home-actions">
+              <a href="{{ url_for('doctor_detail', doctor_id=doctor.id) }}" class="btn btn-outline btn-sm">Xem hồ sơ</a>
+              <a href="{{ url_for('book_appointment') }}?doctor_id={{ doctor.id }}" class="btn btn-primary btn-sm">Đặt lịch</a>
+            </div>
+          </div>
+        </article>
       {% endfor %}
     </div>
-    <div class="section-cta-inline">
-      <a class="btn btn-light" href="{{ url_for('doctors') }}">Xem tất cả bác sĩ</a>
+
+    <div class="text-center mt-5">
+      <a href="{{ url_for('doctors') }}" class="btn btn-outline-primary btn-lg">Xem toàn bộ đội ngũ Bác sĩ →</a>
     </div>
   </div>
 </section>
 
-{# ── LÝ DO CHỌN PETCARE ───────────────────────────────────────────────── #}
-<section class="section why-section">
-  <div class="container">
-    <div class="section-heading">
-      <span class="eyebrow">Tại sao chọn chúng tôi</span>
-      <h2>PetCare khác biệt ở điểm nào?</h2>
-    </div>
-    <div class="why-grid">
-      <div class="why-card">
-        <div class="why-icon">🏥</div>
-        <h4>Cơ sở vật chất hiện đại</h4>
-        <p>Trang thiết bị thăm khám và điều trị được bảo dưỡng, vệ sinh định kỳ theo tiêu chuẩn.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">👨‍⚕️</div>
-        <h4>Bác sĩ có chuyên môn</h4>
-        <p>Đội ngũ được đào tạo bài bản, cập nhật kiến thức thường xuyên và yêu nghề thật sự.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">💬</div>
-        <h4>Tư vấn minh bạch</h4>
-        <p>Giải thích rõ ràng tình trạng sức khỏe và kế hoạch điều trị trước khi thực hiện bất kỳ bước nào.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon">🔒</div>
-        <h4>An toàn và vô khuẩn</h4>
-        <p>Dụng cụ được khử trùng đúng quy trình. Không gian phòng khám được vệ sinh sau mỗi ca.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-{# ── ĐÁNH GIÁ KHÁCH HÀNG ──────────────────────────────────────────────── #}
+<!-- Cơ sở vật chất phòng khám -->
 <section class="section section-soft">
   <div class="container">
-    <div class="section-heading">
-      <span class="eyebrow">Khách hàng nói gì</span>
-      <h2>Chia sẻ từ chủ nuôi</h2>
-      <p class="demo-label">⚠️ Đây là đánh giá minh họa, không phải phản hồi thực tế.</p>
+    <div class="section-heading text-center">
+      <span class="eyebrow">CƠ SỞ VẬT CHẤT</span>
+      <h2>Môi trường chăm sóc đạt chuẩn y tế</h2>
+      <p>Không gian sạch sẽ, thông thoáng, được khử khuẩn định kỳ bằng hệ thống tia cực tím UV-C.</p>
     </div>
-    <div class="review-grid">
-      <article class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p>"Bác sĩ giải thích rất tận tình, bé mèo nhà mình không còn sợ mỗi lần đến khám nữa."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">TL</div>
+
+    <div class="facility-grid">
+      <div class="facility-card">
+        <img src="{{ url_for('static', filename='images/clinic/clinic_room.jpg') }}" alt="Phòng khám" loading="lazy">
+        <div class="facility-caption">
+          <h4>Phòng Thăm khám Tiêu chuẩn</h4>
+          <p>Trang bị bàn khám nâng hạ tự động và đèn mổ chuyên dụng.</p>
+        </div>
+      </div>
+
+      <div class="facility-card">
+        <img src="{{ url_for('static', filename='images/clinic/surgery_room.jpg') }}" alt="Phòng phẫu thuật" loading="lazy">
+        <div class="facility-caption">
+          <h4>Phòng Phẫu thuật Vô trùng</h4>
+          <p>Máy gây mê bay hơi Isoflurane và monitor theo dõi sinh hiệu 5 thông số.</p>
+        </div>
+      </div>
+
+      <div class="facility-card">
+        <img src="{{ url_for('static', filename='images/clinic/grooming.jpg') }}" alt="Khu Spa thú cưng" loading="lazy">
+        <div class="facility-caption">
+          <h4>Khu vực Spa & Cắt tỉa</h4>
+          <p>Bồn tắm massage chuyên biệt và sản phẩm chăm sóc lông da hữu cơ.</p>
+        </div>
+      </div>
+
+      <div class="facility-card">
+        <img src="{{ url_for('static', filename='images/clinic/pet_hotel.jpg') }}" alt="Khách sạn thú cưng" loading="lazy">
+        <div class="facility-caption">
+          <h4>Khu Lưu trú Khách sạn</h4>
+          <p>Phòng nghỉ riêng biệt, điều hòa 24/7 và camera giám sát trực tuyến.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quy trình khám 4 bước -->
+<section class="section">
+  <div class="container">
+    <div class="section-heading text-center">
+      <span class="eyebrow">QUY TRÌNH TIẾP NHẬN</span>
+      <h2>Khám bệnh chuyên nghiệp trong 4 bước</h2>
+      <p>Quy trình rõ ràng, minh bạch giúp bạn hoàn toàn an tâm trong suốt buổi khám.</p>
+    </div>
+
+    <div class="process-steps-modern">
+      <div class="step-card">
+        <div class="step-badge">01</div>
+        <h4>Đặt lịch trực tuyến</h4>
+        <p>Chọn dịch vụ, bác sĩ chuyên khoa và khung giờ thuận tiện nhất chỉ với vài thao tác.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-badge">02</div>
+        <h4>Tiếp đón & Cân đo</h4>
+        <p>Nhân viên y tế tiếp nhận, đo thân nhiệt, cân nặng và kiểm tra dấu hiệu sinh tồn ban đầu.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-badge">03</div>
+        <h4>Bác sĩ thăm khám</h4>
+        <p>Bác sĩ kiểm tra kỹ lưỡng, chỉ định xét nghiệm nếu cần và tư vấn chi tiết phác đồ.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-badge">04</div>
+        <h4>Bệnh án & Tái khám</h4>
+        <p>Nhận hồ sơ bệnh án điện tử, hướng dẫn dùng thuốc và kích hoạt nhắc lịch tái khám tự động.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Đánh giá từ khách hàng -->
+<section class="section section-soft">
+  <div class="container">
+    <div class="section-heading text-center">
+      <span class="eyebrow">CHIA SẺ CHỦ NUÔI</span>
+      <h2>Cảm nhận từ khách hàng về PetCare</h2>
+      <p>Sự hài lòng và sức khỏe của các bé là niềm hạnh phúc lớn nhất của chúng tôi.</p>
+    </div>
+
+    <div class="reviews-grid-modern">
+      <div class="review-box">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p class="review-text">
+          "Bé Corgi nhà mình bị viêm da nặng, chạy chữa nhiều nơi không khỏi. Đến PetCare được bác sĩ Lê Ngọc Hà điều trị tận tình theo phác đồ mới, sau 2 tuần bé đã mọc lông trở lại và khỏi hẳn."
+        </p>
+        <div class="reviewer-meta">
+          <div class="reviewer-avatar-wrap">TL</div>
           <div>
             <strong>Chị Thanh Lan</strong>
-            <small>Chủ nuôi mèo – Minh họa</small>
+            <small>Chủ nuôi bé Milo (Corgi)</small>
           </div>
         </div>
-      </article>
-      <article class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p>"Đặt lịch online tiện lắm, nhân viên xác nhận nhanh và phòng khám sạch sẽ, thoáng mát."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">MH</div>
+      </div>
+
+      <div class="review-box">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p class="review-text">
+          "Bác sĩ Trần Quốc Bảo phẫu thuật xương cho bé mèo nhà mình cực kỳ khéo léo. Phòng mổ rất sạch sẽ, có hệ thống theo dõi nhịp tim chuyên nghiệp. Bây giờ bé đã chạy nhảy bình thường."
+        </p>
+        <div class="reviewer-meta">
+          <div class="reviewer-avatar-wrap">MH</div>
           <div>
             <strong>Anh Minh Hoàng</strong>
-            <small>Chủ nuôi chó – Minh họa</small>
+            <small>Chủ nuôi bé Bông (Mèo Anh lông ngắn)</small>
           </div>
         </div>
-      </article>
-      <article class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p>"Rất hài lòng với dịch vụ tắm và vệ sinh. Bé về nhà thơm và vui vẻ hẳn."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">QN</div>
+      </div>
+
+      <div class="review-box">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p class="review-text">
+          "Dịch vụ đặt lịch khám online rất tiện lợi, đến nơi không phải chờ đợi lâu. Bệnh án được lưu trên website giúp mình dễ dàng kiểm tra lại đơn thuốc và ngày tiêm chủng."
+        </p>
+        <div class="reviewer-meta">
+          <div class="reviewer-avatar-wrap">QN</div>
           <div>
             <strong>Chị Quỳnh Nga</strong>
-            <small>Chủ nuôi hamster – Minh họa</small>
+            <small>Chủ nuôi bé Xù (Poodle)</small>
           </div>
         </div>
-      </article>
+      </div>
     </div>
   </div>
 </section>
 
-{# ── CTA CUỐI TRANG ────────────────────────────────────────────────────── #}
-<section class="cta-section">
-  <div class="container">
-    <span class="eyebrow">Sẵn sàng đồng hành</span>
-    <h2>Một lịch hẹn nhỏ, an tâm thật nhiều</h2>
-    <p>Gửi thông tin để nhân viên PetCare xác nhận lịch khám của bé yêu nhà bạn.</p>
-    <div class="cta-actions">
-      <a class="btn btn-primary btn-lg" href="{{ url_for('book_appointment') }}">Đặt lịch ngay</a>
-      <a class="btn btn-outline-light btn-lg" href="{{ url_for('contact') }}">Liên hệ tư vấn</a>
+<!-- FAQ Accordion -->
+<section class="section">
+  <div class="container max-w-800">
+    <div class="section-heading text-center">
+      <span class="eyebrow">CÂU HỎI THƯỜNG GẶP</span>
+      <h2>Giải đáp thắc mắc của bạn</h2>
+    </div>
+
+    <div class="faq-accordion">
+      <details class="faq-item" open>
+        <summary>Tôi có cần đặt lịch trước khi mang thú cưng đến khám không?</summary>
+        <div class="faq-content">
+          <p>PetCare luôn khuyến khích chủ nuôi đặt lịch trước qua website để được ưu tiên khung giờ và chọn đúng bác sĩ mong muốn. Tuy nhiên trong các trường hợp cấp cứu khẩn cấp, trung tâm tiếp nhận 24/7 không cần hẹn trước.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Trước khi đưa bé đi tiêm phòng cần chuẩn bị những gì?</summary>
+        <div class="faq-content">
+          <p>Thú cưng cần hoàn toàn khỏe mạnh, không sốt, không tiêu chảy trong 3 ngày gần nhất. Hãy mang theo sổ tiêm chủng cũ nếu có để bác sĩ kiểm tra và lên lịch tiêm đúng thời điểm.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Tôi có thể xem lại kết quả khám và đơn thuốc ở đâu?</summary>
+        <div class="faq-content">
+          <p>Sau khi bác sĩ hoàn thành ca khám, toàn bộ hồ sơ bệnh án điện tử, chỉ số sinh tồn và đơn thuốc sẽ được cập nhật trực tiếp trong tài khoản của bạn tại mục <strong>Lịch hẹn & Bệnh án</strong>.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Quy định hủy hoặc dời lịch khám như thế nào?</summary>
+        <div class="faq-content">
+          <p>Bạn có thể chủ động hủy hoặc dời lịch hẹn trên website trước giờ khám tối thiểu 4 tiếng để phòng khám sắp xếp khung giờ cho các bệnh nhân khác.</p>
+        </div>
+      </details>
     </div>
   </div>
 </section>
 
+<!-- CTA Bottom -->
+<section class="cta-banner">
+  <div class="container text-center">
+    <h2>Sẵn sàng mang đến sự chăm sóc y tế tốt nhất cho bé yêu?</h2>
+    <p>Đặt lịch khám ngay hôm nay để nhận tư vấn trực tiếp từ các bác sĩ chuyên khoa PetCare.</p>
+    <div class="cta-buttons-row">
+      <a href="{{ url_for('book_appointment') }}" class="btn btn-primary btn-lg">🗓️ Đặt lịch khám ngay</a>
+      <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg">📞 Liên hệ cấp cứu 24/7</a>
+    </div>
+  </div>
+</section>
 {% endblock %}

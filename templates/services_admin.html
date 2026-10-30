@@ -1,1 +1,88 @@
-{% extends 'portal.html' %}{% block portal_content %}<section class="login-card wide-card"><h1>Danh mục dịch vụ</h1><form method="post" class="stack-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Tên dịch vụ<input name="name" required></label><label>Giá (VND)<input type="number" min="0" name="price" required></label><button class="btn btn-primary">Thêm dịch vụ</button></form></section><table class="data-table"><tr><th>Dịch vụ</th><th>Giá</th><th>Trạng thái</th></tr>{% for service in service_list %}<tr><td>{{ service.name }}</td><td>{{ '{:,.0f}'.format(service.price) }} đ</td><td>{{ 'Hoạt động' if service.is_active else 'Ngừng' }}</td></tr>{% endfor %}</table>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Quản lý Dịch vụ Y tế | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">DANH MỤC KHÁM CHỮA BỆNH</span>
+      <h1>Danh mục Dịch vụ & Biểu phí Y tế</h1>
+      <p class="text-muted">Quản lý giá niêm yết và trạng thái kích hoạt của từng gói dịch vụ thú y</p>
+    </div>
+  </div>
+
+  <div class="staff-layout-grid mb-5">
+    <div class="staff-form-col">
+      <div class="form-card-modern">
+        <h3>➕ Thêm Dịch vụ mới</h3>
+        <p class="text-muted text-sm mb-3">Tạo gói dịch vụ hoặc thủ thuật mới cho phòng khám.</p>
+
+        <form method="post" action="{{ url_for('admin_services') }}" class="stack-form modern-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="action" value="create">
+
+          <div class="form-group">
+            <label>Tên dịch vụ y tế <span class="req-star">*</span></label>
+            <input type="text" name="name" class="form-control" placeholder="Ví dụ: Siêu âm màu ổ bụng..." required>
+          </div>
+
+          <div class="form-group">
+            <label>Đơn giá niêm yết (VNĐ) <span class="req-star">*</span></label>
+            <input type="number" name="price" min="0" step="1000" class="form-control" placeholder="Ví dụ: 250000" required>
+          </div>
+
+          <div class="form-actions mt-3">
+            <button type="submit" class="btn btn-primary btn-block">+ Thêm dịch vụ vào bảng giá</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="staff-list-col">
+      <div class="table-responsive">
+        <table class="data-table-modern">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tên dịch vụ</th>
+              <th class="text-right">Mức giá</th>
+              <th>Trạng thái</th>
+              <th class="text-right">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for svc in service_list %}
+              <tr>
+                <td>#{{ svc.id }}</td>
+                <td><strong>{{ svc.name }}</strong></td>
+                <td class="text-right font-bold text-primary">{{ '{:,.0f}'.format(svc.price) }}đ</td>
+                <td>
+                  {% if svc.is_active %}
+                    <span class="status-badge status-da-xac-nhan">Đang áp dụng</span>
+                  {% else %}
+                    <span class="status-badge status-da-huy">Tạm dừng</span>
+                  {% endif %}
+                </td>
+                <td class="text-right">
+                  <form method="post" action="{{ url_for('admin_services') }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="action" value="toggle_active">
+                    <input type="hidden" name="service_id" value="{{ svc.id }}">
+                    <button type="submit" class="btn btn-xs {% if svc.is_active %}btn-outline-danger{% else %}btn-outline-success{% endif %}">
+                      {% if svc.is_active %}Tạm dừng{% else %}Kích hoạt{% endif %}
+                    </button>
+                  </form>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="5" class="text-center py-4 text-muted">Chưa có dịch vụ nào trong hệ thống.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

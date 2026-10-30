@@ -1,1 +1,161 @@
-{% extends 'portal.html' %}{% block portal_content %}<section class="login-card wide-card"><h1>Quản lý nhân sự</h1><form method="post" class="stack-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Họ tên<input name="full_name" required></label><label>Tên đăng nhập<input name="username" required></label><label>Mật khẩu tạm (ít nhất 8 ký tự)<input type="password" name="password" minlength="8" required></label><label>Vai trò<select name="role"><option value="DOCTOR">Bác sĩ</option><option value="CASHIER">Thu ngân</option></select></label><button class="btn btn-primary">Thêm nhân sự</button></form></section><table class="data-table"><tr><th>Họ tên</th><th>Tài khoản</th><th>Vai trò</th><th>Trạng thái</th></tr>{% for person in staff %}<tr><td>{{ person.full_name }}</td><td>{{ person.username }}</td><td>{{ person.role }}</td><td>{{ 'Hoạt động' if person.is_active else 'Khóa' }}</td></tr>{% endfor %}</table>{% endblock %}
+{% extends 'portal.html' %}
+{% block title %}Quản lý Nhân sự & Bác sĩ | PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">QUẢN LÝ NHÂN LỰC Y TẾ</span>
+      <h1>Danh sách Bác sĩ & Nhân sự PetCare</h1>
+      <p class="text-muted">Quản trị tài khoản, phân quyền bác sĩ, thu ngân và điều phối nhân sự</p>
+    </div>
+  </div>
+
+  <div class="staff-layout-grid mb-5">
+    <!-- Form Thêm nhân sự -->
+    <div class="staff-form-col">
+      <div class="form-card-modern">
+        <h3>➕ Thêm Nhân sự mới</h3>
+        <p class="text-muted text-sm mb-3">Tạo tài khoản Bác sĩ hoặc Thu ngân mới cho phòng khám.</p>
+
+        <form method="post" action="{{ url_for('admin_staff') }}" class="stack-form modern-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="action" value="create">
+
+          <div class="form-group">
+            <label>Họ và tên nhân sự <span class="req-star">*</span></label>
+            <input type="text" name="full_name" class="form-control" placeholder="Ví dụ: BS. Nguyễn Văn A" required>
+          </div>
+
+          <div class="form-group">
+            <label>Tên đăng nhập <span class="req-star">*</span></label>
+            <input type="text" name="username" class="form-control" placeholder="Ví dụ: doctor_vanna" required>
+          </div>
+
+          <div class="form-group">
+            <label>Mật khẩu khởi tạo (tối thiểu 8 ký tự) <span class="req-star">*</span></label>
+            <input type="password" name="password" minlength="8" class="form-control" placeholder="Nhập mật khẩu an toàn" required>
+          </div>
+
+          <div class="form-group">
+            <label>Vai trò <span class="req-star">*</span></label>
+            <select name="role" class="form-control" id="roleSelect" onchange="toggleSpecialtyField(this.value)">
+              <option value="DOCTOR">Bác sĩ Thú y (DOCTOR)</option>
+              <option value="CASHIER">Thu ngân & Kế toán (CASHIER)</option>
+            </select>
+          </div>
+
+          <div id="doctorExtraFields">
+            <div class="form-group">
+              <label>Học vị / Bằng cấp</label>
+              <input type="text" name="degree" class="form-control" placeholder="Ví dụ: Bác sĩ Thú y, Thạc sĩ Thú y">
+            </div>
+
+            <div class="form-group">
+              <label>Chuyên khoa chính</label>
+              <input type="text" name="specialty" class="form-control" placeholder="Ví dụ: Ngoại khoa, Tiêm chủng, Nha khoa...">
+            </div>
+          </div>
+
+          <div class="form-actions mt-3">
+            <button type="submit" class="btn btn-primary btn-block">Thêm nhân sự vào hệ thống</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Danh sách nhân sự -->
+    <div class="staff-list-col">
+      <div class="table-responsive">
+        <table class="data-table-modern">
+          <thead>
+            <tr>
+              <th>Họ tên & Tài khoản</th>
+              <th>Vai trò</th>
+              <th>Chuyên môn / Học vị</th>
+              <th>Trạng thái</th>
+              <th class="text-right">Quản trị</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for person in staff %}
+              <tr>
+                <td>
+                  <strong>{{ person.full_name }}</strong>
+                  <small class="d-block text-muted">@{{ person.username }}</small>
+                </td>
+                <td>
+                  <span class="user-role-badge badge-{{ person.role.lower() }}">
+                    {% if person.role == 'DOCTOR' %}Bác sĩ Thú y{% else %}Thu ngân{% endif %}
+                  </span>
+                </td>
+                <td>
+                  <small class="d-block font-bold">{{ person.degree or '—' }}</small>
+                  <small class="text-muted">{{ person.specialty or '—' }}</small>
+                </td>
+                <td>
+                  {% if person.is_active %}
+                    <span class="status-badge status-da-xac-nhan">Đang hoạt động</span>
+                  {% else %}
+                    <span class="status-badge status-da-huy">Đã khóa</span>
+                  {% endif %}
+                </td>
+                <td class="text-right">
+                  <div class="action-buttons-inline">
+                    <!-- Toggle Active Form -->
+                    <form method="post" action="{{ url_for('admin_staff') }}" class="inline-form">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                      <input type="hidden" name="action" value="toggle_active">
+                      <input type="hidden" name="user_id" value="{{ person.id }}">
+                      <button type="submit" class="btn btn-xs {% if person.is_active %}btn-outline-danger{% else %}btn-outline-success{% endif %}">
+                        {% if person.is_active %}Khóa{% else %}Mở{% endif %}
+                      </button>
+                    </form>
+
+                    <!-- Reset Password Modal / Prompt -->
+                    <button type="button" class="btn btn-xs btn-outline-secondary" onclick="promptResetPassword({{ person.id }}, '{{ person.full_name }}')">
+                      🔑 Reset MK
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td colspan="5" class="text-center py-4 text-muted">Chưa có nhân sự nào.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden Form for Reset Password -->
+<form id="resetPwForm" method="post" action="{{ url_for('admin_staff') }}" style="display:none;">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <input type="hidden" name="action" value="reset_password">
+  <input type="hidden" name="user_id" id="resetUserId">
+  <input type="hidden" name="new_password" id="resetNewPw">
+</form>
+
+<script>
+function toggleSpecialtyField(role) {
+  const extra = document.getElementById('doctorExtraFields');
+  if (extra) {
+    extra.style.display = role === 'DOCTOR' ? 'block' : 'none';
+  }
+}
+
+function promptResetPassword(userId, name) {
+  const newPw = prompt(`Nhập mật khẩu mới cho ${name} (tối thiểu 8 ký tự):`, 'Doctor@123');
+  if (newPw && newPw.trim().length >= 8) {
+    document.getElementById('resetUserId').value = userId;
+    document.getElementById('resetNewPw').value = newPw.trim();
+    document.getElementById('resetPwForm').submit();
+  } else if (newPw !== null) {
+    alert('Mật khẩu mới phải có ít nhất 8 ký tự.');
+  }
+}
+</script>
+{% endblock %}

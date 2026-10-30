@@ -1,0 +1,76 @@
+{% extends 'portal.html' %}
+{% block title %}Lịch trực cá nhân | Bác sĩ PetCare{% endblock %}
+
+{% block portal_content %}
+<div class="page-container">
+  <div class="section-card-header mb-4">
+    <div class="header-titles">
+      <span class="eyebrow">LỊCH LÀM VIỆC & CA TRỰC</span>
+      <h1>Lịch trực của Bác sĩ {{ current_user.full_name }}</h1>
+      <p class="text-muted">Xem ca làm việc được phòng khám phân công từ ngày hôm nay trở đi.</p>
+    </div>
+    <div class="header-actions">
+      <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline btn-sm">← Quay lại Ca khám</a>
+    </div>
+  </div>
+
+  <div class="schedule-table-card">
+    <div class="table-responsive">
+      <table class="data-table-modern">
+        <thead>
+          <tr>
+            <th>Ngày trực</th>
+            <th>Thứ / Ngày trong tuần</th>
+            <th>Ca trực</th>
+            <th>Khung giờ tiếp nhận</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sched in schedules %}
+            <tr {% if sched.schedule_date == today_date %}class="highlight-row"{% endif %}>
+              <td>
+                <strong class="date-text">{{ sched.schedule_date }}</strong>
+                {% if sched.schedule_date == today_date %}
+                  <span class="badge-today">Hôm nay</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="day-of-week">{{ sched.schedule_date }}</span>
+              </td>
+              <td>
+                <span class="shift-badge shift-{{ sched.shift.lower().replace(' ', '-') }}">
+                  {{ sched.shift }}
+                </span>
+              </td>
+              <td>
+                {% if sched.shift == 'Sáng' %}
+                  <span>08:00 – 11:30</span>
+                {% elif sched.shift == 'Chiều' %}
+                  <span>13:30 – 17:00</span>
+                {% else %}
+                  <span>08:00 – 11:30 & 13:30 – 17:00</span>
+                {% endif %}
+              </td>
+              <td>
+                <span class="status-badge status-da-xac-nhan">Đã duyệt lịch</span>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="5" class="text-center py-4">
+                <div class="empty-state">
+                  <div class="empty-icon">📅</div>
+                  <p>Hiện chưa có lịch trực nào được phân bổ cho bạn trong thời gian tới.</p>
+                  <p class="text-muted text-sm">Vui lòng liên hệ Quản trị viên phòng khám để đăng ký ca trực.</p>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
