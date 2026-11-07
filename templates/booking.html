@@ -14,53 +14,57 @@
       {% include 'flashes.html' %}
 
       {% if current_user and current_user.role == 'CUSTOMER' %}
-        <div class="client-welcome-strip mb-4">
-          <span class="client-icon">🐾</span>
-          <div>
-            <strong>Xin chào {{ current_user.full_name }}!</strong>
-            <small class="d-block text-muted">Hệ thống đã nhận diện tài khoản của bạn. Vui lòng chọn thú cưng để tiếp tục.</small>
-          </div>
+      <div class="client-welcome-strip mb-4">
+        <span class="client-icon">🐾</span>
+        <div>
+          <strong>Xin chào {{ current_user.full_name }}!</strong>
+          <small class="d-block text-muted">Hệ thống đã nhận diện tài khoản của bạn. Vui lòng chọn thú cưng để tiếp
+            tục.</small>
         </div>
+      </div>
       {% else %}
-        <div class="guest-notice-strip mb-4">
-          <span>💡 <strong>Mẹo:</strong> <a href="{{ url_for('login') }}">Đăng nhập tài khoản</a> để quản lý thú cưng, lưu bệnh án điện tử và tích lũy ưu đãi khám.</span>
-        </div>
+      <div class="guest-notice-strip mb-4">
+        <span>💡 <strong>Mẹo:</strong> <a href="{{ url_for('login') }}">Đăng nhập tài khoản</a> để quản lý thú cưng, lưu
+          bệnh án điện tử và tích lũy ưu đãi khám.</span>
+      </div>
       {% endif %}
 
       <form id="bookingForm" method="post" action="{{ url_for('book_appointment') }}" class="stack-form modern-form">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
         {% if current_user and current_user.role == 'CUSTOMER' %}
-          <div class="form-group">
-            <label for="petSelect">Thú cưng cần khám <span class="req-star">*</span></label>
-            <select id="petSelect" name="pet_id" class="form-control" required>
-              {% for pet in pets %}
-                <option value="{{ pet.id }}">{{ pet.name }} ({{ pet.species }}{% if pet.breed %} - {{ pet.breed }}{% endif %})</option>
-              {% else %}
-                <option value="">Bạn chưa có hồ sơ thú cưng</option>
-              {% endfor %}
-            </select>
-            {% if not pets %}
-              <div class="mt-2 text-sm text-danger">
-                Bạn chưa thêm thú cưng nào. <a href="{{ url_for('pet_form') }}" class="font-bold underline">Thêm thú cưng ngay</a> trước khi đặt lịch.
-              </div>
-            {% endif %}
+        <div class="form-group">
+          <label for="petSelect">Thú cưng cần khám <span class="req-star">*</span></label>
+          <select id="petSelect" name="pet_id" class="form-control" required>
+            {% for pet in pets %}
+            <option value="{{ pet.id }}">{{ pet.name }} ({{ pet.species }}{% if pet.breed %} - {{ pet.breed }}{% endif
+              %})</option>
+            {% else %}
+            <option value="">Bạn chưa có hồ sơ thú cưng</option>
+            {% endfor %}
+          </select>
+          {% if not pets %}
+          <div class="mt-2 text-sm text-danger">
+            Bạn chưa thêm thú cưng nào. <a href="{{ url_for('pet_form') }}" class="font-bold underline">Thêm thú cưng
+              ngay</a> trước khi đặt lịch.
           </div>
+          {% endif %}
+        </div>
         {% else %}
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label>Họ và tên chủ nuôi <span class="req-star">*</span></label>
-              <input type="text" name="full_name" class="form-control" placeholder="Nhập họ và tên của bạn" required>
-            </div>
-            <div class="form-group">
-              <label>Số điện thoại liên hệ <span class="req-star">*</span></label>
-              <input type="tel" name="phone" class="form-control" placeholder="Ví dụ: 0901234567" required>
-            </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Họ và tên chủ nuôi <span class="req-star">*</span></label>
+            <input type="text" name="full_name" class="form-control" placeholder="Nhập họ và tên của bạn" required>
           </div>
           <div class="form-group">
-            <label>Tên bé thú cưng <span class="req-star">*</span></label>
-            <input type="text" name="pet_name" class="form-control" placeholder="Ví dụ: Miu, Lu, Bông..." required>
+            <label>Số điện thoại liên hệ <span class="req-star">*</span></label>
+            <input type="tel" name="phone" class="form-control" placeholder="Ví dụ: 0901234567" required>
           </div>
+        </div>
+        <div class="form-group">
+          <label>Tên bé thú cưng <span class="req-star">*</span></label>
+          <input type="text" name="pet_name" class="form-control" placeholder="Ví dụ: Miu, Lu, Bông..." required>
+        </div>
         {% endif %}
 
         <!-- Chọn Dịch vụ -->
@@ -68,9 +72,9 @@
           <label>Chọn dịch vụ khám <span class="req-star">*</span></label>
           <select id="serviceSelect" name="service_id" class="form-control" required>
             {% for svc in service_list %}
-              <option value="{{ svc.id }}" {% if request.args.get('service') == svc.name %}selected{% endif %}>
-                {{ svc.name }} — {{ '{:,.0f}'.format(svc.price) }}đ
-              </option>
+            <option value="{{ svc.id }}" {% if request.args.get('service')==svc.name %}selected{% endif %}>
+              {{ svc.name }} — {{ '{:,.0f}'.format(svc.price) }}đ
+            </option>
             {% endfor %}
           </select>
         </div>
@@ -81,9 +85,10 @@
           <select id="doctorId" name="doctor_id" class="form-control">
             <option value="">Để trung tâm chỉ định bác sĩ phù hợp nhất</option>
             {% for doc in doctors %}
-              <option value="{{ doc.id }}" {% if request.args.get('doctor_id')|string == doc.id|string %}selected{% endif %}>
-                {{ doc.full_name }} ({{ doc.specialty }})
-              </option>
+            <option value="{{ doc.id }}" {% if request.args.get('doctor_id')|string==doc.id|string %}selected{% endif
+              %}>
+              {{ doc.full_name }} ({{ doc.specialty }})
+            </option>
             {% endfor %}
           </select>
         </div>
@@ -92,7 +97,8 @@
         <div class="form-grid-2">
           <div class="form-group">
             <label>Ngày khám dự kiến <span class="req-star">*</span></label>
-            <input id="appointmentDate" type="date" name="appointment_date" value="{{ request.args.get('date', '') }}" class="form-control" required>
+            <input id="appointmentDate" type="date" name="appointment_date" value="{{ request.args.get('date', '') }}"
+              class="form-control" required>
           </div>
 
           <div class="form-group">
@@ -100,13 +106,15 @@
             <select id="slotSelect" name="time_slot" class="form-control">
               <option value="">-- Chọn khung giờ khám --</option>
             </select>
-            <small class="text-muted d-block mt-1" id="slotHelpText">Chọn bác sĩ và ngày để xem các khung giờ trống.</small>
+            <small class="text-muted d-block mt-1" id="slotHelpText">Chọn bác sĩ và ngày để xem các khung giờ
+              trống.</small>
           </div>
         </div>
 
         <div class="form-group">
           <label>Mô tả triệu chứng hoặc ghi chú dặn dò</label>
-          <textarea name="note" rows="3" class="form-control" placeholder="Ví dụ: Bé bị biếng ăn 2 ngày nay, có nôn mửa nhẹ; hoặc hẹn tái khám vắc-xin mũi 2..."></textarea>
+          <textarea name="note" rows="3" class="form-control"
+            placeholder="Ví dụ: Bé bị biếng ăn 2 ngày nay, có nôn mửa nhẹ; hoặc hẹn tái khám vắc-xin mũi 2..."></textarea>
         </div>
 
         <div class="form-actions mt-4">
@@ -121,61 +129,61 @@
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const doctorSelect = document.getElementById('doctorId');
-  const dateInput    = document.getElementById('appointmentDate');
-  const slotSelect   = document.getElementById('slotSelect');
-  const slotHelp     = document.getElementById('slotHelpText');
+  document.addEventListener('DOMContentLoaded', () => {
+    const doctorSelect = document.getElementById('doctorId');
+    const dateInput = document.getElementById('appointmentDate');
+    const slotSelect = document.getElementById('slotSelect');
+    const slotHelp = document.getElementById('slotHelpText');
 
-  // Khởi tạo min date là hôm nay
-  const todayIso = new Date().toISOString().slice(0, 10);
-  dateInput.min = todayIso;
-  if (!dateInput.value) {
-    dateInput.value = todayIso;
-  }
-
-  async function updateAvailableSlots() {
-    const docId = doctorSelect.value;
-    const dateVal = dateInput.value;
-
-    if (!dateVal) {
-      slotSelect.innerHTML = '<option value="">Vui lòng chọn ngày khám trước</option>';
-      return;
+    // Khởi tạo min date là hôm nay
+    const todayIso = new Date().toISOString().slice(0, 10);
+    dateInput.min = todayIso;
+    if (!dateInput.value) {
+      dateInput.value = todayIso;
     }
 
-    if (!docId) {
-      // Khi không chọn bác sĩ cụ thể, hiển thị các slot mặc định tiêu chuẩn
-      const defaultSlots = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
-      slotSelect.innerHTML = defaultSlots.map(s => `<option value="${s}">${s}</option>`).join('');
-      if (slotHelp) slotHelp.textContent = 'Trung tâm sẽ phân công bác sĩ trực ca tương ứng.';
-      return;
-    }
+    async function updateAvailableSlots() {
+      const docId = doctorSelect.value;
+      const dateVal = dateInput.value;
 
-    if (slotHelp) slotHelp.textContent = 'Đang kiểm tra lịch trống của bác sĩ...';
-    try {
-      const res = await fetch(`/api/slots?doctor_id=${docId}&date=${dateVal}`);
-      const data = await res.json();
-      if (data.slots && data.slots.length > 0) {
-        slotSelect.innerHTML = data.slots.map(s => `<option value="${s}">${s}</option>`).join('');
-        if (slotHelp) slotHelp.textContent = `Bác sĩ có ${data.slots.length} khung giờ trống trong ngày này.`;
-      } else {
-        // Fallback slot
+      if (!dateVal) {
+        slotSelect.innerHTML = '<option value="">Vui lòng chọn ngày khám trước</option>';
+        return;
+      }
+
+      if (!docId) {
+        // Khi không chọn bác sĩ cụ thể, hiển thị các slot mặc định tiêu chuẩn
+        const defaultSlots = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"];
+        slotSelect.innerHTML = defaultSlots.map(s => `<option value="${s}">${s}</option>`).join('');
+        if (slotHelp) slotHelp.textContent = 'Trung tâm sẽ phân công bác sĩ trực ca tương ứng.';
+        return;
+      }
+
+      if (slotHelp) slotHelp.textContent = 'Đang kiểm tra lịch trống của bác sĩ...';
+      try {
+        const res = await fetch(`/api/slots?doctor_id=${docId}&date=${dateVal}`);
+        const data = await res.json();
+        if (data.slots && data.slots.length > 0) {
+          slotSelect.innerHTML = data.slots.map(s => `<option value="${s}">${s}</option>`).join('');
+          if (slotHelp) slotHelp.textContent = `Bác sĩ có ${data.slots.length} khung giờ trống trong ngày này.`;
+        } else {
+          // Fallback slot
+          const fallbackSlots = ["08:30", "09:30", "10:30", "14:00", "15:30"];
+          slotSelect.innerHTML = fallbackSlots.map(s => `<option value="${s}">${s}</option>`).join('');
+          if (slotHelp) slotHelp.textContent = 'Khung giờ tiêu chuẩn tiếp nhận của bác sĩ.';
+        }
+      } catch (e) {
         const fallbackSlots = ["08:30", "09:30", "10:30", "14:00", "15:30"];
         slotSelect.innerHTML = fallbackSlots.map(s => `<option value="${s}">${s}</option>`).join('');
-        if (slotHelp) slotHelp.textContent = 'Khung giờ tiêu chuẩn tiếp nhận của bác sĩ.';
+        if (slotHelp) slotHelp.textContent = 'Khung giờ tiếp nhận tiêu chuẩn.';
       }
-    } catch (e) {
-      const fallbackSlots = ["08:30", "09:30", "10:30", "14:00", "15:30"];
-      slotSelect.innerHTML = fallbackSlots.map(s => `<option value="${s}">${s}</option>`).join('');
-      if (slotHelp) slotHelp.textContent = 'Khung giờ tiếp nhận tiêu chuẩn.';
     }
-  }
 
-  doctorSelect?.addEventListener('change', updateAvailableSlots);
-  dateInput?.addEventListener('change', updateAvailableSlots);
+    doctorSelect?.addEventListener('change', updateAvailableSlots);
+    dateInput?.addEventListener('change', updateAvailableSlots);
 
-  // Kích hoạt ngay lúc tải trang
-  updateAvailableSlots();
-});
+    // Kích hoạt ngay lúc tải trang
+    updateAvailableSlots();
+  });
 </script>
 {% endblock %}

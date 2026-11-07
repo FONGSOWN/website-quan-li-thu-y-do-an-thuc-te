@@ -119,6 +119,7 @@ def create_app(test_config=None):
         ADMIN_USERNAME=os.environ.get("PETCARE_ADMIN_USER", "admin"),
         ADMIN_PASSWORD=os.environ.get("PETCARE_ADMIN_PASSWORD", "admin@123"),
         DOCTOR_DEFAULT_PASSWORD=os.environ.get("PETCARE_DOCTOR_PASSWORD", "Doctor@123"),
+        TEMPLATES_AUTO_RELOAD=True,
     )
     if test_config:
         app.config.update(test_config)

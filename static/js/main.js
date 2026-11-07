@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ── MOBILE SITE NAVIGATION ───────────────────────────────────────── */
   const menuToggle = document.getElementById('menuToggle');
-  const mainNav    = document.getElementById('mainNav');
+  const mainNav = document.getElementById('mainNav');
 
   if (menuToggle && mainNav) {
     menuToggle.addEventListener('click', () => {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── PORTAL SIDEBAR TOGGLE (FOR MOBILE / TABLET) ─────────────────── */
-  const portalToggle  = document.getElementById('portalSidebarToggle');
+  const portalToggle = document.getElementById('portalSidebarToggle');
   const portalSidebar = document.getElementById('portalSidebar');
 
   if (portalToggle && portalSidebar) {
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!bookingForm.checkValidity()) {
         return; // Để trình duyệt hiển thị tooltip validation
       }
-      const btn     = this.querySelector('#submitBtn');
+      const btn = this.querySelector('#submitBtn');
       const btnText = this.querySelector('.btn-text');
       const btnLoad = this.querySelector('.btn-loading');
       if (btn) {
@@ -107,9 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── STATUS BADGE: apply CSS class based on text content ─────────── */
   document.querySelectorAll('.status').forEach(badge => {
     const text = badge.textContent.trim();
-    if (text === 'Đã xác nhận')  badge.classList.add('status-da-xac-nhan');
+    if (text === 'Đã xác nhận') badge.classList.add('status-da-xac-nhan');
     if (text === 'Đã hoàn thành') badge.classList.add('status-da-hoan-thanh');
-    if (text === 'Đã hủy')       badge.classList.add('status-da-huy');
+    if (text === 'Đã hủy') badge.classList.add('status-da-huy');
   });
 
   /* ── FLASH AUTO-DISMISS ───────────────────────────────────────────── */
@@ -151,21 +151,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const originalText = el.innerText;
             const hasPlus = originalText.includes('+');
             const hasPercent = originalText.includes('%');
-            
+
             function updateCounter(currentTime) {
               const elapsed = currentTime - startTime;
               const progress = Math.min(elapsed / duration, 1);
               // Ease-out cubic
               const ease = 1 - Math.pow(1 - progress, 3);
               const currentVal = Math.floor(start + (target - start) * ease);
-              
+
               let formatted = currentVal >= 1000 ? currentVal.toLocaleString('vi-VN') : currentVal;
               if (hasPercent && progress >= 1 && target % 1 !== 0) {
                 formatted = target.toFixed(1);
               }
               if (hasPlus) formatted += '+';
               if (hasPercent) formatted += '%';
-              
+
               el.innerText = formatted;
               if (progress < 1) {
                 requestAnimationFrame(updateCounter);
@@ -205,6 +205,108 @@ document.addEventListener('DOMContentLoaded', () => {
       el.classList.add('reveal-init');
       revealObserver.observe(el);
     });
+  }
+
+  /* ── FACILITY SLIDER AUTO 3S (CƠ SỞ VẬT CHẤT TRƯỢT TỪ PHẢI SANG TRÁI) ── */
+  const facilityTrack = document.getElementById('facilityTrack');
+  const facilityPrev = document.getElementById('facilityPrev');
+  const facilityNext = document.getElementById('facilityNext');
+  const facilityDots = document.querySelectorAll('.facility-dot');
+  const facilitySlides = document.querySelectorAll('.facility-slide');
+
+  if (facilityTrack && facilitySlides.length > 0) {
+    let currentSlide = 0;
+    const totalSlides = facilitySlides.length;
+    let slideTimer = null;
+
+    function updateSlider(index) {
+      if (index < 0) {
+        currentSlide = totalSlides - 1;
+      } else if (index >= totalSlides) {
+        currentSlide = 0;
+      } else {
+        currentSlide = index;
+      }
+
+      // Trượt ngang từ phải sang trái
+      facilityTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+      // Cập nhật chấm chỉ số active
+      facilityDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    function nextSlide() {
+      updateSlider(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      updateSlider(currentSlide - 1);
+    }
+
+    function startTimer() {
+      stopTimer();
+      slideTimer = setInterval(nextSlide, 3000); // 3 giây trượt 1 lần
+    }
+
+    function stopTimer() {
+      if (slideTimer) {
+        clearInterval(slideTimer);
+        slideTimer = null;
+      }
+    }
+
+    if (facilityNext) {
+      facilityNext.addEventListener('click', () => {
+        nextSlide();
+        startTimer();
+      });
+    }
+
+    if (facilityPrev) {
+      facilityPrev.addEventListener('click', () => {
+        prevSlide();
+        startTimer();
+      });
+    }
+
+    facilityDots.forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        const targetIdx = parseInt(e.target.dataset.index, 10);
+        if (!isNaN(targetIdx)) {
+          updateSlider(targetIdx);
+          startTimer();
+        }
+      });
+    });
+
+    // Tạm dừng khi rê chuột vào để người xem đọc thông tin, rời chuột thì chạy tiếp
+    const sliderBox = document.querySelector('.facility-slider-container');
+    if (sliderBox) {
+      sliderBox.addEventListener('mouseenter', stopTimer);
+      sliderBox.addEventListener('mouseleave', startTimer);
+
+      // Vuốt chạm trên điện thoại (touch swipe)
+      let touchStartX = 0;
+      let touchEndX = 0;
+      sliderBox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        stopTimer();
+      }, { passive: true });
+      sliderBox.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        if (touchStartX - touchEndX > 40) {
+          nextSlide(); // vuốt sang trái -> xem slide tiếp
+        } else if (touchEndX - touchStartX > 40) {
+          prevSlide(); // vuốt sang phải -> xem slide trước
+        }
+        startTimer();
+      }, { passive: true });
+    }
+
+    // Khởi động chạy tự động ngay lập tức
+    startTimer();
   }
 
 });
