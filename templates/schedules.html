@@ -14,7 +14,10 @@
   <div class="staff-layout-grid mb-5">
     <div class="staff-form-col">
       <div class="form-card-modern">
-        <h3>📅 Đăng ký ca trực mới</h3>
+        <h3>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Đăng ký ca trực mới
+        </h3>
         <p class="text-muted text-sm mb-3">Chọn bác sĩ, ngày và ca làm việc tương ứng.</p>
 
         <form method="post" action="{{ url_for('admin_schedules') }}" class="stack-form modern-form">
@@ -46,7 +49,9 @@
           </div>
 
           <div class="form-actions mt-3">
-            <button type="submit" class="btn btn-primary btn-block">💾 Lưu lịch trực bác sĩ</button>
+            <button type="submit" class="btn btn-primary btn-block">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Lưu lịch trực bác sĩ
+            </button>
           </div>
         </form>
       </div>
@@ -66,7 +71,9 @@
             {% for sched in schedules %}
               <tr {% if sched.schedule_date == today_date %}class="highlight-row"{% endif %}>
                 <td>
-                  <strong>👨‍⚕️ {{ sched.full_name }}</strong>
+                  <strong>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>{{ sched.full_name }}
+                  </strong>
                 </td>
                 <td>
                   <strong>{{ sched.schedule_date }}</strong>

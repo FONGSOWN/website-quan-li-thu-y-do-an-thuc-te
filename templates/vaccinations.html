@@ -18,7 +18,10 @@
     <!-- Form thêm mũi tiêm -->
     <div class="vacc-form-col">
       <div class="form-card-modern">
-        <h3>💉 Thêm mũi tiêm mới</h3>
+        <h3>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Thêm mũi tiêm mới
+        </h3>
         <p class="text-muted text-sm mb-3">Ghi nhận mũi vắc-xin vừa tiêm hoặc cập nhật sổ tiêm cũ.</p>
 
         <form method="post" action="{{ url_for('vaccinations', pet_id=pet.id) }}" class="stack-form modern-form">
@@ -68,7 +71,9 @@
             {% for vacc in vaccinations %}
               <tr>
                 <td>
-                  <strong>💉 {{ vacc.vaccine_name }}</strong>
+                  <strong>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>{{ vacc.vaccine_name }}
+                  </strong>
                 </td>
                 <td>{{ vacc.vaccinated_on }}</td>
                 <td>
@@ -84,7 +89,9 @@
               <tr>
                 <td colspan="4" class="text-center py-5">
                   <div class="empty-state">
-                    <div class="empty-icon">💉</div>
+                    <div class="empty-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
                     <h3>Bé {{ pet.name }} chưa có lịch sử tiêm phòng</h3>
                     <p class="text-muted">Hãy thêm thông tin các mũi vắc-xin đã tiêm ở cột bên cạnh.</p>
                   </div>

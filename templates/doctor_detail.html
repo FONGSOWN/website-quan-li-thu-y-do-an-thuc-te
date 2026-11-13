@@ -29,21 +29,27 @@
 
         <div class="doctor-highlights-row">
           <div class="highlight-item">
-            <span class="highlight-icon">🎓</span>
+            <span class="highlight-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </span>
             <div>
               <strong>Bằng cấp chuyên môn</strong>
               <p>{{ doctor.degree or 'Bác sĩ Thú y Chính quy' }}</p>
             </div>
           </div>
           <div class="highlight-item">
-            <span class="highlight-icon">📞</span>
+            <span class="highlight-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
             <div>
               <strong>Tư vấn y tế</strong>
               <p>{{ doctor.phone or '0900 123 456' }}</p>
             </div>
           </div>
           <div class="highlight-item">
-            <span class="highlight-icon">⭐</span>
+            <span class="highlight-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </span>
             <div>
               <strong>Đánh giá dịch vụ</strong>
               <p>4.9 / 5.0 (Hơn 500 lượt khám)</p>
@@ -58,10 +64,10 @@
 
         <div class="doctor-cta-actions">
           <a href="{{ url_for('book_appointment') }}?doctor_id={{ doctor.id }}" class="btn btn-primary btn-lg">
-            🗓️ Đặt lịch khám với {{ doctor.full_name }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Đặt lịch khám với {{ doctor.full_name }}
           </a>
           <a href="{{ url_for('contact') }}" class="btn btn-outline btn-lg">
-            💬 Gửi câu hỏi tư vấn
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Gửi câu hỏi tư vấn
           </a>
         </div>
       </div>

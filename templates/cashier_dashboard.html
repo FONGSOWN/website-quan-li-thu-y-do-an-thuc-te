@@ -14,7 +14,9 @@
   <!-- Metric Counters -->
   <div class="stats-grid mb-4">
     <div class="stat-block-modern card-orange">
-      <div class="stat-icon">⏳</div>
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
       <div class="stat-details">
         <strong class="stat-number counter" data-target="{{ pending_approval|length }}">{{ pending_approval|length }}</strong>
         <span class="stat-label">Lịch hẹn chờ duyệt</span>
@@ -22,7 +24,9 @@
     </div>
 
     <div class="stat-block-modern card-blue">
-      <div class="stat-icon">💳</div>
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      </div>
       <div class="stat-details">
         <strong class="stat-number counter" data-target="{{ pending|length }}">{{ pending|length }}</strong>
         <span class="stat-label">Ca khám chờ lập hóa đơn</span>
@@ -31,10 +35,10 @@
   </div>
 
   <!-- Section 1: Lịch hẹn chờ duyệt -->
-  <div class="table-card-section mb-5">
+  <div class="table-card-section mb-5" style="margin-top:2.5rem;">
     <div class="section-card-header mb-3">
       <div class="header-titles">
-        <h2>1. Lịch hẹn đặt online đang chờ xác nhận</h2>
+        <h2 class="table-section-heading">1. Lịch hẹn đặt online đang chờ xác nhận</h2>
       </div>
     </div>
 
@@ -56,11 +60,13 @@
               <td>
                 <span class="appt-id-badge">#{{ appt.id }}</span>
                 <strong class="d-block mt-1">{{ appt.appointment_date }}</strong>
-                <small class="text-muted">{{ appt.time_slot or 'Linh hoạt' }}</small>
+                <small class="text-muted">Giờ: {{ appt.time_slot or 'Linh hoạt' }}</small>
               </td>
               <td>
                 <strong>{{ appt.full_name }}</strong>
-                <small class="d-block text-muted">📞 {{ appt.phone }}</small>
+                <small class="d-block text-muted">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>{{ appt.phone }}
+                </small>
               </td>
               <td><strong>{{ appt.pet_name }}</strong></td>
               <td><span class="service-pill">{{ appt.service }}</span></td>
@@ -69,7 +75,7 @@
                 <form method="post" action="{{ url_for('approve_appointment', appointment_id=appt.id) }}" class="inline-form">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                   <button type="submit" class="btn btn-success btn-xs">
-                    ✓ Xác nhận lịch
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><polyline points="20 6 9 17 4 12"/></svg>Xác nhận lịch
                   </button>
                 </form>
               </td>
@@ -85,10 +91,10 @@
   </div>
 
   <!-- Section 2: Ca khám đã hoàn thành chờ thanh toán -->
-  <div class="table-card-section mb-5">
+  <div class="table-card-section mb-5" style="margin-top:2.5rem;">
     <div class="section-card-header mb-3">
       <div class="header-titles">
-        <h2>2. Ca khám đã hoàn tất — Chờ lập hóa đơn thanh toán</h2>
+        <h2 class="table-section-heading">2. Ca khám đã hoàn tất — Chờ lập hóa đơn thanh toán</h2>
       </div>
     </div>
 
@@ -110,14 +116,16 @@
               <td><span class="appt-id-badge">#{{ appt.id }}</span></td>
               <td>
                 <strong>{{ appt.full_name }}</strong>
-                <small class="d-block text-muted">📞 {{ appt.phone }}</small>
+                <small class="d-block text-muted">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>{{ appt.phone }}
+                </small>
               </td>
               <td><strong>{{ appt.pet_name }}</strong></td>
               <td><span class="service-pill">{{ appt.service }}</span></td>
               <td class="font-bold text-primary">{{ '{:,.0f}'.format(appt.service_price or 0) }}đ</td>
               <td class="text-right">
                 <a href="{{ url_for('create_invoice', appointment_id=appt.id) }}" class="btn btn-primary btn-xs">
-                  💳 Lập hóa đơn & Thu tiền
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Lập hóa đơn & Thu tiền
                 </a>
               </td>
             </tr>

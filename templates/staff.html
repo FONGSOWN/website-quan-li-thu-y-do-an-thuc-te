@@ -15,7 +15,10 @@
     <!-- Form Thêm nhân sự -->
     <div class="staff-form-col">
       <div class="form-card-modern">
-        <h3>➕ Thêm Nhân sự mới</h3>
+        <h3>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Thêm Nhân sự mới
+        </h3>
         <p class="text-muted text-sm mb-3">Tạo tài khoản Bác sĩ hoặc Thu ngân mới cho phòng khám.</p>
 
         <form method="post" action="{{ url_for('admin_staff') }}" class="stack-form modern-form">
@@ -114,7 +117,7 @@
 
                     <!-- Reset Password Modal / Prompt -->
                     <button type="button" class="btn btn-xs btn-outline-secondary" onclick="promptResetPassword({{ person.id }}, '{{ person.full_name }}')">
-                      🔑 Reset MK
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="m21 2-2 2m-1.5 1.5L16 7l4 4 1.5-1.5a2.12 2.12 0 0 0 0-3l-2.5-2.5a2.12 2.12 0 0 0-3 0Z"/><circle cx="7.5" cy="15.5" r="5.5"/><path d="m15.5 8.5-4 4"/></svg>Reset MK
                     </button>
                   </div>
                 </td>

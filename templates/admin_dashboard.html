@@ -9,16 +9,14 @@
       <h1>Trung tâm Quản trị Bệnh viện PetCare</h1>
       <p class="text-muted">Theo dõi chỉ số hoạt động, duyệt lịch hẹn và quản lý vận hành phòng khám</p>
     </div>
-    <div class="header-actions">
-      <a class="btn btn-primary btn-sm" href="{{ url_for('admin_appointment_form') }}">➕ Thêm lịch hẹn thủ công</a>
-      <a class="btn btn-outline btn-sm" href="{{ url_for('admin_schedules') }}">📅 Phân ca trực bác sĩ</a>
-    </div>
   </div>
 
   <!-- Metric Counters -->
   <div class="stats-grid mb-4">
     <div class="stat-block-modern card-blue">
-      <div class="stat-icon">👥</div>
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
       <div class="stat-details">
         <strong class="stat-number counter" data-target="{{ metrics.customers }}">{{ metrics.customers }}</strong>
         <span class="stat-label">Khách hàng thành viên</span>
@@ -26,7 +24,9 @@
     </div>
 
     <div class="stat-block-modern card-green">
-      <div class="stat-icon">🐾</div>
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
       <div class="stat-details">
         <strong class="stat-number counter" data-target="{{ metrics.pets }}">{{ metrics.pets }}</strong>
         <span class="stat-label">Hồ sơ thú cưng</span>
@@ -34,7 +34,9 @@
     </div>
 
     <div class="stat-block-modern card-orange">
-      <div class="stat-icon">🗓️</div>
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
       <div class="stat-details">
         <strong class="stat-number counter" data-target="{{ metrics.appointments }}">{{ metrics.appointments }}</strong>
         <span class="stat-label">Tổng ca đặt lịch</span>
@@ -42,7 +44,9 @@
     </div>
 
     <div class="stat-block-modern card-purple">
-      <div class="stat-icon">💰</div>
+      <div class="stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
       <div class="stat-details">
         <strong class="stat-number">{{ '{:,.0f}'.format(metrics.revenue) }}đ</strong>
         <span class="stat-label">Tổng doanh thu y tế</span>
@@ -116,7 +120,9 @@
               </td>
               <td>
                 <strong>{{ appointment.full_name }}</strong>
-                <small class="d-block text-muted">📞 {{ appointment.phone }}</small>
+                <small class="d-block text-muted">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>{{ appointment.phone }}
+                </small>
               </td>
               <td>
                 <strong>{{ appointment.pet_name }}</strong>
@@ -135,7 +141,7 @@
               <td class="text-right">
                 <div class="action-buttons-inline">
                   <a href="{{ url_for('admin_appointment_form', appointment_id=appointment.id) }}" class="btn btn-outline btn-xs">
-                    ✏️ Sửa
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Sửa
                   </a>
 
                   <!-- Status quick update form -->
@@ -152,7 +158,9 @@
 
                   <form method="post" action="{{ url_for('delete_appointment', appointment_id=appointment.id) }}" class="inline-form" data-confirm="Bạn có chắc chắn muốn xóa lịch hẹn #{{ appointment.id }} không?">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                    <button type="submit" class="btn btn-outline-danger btn-xs" title="Xóa lịch hẹn">🗑️</button>
+                    <button type="submit" class="btn btn-outline-danger btn-xs" title="Xóa lịch hẹn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Xóa
+                    </button>
                   </form>
                 </div>
               </td>
@@ -168,7 +176,7 @@
   </div>
 
   <!-- Messages Section -->
-  <div class="messages-section">
+  <div class="messages-section" style="margin-top:3.5rem;">
     <div class="section-card-header mb-3">
       <div class="header-titles">
         <h2>Tin nhắn liên hệ mới từ khách hàng</h2>
@@ -182,7 +190,9 @@
           <div class="msg-header">
             <div>
               <strong>{{ msg.full_name }}</strong>
-              <small class="text-muted d-block">✉️ {{ msg.email }} · {{ msg.created_at }}</small>
+              <small class="text-muted d-block">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:2px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>{{ msg.email }} · {{ msg.created_at }}
+              </small>
             </div>
             <div>
               {% if not msg.is_read %}
@@ -197,12 +207,16 @@
             {% if not msg.is_read %}
               <form class="inline-form" method="post" action="{{ url_for('mark_message_read', message_id=msg.id) }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <button class="btn btn-xs btn-outline-primary">✓ Đánh dấu đã đọc</button>
+                <button class="btn btn-xs btn-outline-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><polyline points="20 6 9 17 4 12"/></svg>Đánh dấu đã đọc
+                </button>
               </form>
             {% endif %}
             <form class="inline-form" method="post" action="{{ url_for('delete_message', message_id=msg.id) }}" data-confirm="Xóa tin nhắn này?">
               <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-              <button class="btn btn-xs btn-outline-danger">🗑️ Xóa</button>
+              <button class="btn btn-xs btn-outline-danger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Xóa
+              </button>
             </form>
           </div>
         </div>
@@ -213,12 +227,19 @@
   </div>
 </div>
 
+<script id="revenueChartData" type="application/json">{{ chart|safe }}</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const chartEl = document.querySelector('#revenueChart');
-  if (chartEl) {
-    const rawData = {{ chart|safe }};
+  const dataHolder = document.getElementById('revenueChartData');
+  if (chartEl && dataHolder) {
+    let rawData = [];
+    try {
+      rawData = JSON.parse(dataHolder.textContent || '[]');
+    } catch (e) {
+      rawData = [];
+    }
     const labels = rawData.map(r => r.label);
     const values = rawData.map(r => r.value);
     

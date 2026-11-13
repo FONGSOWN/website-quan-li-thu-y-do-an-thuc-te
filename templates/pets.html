@@ -10,7 +10,9 @@
       <p class="text-muted">Lưu trữ thông tin giống loài, tiêm vắc-xin, dị ứng và tiền sử bệnh lý của từng bé.</p>
     </div>
     <div class="header-actions">
-      <a href="{{ url_for('pet_form') }}" class="btn btn-primary btn-sm">➕ Thêm thú cưng mới</a>
+      <a href="{{ url_for('pet_form') }}" class="btn btn-primary btn-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Thêm thú cưng mới
+      </a>
     </div>
   </div>
 
@@ -53,7 +55,7 @@
 
           {% if pet.allergies %}
             <div class="pet-warning-chip">
-              ⚠️ <strong>Dị ứng:</strong> {{ pet.allergies }}
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><strong>Dị ứng:</strong> {{ pet.allergies }}
             </div>
           {% endif %}
 
@@ -67,15 +69,15 @@
 
         <div class="pet-full-card-footer">
           <a href="{{ url_for('vaccinations', pet_id=pet.id) }}" class="btn btn-outline-primary btn-sm">
-            💉 Sổ tiêm phòng
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Sổ tiêm phòng
           </a>
           <a href="{{ url_for('pet_form', pet_id=pet.id) }}" class="btn btn-outline btn-sm">
-            ✏️ Sửa
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Sửa
           </a>
           <form method="post" action="{{ url_for('delete_pet', pet_id=pet.id) }}" class="inline-form" data-confirm="Bạn có chắc chắn muốn xóa hồ sơ của bé {{ pet.name }} không? Dữ liệu không thể khôi phục sau khi xóa.">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <button class="btn btn-outline-danger btn-sm" type="submit">
-              🗑️ Xóa
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Xóa
             </button>
           </form>
         </div>
@@ -83,10 +85,15 @@
     {% else %}
       <div class="col-12">
         <div class="empty-state card-empty text-center py-5">
-          <div class="empty-icon">🐾</div>
+          <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
           <h3>Chưa có hồ sơ thú cưng nào</h3>
           <p class="text-muted">Hãy thêm thông tin bé yêu ngay để dễ dàng đặt lịch và theo dõi sức khỏe trọn đời.</p>
-          <a href="{{ url_for('pet_form') }}" class="btn btn-primary mt-3">+ Thêm thú cưng đầu tiên</a>
+          <a href="{{ url_for('pet_form') }}" class="btn btn-primary" style="margin-top:2.2rem; display:inline-flex; align-items:center; gap:8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Thêm thú cưng đầu tiên
+          </a>
         </div>
       </div>
     {% endfor %}

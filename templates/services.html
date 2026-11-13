@@ -100,8 +100,8 @@
       <p>Bảng giá công khai, không phát sinh chi phí ẩn khi thăm khám.</p>
     </div>
 
-    <div class="price-table-card">
-      <table class="data-table-modern">
+    <div class="price-table-card table-responsive">
+      <table class="data-table-modern price-table">
         <thead>
           <tr>
             <th>Tên dịch vụ y tế</th>
@@ -112,14 +112,14 @@
         <tbody>
           {% for svc in service_list %}
             <tr>
-              <td>
+              <td class="service-name-cell">
                 <strong>{{ svc.name }}</strong>
               </td>
-              <td class="text-right">
+              <td class="text-right service-price-cell">
                 <span class="price-tag-badge">{{ '{:,.0f}'.format(svc.price) }} VNĐ</span>
               </td>
-              <td class="text-right">
-                <a href="{{ url_for('book_appointment') }}?service={{ svc.name }}" class="btn btn-outline-primary btn-xs">
+              <td class="text-right service-action-cell">
+                <a href="{{ url_for('book_appointment') }}?service={{ svc.name }}" class="btn btn-primary btn-xs">
                   Đặt lịch
                 </a>
               </td>

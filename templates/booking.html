@@ -15,7 +15,9 @@
 
       {% if current_user and current_user.role == 'CUSTOMER' %}
       <div class="client-welcome-strip mb-4">
-        <span class="client-icon">🐾</span>
+        <span class="client-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </span>
         <div>
           <strong>Xin chào {{ current_user.full_name }}!</strong>
           <small class="d-block text-muted">Hệ thống đã nhận diện tài khoản của bạn. Vui lòng chọn thú cưng để tiếp
@@ -119,8 +121,12 @@
 
         <div class="form-actions mt-4">
           <button id="submitBtn" class="btn btn-primary btn-block btn-lg" type="submit">
-            <span class="btn-text">🚀 Xác nhận Gửi Yêu Cầu Đặt Lịch</span>
-            <span class="btn-loading" hidden>⏳ Đang xử lý...</span>
+            <span class="btn-text">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>Xác nhận Gửi Yêu Cầu Đặt Lịch
+            </span>
+            <span class="btn-loading" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>Đang xử lý...
+            </span>
           </button>
         </div>
       </form>

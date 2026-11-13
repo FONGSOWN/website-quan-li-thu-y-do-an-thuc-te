@@ -25,13 +25,13 @@
     <!-- Role Selection Tabs -->
     <div class="auth-role-tabs" id="roleTabs">
       <button type="button" class="tab-btn {% if request.args.get('role') != 'doctor' and request.args.get('role') != 'admin' %}active{% endif %}" data-role="customer">
-        <span>🐾</span> Khách hàng
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>Khách hàng
       </button>
       <button type="button" class="tab-btn {% if request.args.get('role') == 'doctor' %}active{% endif %}" data-role="doctor">
-        <span>👨‍⚕️</span> Bác sĩ & Y tế
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M11 2a2 2 0 0 0-2 2v5H4a2 2 0 0 0-2 2v2c0 1.1.9 2 2 2h5v5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-5h5a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-5V4a2 2 0 0 0-2-2h-2z"/></svg>Bác sĩ & Y tế
       </button>
       <button type="button" class="tab-btn {% if request.args.get('role') == 'admin' %}active{% endif %}" data-role="admin">
-        <span>🛡️</span> Quản trị viên
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Quản trị viên
       </button>
     </div>
 
@@ -107,7 +107,9 @@
 
       <div class="demo-btns-grid">
         <button type="button" class="demo-account-pill" onclick="fillAccount('doctor_minh_anh', 'Doctor@123', 'doctor', 'Bác sĩ thú y (BS. Nguyễn Minh Anh)')">
-          <span class="demo-icon">👨‍⚕️</span>
+          <span class="demo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2a2 2 0 0 0-2 2v5H4a2 2 0 0 0-2 2v2c0 1.1.9 2 2 2h5v5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-5h5a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-5V4a2 2 0 0 0-2-2h-2z"/></svg>
+          </span>
           <div class="demo-info">
             <strong>Bác sĩ thú y</strong>
             <small>doctor_minh_anh / Doctor@123</small>
@@ -115,7 +117,9 @@
         </button>
 
         <button type="button" class="demo-account-pill" onclick="fillAccount('admin', 'admin@123', 'admin', 'Quản trị viên PetCare')">
-          <span class="demo-icon">🛡️</span>
+          <span class="demo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </span>
           <div class="demo-info">
             <strong>Quản trị viên</strong>
             <small>admin / admin@123</small>
@@ -123,7 +127,9 @@
         </button>
 
         <button type="button" class="demo-account-pill" onclick="fillAccount('son', 'Customer@123', 'customer', 'Khách hàng (Dương Như Phong Sơn)')">
-          <span class="demo-icon">🐾</span>
+          <span class="demo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
           <div class="demo-info">
             <strong>Khách hàng có sẵn</strong>
             <small>son / Customer@123</small>
@@ -131,7 +137,9 @@
         </button>
 
         <button type="button" class="demo-account-pill" onclick="fillAccount('cashier', 'Cashier@123', 'admin', 'Thu ngân & Duyệt lịch')">
-          <span class="demo-icon">💳</span>
+          <span class="demo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </span>
           <div class="demo-info">
             <strong>Thu ngân</strong>
             <small>cashier / Cashier@123</small>

@@ -8,12 +8,16 @@
       <span class="eyebrow">LÂM SÀNG & BỆNH ÁN ĐIỆN TỬ</span>
       <h1>Phiếu khám bệnh: {{ appointment.pet_name }}</h1>
       <p class="text-muted">
-        Chủ nuôi: <strong>{{ appointment.full_name }}</strong> (📞 {{ appointment.phone }}) · Lịch hẹn: {{ appointment.appointment_date }} ({{ appointment.time_slot or 'Không chỉ định' }})
+        Chủ nuôi: <strong>{{ appointment.full_name }}</strong> (
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:2px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.06 6.06l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>{{ appointment.phone }}
+        ) · Lịch hẹn: {{ appointment.appointment_date }} ({{ appointment.time_slot or 'Không chỉ định' }})
       </p>
     </div>
     <div class="header-actions">
       {% if appointment.pet_id %}
-        <a href="{{ url_for('doctor_pet_history', pet_id=appointment.pet_id) }}" class="btn btn-outline-info btn-sm">📋 Xem bệnh sử cũ</a>
+        <a href="{{ url_for('doctor_pet_history', pet_id=appointment.pet_id) }}" class="btn btn-outline-info btn-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:3px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Xem bệnh sử cũ
+        </a>
       {% endif %}
       <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline btn-sm">← Ca khám hôm nay</a>
     </div>
@@ -26,7 +30,9 @@
       <!-- Pet Info Strip -->
       <div class="patient-info-strip mb-4">
         <div class="patient-badge">
-          <span class="patient-icon">🐾</span>
+          <span class="patient-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
           <div>
             <strong>{{ appointment.pet_name }}</strong>
             <small class="d-block text-muted">Dịch vụ: {{ appointment.service }}</small>
@@ -110,7 +116,7 @@
 
       <div class="form-actions mt-5">
         <button type="submit" class="btn btn-primary btn-lg">
-          ✅ Hoàn tất ca khám & Lưu bệnh án
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px"><polyline points="20 6 9 17 4 12"/></svg>Hoàn tất ca khám & Lưu bệnh án
         </button>
         <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-outline btn-lg">Hủy bỏ</a>
       </div>

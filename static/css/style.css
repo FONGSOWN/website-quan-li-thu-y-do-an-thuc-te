@@ -2900,6 +2900,7 @@ tr:hover td {
 .text-gradient {
   background: linear-gradient(120deg, #0284c7, #10b981);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -4046,6 +4047,22 @@ tr:hover td {
   font-weight: 600;
 }
 
+/* Table Responsive Wrapper */
+.table-responsive,
+.price-table-card {
+  width: 100% !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.price-table-card {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06);
+  margin-top: 2rem;
+}
+
 /* Modern Data Table */
 .data-table-modern {
   width: 100%;
@@ -4054,7 +4071,6 @@ tr:hover td {
   background: #ffffff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: var(--shadow-card);
   border: 1px solid var(--border-light);
 }
 
@@ -4079,6 +4095,75 @@ tr:hover td {
 
 .data-table-modern tr:hover td {
   background: #f8fafc;
+}
+
+.price-tag-badge {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0284c7;
+  font-weight: 800;
+  font-size: 0.88rem;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid #bae6fd;
+  white-space: nowrap;
+}
+
+/* Tối ưu hiển thị Bảng giá trên Điện thoại di động (Không bị tràn, thấy đủ cột) */
+@media (max-width: 640px) {
+  .price-table-card {
+    border-radius: 14px;
+    margin-top: 1.2rem;
+  }
+
+  .price-table {
+    width: 100% !important;
+  }
+
+  .price-table th {
+    padding: 10px 8px !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0 !important;
+  }
+
+  .price-table td {
+    padding: 11px 8px !important;
+    font-size: 0.84rem !important;
+  }
+
+  .price-table .service-name-cell {
+    max-width: 180px;
+  }
+
+  .price-table .service-name-cell strong {
+    font-size: 0.85rem !important;
+    line-height: 1.35;
+    display: block;
+    word-break: break-word;
+  }
+
+  .price-table .service-price-cell {
+    white-space: nowrap !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+
+  .price-table .price-tag-badge {
+    font-size: 0.78rem !important;
+    padding: 3px 8px !important;
+  }
+
+  .price-table .service-action-cell {
+    padding-left: 4px !important;
+    padding-right: 6px !important;
+  }
+
+  .price-table .service-action-cell .btn {
+    padding: 5px 10px !important;
+    font-size: 0.76rem !important;
+    white-space: nowrap !important;
+    border-radius: 8px !important;
+  }
 }
 
 .time-badge strong {
@@ -4547,24 +4632,146 @@ main {
   padding: 0 !important;
 }
 
-/* Tinh chỉnh ảnh Hero Bác sĩ & Chó cưng gọn gàng, đẹp mắt, không chiếm chỗ */
-.hero-layout {
-  display: grid !important;
-  grid-template-columns: 1.15fr 0.85fr !important;
-  gap: 2.5rem !important;
-  align-items: center !important;
+/* Tinh chỉnh ảnh Hero Bác sĩ & Chó cưng trên Desktop */
+@media (min-width: 993px) {
+  .hero-layout {
+    display: grid !important;
+    grid-template-columns: 1.15fr 0.85fr !important;
+    gap: 2.5rem !important;
+    align-items: center !important;
+  }
+
+  .hero-visual-content {
+    display: block !important;
+  }
+
+  .main-hero-img {
+    width: 100% !important;
+    max-height: 380px !important;
+    object-fit: cover !important;
+    border-radius: 24px !important;
+    box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.18) !important;
+  }
 }
 
-.hero-visual-content {
-  display: block !important;
+/* ── RESPONSIVE HERO BANNER TRÊN TABLET & ĐIỆN THOẠI DI ĐỘNG ── */
+@media (max-width: 992px) {
+  .hero-layout {
+    grid-template-columns: 1fr !important;
+    gap: 2.2rem !important;
+    text-align: center;
+  }
+
+  .hero-heading {
+    font-size: 2.3rem !important;
+    line-height: 1.3 !important;
+  }
+
+  .hero-buttons {
+    justify-content: center !important;
+  }
+
+  .hero-metrics-bar {
+    margin: 0 auto 1.5rem auto !important;
+    max-width: 480px !important;
+  }
+
+  .hero-visual-content {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .main-hero-img {
+    width: 100% !important;
+    max-height: 340px !important;
+    object-fit: cover !important;
+    border-radius: 20px !important;
+  }
 }
 
-.main-hero-img {
-  width: 100% !important;
-  max-height: 380px !important;
-  object-fit: cover !important;
-  border-radius: 24px !important;
-  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.18) !important;
+@media (max-width: 580px) {
+  .hero-modern {
+    padding: 2.5rem 0 2rem !important;
+  }
+
+  .hero-layout {
+    gap: 1.5rem !important;
+    text-align: left !important;
+  }
+
+  .hero-chip {
+    font-size: 0.78rem !important;
+    padding: 5px 12px !important;
+    margin-bottom: 0.8rem !important;
+  }
+
+  .hero-heading {
+    font-size: 1.85rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .hero-paragraph {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .hero-buttons {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+    margin-bottom: 1.8rem !important;
+  }
+
+  .hero-buttons .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 12px 20px !important;
+    font-size: 0.95rem !important;
+  }
+
+  .hero-metrics-bar {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    padding: 12px 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+  }
+
+  .metric-divider {
+    display: none !important;
+  }
+
+  .metric-item strong {
+    font-size: 1.15rem !important;
+    margin-bottom: 2px !important;
+  }
+
+  .metric-item span {
+    font-size: 0.7rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero-image-card {
+    margin-top: 0.5rem !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12) !important;
+  }
+
+  .main-hero-img {
+    max-height: 240px !important;
+    border-radius: 20px !important;
+  }
+
+  /* Ẩn floating badges khi trên màn hình điện thoại hẹp để tuyệt đối không đè nội dung */
+  .hero-floating-badge {
+    display: none !important;
+  }
 }
 
 
@@ -5677,4 +5884,501 @@ main {
   padding-left: 46px !important;
   padding-right: 46px !important;
   box-sizing: border-box !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   DOCTOR DASHBOARD – Widget & Layout Improvements
+   ══════════════════════════════════════════════════════════════ */
+
+/* 1. Hạ "Danh sách Ca khám & Bệnh nhân" xuống cách stat-grid hơn */
+.doctor-main-grid {
+  margin-top: 2.5rem !important;
+}
+
+/* 2. Sidebar widget container */
+.doctor-side-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 3. Base widget card */
+.widget-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1.5px solid #e0f0fb;
+  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.widget-card:hover {
+  box-shadow: 0 8px 32px rgba(2, 132, 199, 0.15);
+}
+
+/* Widget header */
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1.5px solid #e0f0fb;
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+}
+.widget-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0369a1;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.widget-header .small-link {
+  font-size: 0.8rem;
+  color: #0284c7;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  background: #e0f0fb;
+  transition: background 0.15s;
+}
+.widget-header .small-link:hover {
+  background: #bae6fd;
+}
+
+/* 4. Schedule timeline */
+.schedule-timeline {
+  list-style: none;
+  padding: 0.5rem 1.25rem 1rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.timeline-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  transition: background 0.15s;
+}
+.timeline-item:hover {
+  background: #f0f9ff;
+  border-color: #bae6fd;
+}
+.today-item {
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+  border-color: #0284c7 !important;
+}
+.timeline-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.timeline-date strong {
+  font-size: 0.85rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+.badge-today {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: #0284c7;
+  color: #fff;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+}
+.timeline-shift {
+  display: flex;
+  align-items: center;
+}
+.shift-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+}
+.shift-badge.shift-sáng,
+.shift-badge.shift-sang {
+  background: #fef9c3;
+  color: #92400e;
+}
+.shift-badge.shift-chiều,
+.shift-badge.shift-chieu {
+  background: #fce7f3;
+  color: #9d174d;
+}
+.shift-badge.shift-cả-ngày,
+.shift-badge.shift-ca-ngay,
+.shift-badge.shift-cả-ngay {
+  background: #dcfce7;
+  color: #166534;
+}
+.shift-badge.shift-tối,
+.shift-badge.shift-toi {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+/* 5. Tips card (Hướng dẫn khám lâm sàng) */
+.widget-card.card-tips {
+  border-color: #fde68a;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);
+}
+.widget-card.card-tips:hover {
+  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.18);
+}
+.widget-card.card-tips .widget-header {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-bottom-color: #fde68a;
+}
+.widget-card.card-tips .widget-header h3 {
+  color: #92400e;
+}
+.tips-list {
+  list-style: none;
+  padding: 0.75rem 1.25rem 1rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.tips-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: #fffbeb;
+  border-left: 3px solid #f59e0b;
+}
+.tips-list li::before {
+  content: "✓";
+  font-weight: 800;
+  color: #d97706;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   DOCTOR DASHBOARD – Widget & Layout Improvements
+   ══════════════════════════════════════════════════════════════ */
+
+/* 1. Hạ "Danh sách Ca khám & Bệnh nhân" xuống cách stat-grid hơn */
+.doctor-main-grid {
+  margin-top: 2.5rem !important;
+}
+
+/* 2. Sidebar widget container */
+.doctor-side-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 3. Base widget card */
+.widget-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1.5px solid #e0f0fb;
+  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.widget-card:hover {
+  box-shadow: 0 8px 32px rgba(2, 132, 199, 0.15);
+}
+
+/* Widget header */
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1.5px solid #e0f0fb;
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+}
+.widget-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0369a1;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.widget-header .small-link {
+  font-size: 0.8rem;
+  color: #0284c7;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  background: #e0f0fb;
+  transition: background 0.15s;
+}
+.widget-header .small-link:hover {
+  background: #bae6fd;
+}
+
+/* 4. Schedule timeline */
+.schedule-timeline {
+  list-style: none;
+  padding: 0.5rem 1.25rem 1rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.timeline-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.85rem;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  transition: background 0.15s;
+}
+.timeline-item:hover {
+  background: #f0f9ff;
+  border-color: #bae6fd;
+}
+.today-item {
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+  border-color: #0284c7 !important;
+}
+.timeline-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.timeline-date strong {
+  font-size: 0.85rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+.badge-today {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: #0284c7;
+  color: #fff;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+}
+.timeline-shift {
+  display: flex;
+  align-items: center;
+}
+.shift-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+}
+.shift-badge.shift-sáng,
+.shift-badge.shift-sang {
+  background: #fef9c3;
+  color: #92400e;
+}
+.shift-badge.shift-chiều,
+.shift-badge.shift-chieu {
+  background: #fce7f3;
+  color: #9d174d;
+}
+.shift-badge.shift-cả-ngày,
+.shift-badge.shift-ca-ngay,
+.shift-badge.shift-cả-ngay {
+  background: #dcfce7;
+  color: #166534;
+}
+.shift-badge.shift-tối,
+.shift-badge.shift-toi {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+/* 5. Tips card (Hướng dẫn khám lâm sàng) */
+.widget-card.card-tips {
+  border-color: #fde68a;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);
+}
+.widget-card.card-tips:hover {
+  box-shadow: 0 8px 32px rgba(245, 158, 11, 0.18);
+}
+.widget-card.card-tips .widget-header {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-bottom-color: #fde68a;
+}
+.widget-card.card-tips .widget-header h3 {
+  color: #92400e;
+}
+.tips-list {
+  list-style: none;
+  padding: 0.75rem 1.25rem 1rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.tips-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.5;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  background: #fffbeb;
+  border-left: 3px solid #f59e0b;
+}
+.tips-list li::before {
+  content: "✓";
+  font-weight: 800;
+  color: #d97706;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+
+/* ── SVG Icon trong nav & stat-icon hiển thị đúng kích thước ── */
+.nav-icon svg {
+  display: inline-block;
+  vertical-align: -3px;
+  flex-shrink: 0;
+}
+.stat-icon svg {
+  display: block;
+}
+.empty-icon svg {
+  display: block;
+  margin: 0 auto;
+  color: #94a3b8;
+}
+.empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  background: #f1f5f9;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+}
+
+
+/* ── KHOẢNG CÁCH THOÁNG ĐÃNG CHO CỔNG KHÁCH HÀNG & LỊCH HẸN ── */
+.customer-hero-banner {
+  margin-bottom: 2.5rem !important;
+}
+
+.stats-grid {
+  margin-bottom: 3rem !important;
+}
+
+.appointments-table-card {
+  margin-top: 2rem !important;
+}
+
+.empty-state .btn {
+  margin-top: 2rem !important;
+}
+
+.empty-state p {
+  margin-bottom: 0.5rem;
+}
+
+
+/* ── TIÊU ĐỀ PHÂN MỤC 1 & 2 TRÊN DASHBOARD THU NGÂN / QUẢN TRỊ ── */
+.table-section-heading,
+.table-card-section .section-card-header h2 {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  letter-spacing: -0.01em;
+  margin: 0 !important;
+  line-height: 1.4 !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   ADMIN ACTIONS & MESSAGES STYLING
+   ══════════════════════════════════════════════════════════════ */
+
+/* 1. Đưa tất cả nút thao tác (Sửa, Khám, Xóa, Khóa, Reset MK) về 1 hàng ngang */
+.action-buttons-inline {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  flex-wrap: nowrap !important;
+}
+
+.action-buttons-inline form,
+.action-buttons-inline .inline-form {
+  display: inline-flex !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.action-buttons-inline .btn {
+  margin: 0 !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+}
+
+/* 2. Phần Tin nhắn liên hệ mới: Hạ xuống và làm nổi bật */
+.messages-section {
+  margin-top: 3.5rem !important;
+}
+
+.messages-section .section-card-header {
+  margin-bottom: 1.25rem !important;
+}
+
+.message-card-modern {
+  background: #ffffff !important;
+  border-radius: 14px !important;
+  border: 1.5px solid #e2e8f0 !important;
+  padding: 1.25rem 1.5rem !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+  transition: transform 0.15s, box-shadow 0.15s !important;
+}
+
+.message-card-modern:hover {
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1) !important;
+}
+
+.message-card-modern.unread-card {
+  border-left: 4.5px solid #0284c7 !important;
+  border-color: #bae6fd !important;
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%) !important;
+}
+
+.msg-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-top: 1rem !important;
+}
+
+.msg-actions form,
+.msg-actions .inline-form {
+  display: inline-flex !important;
+  margin: 0 !important;
 }

@@ -50,70 +50,70 @@
 
       {% if current_user.role == 'DOCTOR' %}
         <a href="{{ url_for('doctor_dashboard') }}" class="portal-nav-item {% if request.endpoint == 'doctor_dashboard' %}active{% endif %}">
-          <span class="nav-icon">🩺</span> Ca khám & Lịch hẹn
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2a2 2 0 0 0-2 2v5H4a2 2 0 0 0-2 2v2c0 1.1.9 2 2 2h5v5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-5h5a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-5V4a2 2 0 0 0-2-2h-2z"/></svg></span> Ca khám & Lịch hẹn
         </a>
         <a href="{{ url_for('doctor_schedules') }}" class="portal-nav-item {% if request.endpoint == 'doctor_schedules' %}active{% endif %}">
-          <span class="nav-icon">📅</span> Lịch trực cá nhân
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span> Lịch trực cá nhân
         </a>
         <a href="{{ url_for('doctor_profile') }}" class="portal-nav-item {% if request.endpoint == 'doctor_profile' %}active{% endif %}">
-          <span class="nav-icon">👨‍⚕️</span> Hồ sơ & Chuyên môn
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Hồ sơ & Chuyên môn
         </a>
 
       {% elif current_user.role == 'CUSTOMER' %}
         <a href="{{ url_for('dashboard') }}" class="portal-nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}">
-          <span class="nav-icon">📊</span> Tổng quan
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span> Tổng quan
         </a>
         <a href="{{ url_for('pets') }}" class="portal-nav-item {% if request.endpoint in ('pets', 'pet_form', 'vaccinations') %}active{% endif %}">
-          <span class="nav-icon">🐾</span> Thú cưng của tôi
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5.172C10 3.782 8.423 2.679 6.5 3c-2.823.47-4.113 6.006-4 7 .08.703 1.725 1.722 3.656 1 1.261-.472 1.96-1.45 2.344-2.5"/><path d="M14.267 5.172c0-1.39 1.577-2.493 3.5-2.172 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.96-1.45-2.344-2.5"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75z"/><path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444c0-1.061-.162-2.2-.493-3.309m-9.243-6.082A8.801 8.801 0 0 1 12 5c.78 0 1.5.108 2.161.306"/></svg></span> Thú cưng của tôi
         </a>
         <a href="{{ url_for('appointments') }}" class="portal-nav-item {% if request.endpoint in ('appointments', 'medical_record_detail') %}active{% endif %}">
-          <span class="nav-icon">🗓️</span> Lịch hẹn & Bệnh án
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span> Lịch hẹn & Bệnh án
         </a>
         <a href="{{ url_for('book_appointment') }}" class="portal-nav-item">
-          <span class="nav-icon">➕</span> Đặt lịch khám mới
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span> Đặt lịch khám mới
         </a>
         <a href="{{ url_for('profile') }}" class="portal-nav-item {% if request.endpoint == 'profile' %}active{% endif %}">
-          <span class="nav-icon">👤</span> Thông tin cá nhân
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Thông tin cá nhân
         </a>
 
       {% elif current_user.role == 'ADMIN' %}
         <a href="{{ url_for('admin_dashboard') }}" class="portal-nav-item {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
-          <span class="nav-icon">📈</span> Dashboard Quản trị
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span> Dashboard Quản trị
         </a>
         <a href="{{ url_for('admin_appointment_form') }}" class="portal-nav-item {% if request.endpoint == 'admin_appointment_form' %}active{% endif %}">
-          <span class="nav-icon">➕</span> Tạo lịch hẹn thủ công
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></span> Tạo lịch hẹn thủ công
         </a>
         <a href="{{ url_for('admin_staff') }}" class="portal-nav-item {% if request.endpoint == 'admin_staff' %}active{% endif %}">
-          <span class="nav-icon">👥</span> Quản lý Bác sĩ & Nhân sự
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Quản lý Bác sĩ & Nhân sự
         </a>
         <a href="{{ url_for('admin_services') }}" class="portal-nav-item {% if request.endpoint == 'admin_services' %}active{% endif %}">
-          <span class="nav-icon">💊</span> Danh mục Dịch vụ
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0h10m-10 0H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></span> Danh mục Dịch vụ
         </a>
         <a href="{{ url_for('admin_schedules') }}" class="portal-nav-item {% if request.endpoint == 'admin_schedules' %}active{% endif %}">
-          <span class="nav-icon">📅</span> Phân ca Lịch trực Bác sĩ
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span> Phân ca Lịch trực Bác sĩ
         </a>
         <a href="{{ url_for('profile') }}" class="portal-nav-item {% if request.endpoint == 'profile' %}active{% endif %}">
-          <span class="nav-icon">⚙️</span> Cấu hình tài khoản
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span> Cấu hình tài khoản
         </a>
 
       {% elif current_user.role == 'CASHIER' %}
         <a href="{{ url_for('cashier_dashboard') }}" class="portal-nav-item {% if request.endpoint in ('cashier_dashboard', 'create_invoice') %}active{% endif %}">
-          <span class="nav-icon">💳</span> Duyệt lịch & Hóa đơn
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span> Duyệt lịch & Hóa đơn
         </a>
         <a href="{{ url_for('profile') }}" class="portal-nav-item {% if request.endpoint == 'profile' %}active{% endif %}">
-          <span class="nav-icon">👤</span> Tài khoản cá nhân
+          <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Tài khoản cá nhân
         </a>
       {% endif %}
 
       <div class="nav-section-title" style="margin-top:1.5rem;">HỆ THỐNG</div>
       <a href="{{ url_for('notifications') }}" class="portal-nav-item {% if request.endpoint == 'notifications' %}active{% endif %}">
-        <span class="nav-icon">🔔</span> Thông báo
+        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span> Thông báo
         {% if unread_notifications > 0 %}
           <span class="badge-count">{{ unread_notifications }}</span>
         {% endif %}
       </a>
       <a href="{{ url_for('index') }}" class="portal-nav-item" target="_blank">
-        <span class="nav-icon">🌐</span> Xem Website công khai ↗
+        <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span> Xem Website công khai ↗
       </a>
     </nav>
 
@@ -121,7 +121,7 @@
       <form method="post" action="{{ url_for('logout') }}" class="w-100">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <button class="btn btn-outline-danger btn-block">
-          <span>🚪</span> Đăng xuất
+          Đăng xuất
         </button>
       </form>
     </div>
@@ -132,7 +132,7 @@
     <!-- Top Bar inside Portal -->
     <header class="portal-topbar">
       <button class="portal-sidebar-toggle" id="portalSidebarToggle" aria-label="Toggle Sidebar">
-        <span>☰</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
 
       <div class="portal-title-area">
@@ -140,12 +140,6 @@
       </div>
 
       <div class="portal-topbar-actions">
-        <a href="{{ url_for('notifications') }}" class="icon-notification-btn" title="Thông báo">
-          🔔
-          {% if unread_notifications > 0 %}
-            <span class="notification-dot"></span>
-          {% endif %}
-        </a>
         <div class="user-greeting">
           <span>Xin chào, <strong>{{ current_user.full_name }}</strong></span>
         </div>
