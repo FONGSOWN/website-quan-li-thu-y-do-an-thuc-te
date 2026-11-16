@@ -3,9 +3,13 @@
 
 {% block body %}
 <div class="print-page-wrap">
-  <div class="no-print d-flex justify-between align-center mb-4 container" style="padding-top:20px;">
-    <a href="javascript:history.back()" class="btn btn-outline btn-sm">← Quay lại</a>
-    <button onclick="window.print()" class="btn btn-primary btn-sm">🖨️ In / Lưu Hóa đơn PDF</button>
+  <div class="no-print d-flex justify-between align-center mb-4 container" style="max-width: 760px; padding-top: 24px;">
+    <a href="javascript:history.back()" class="btn btn-outline btn-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>Quay lại
+    </a>
+    <button onclick="window.print()" class="btn btn-primary btn-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>In / Lưu Hóa đơn PDF
+    </button>
   </div>
 
   <div class="invoice-paper-sheet">
@@ -18,11 +22,11 @@
             <path d="M20 12v16M12 20h16" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
           </svg>
           <div>
-            <h2 class="m-0 text-primary">PetCare Animal Hospital</h2>
+            <h2 class="m-0 text-primary" style="font-size: 1.35rem;">PetCare Animal Hospital</h2>
             <small class="text-muted font-bold">Bệnh viện & Trung tâm Y tế Thú y Quốc tế</small>
           </div>
         </div>
-        <p class="text-sm text-muted mt-2">
+        <p class="text-sm text-muted mt-2" style="line-height: 1.5;">
           123 Đường Hoa Sen, Q.1, TP. Hồ Chí Minh<br>
           Hotline: 0900 123 456 · Email: ketoan@petcare.vn
         </p>
@@ -32,7 +36,7 @@
         <h1 class="invoice-title">HÓA ĐƠN Y TẾ</h1>
         <p class="m-0"><strong>Số HĐ:</strong> #INV-{{ invoice.id }}</p>
         <p class="m-0"><strong>Ngày lập:</strong> {{ invoice.paid_at }}</p>
-        <p class="m-0"><strong>Thanh toán:</strong> <span class="badge-payment">{{ invoice.payment_method }}</span></p>
+        <p class="m-0 mt-1"><strong>Thanh toán:</strong> <span class="badge-payment">{{ invoice.payment_method }}</span></p>
       </div>
     </div>
 
@@ -40,20 +44,20 @@
 
     <!-- Customer & Pet Info -->
     <div class="invoice-info-grid">
-      <div>
+      <div class="info-card-cell">
         <h4 class="text-muted text-xs uppercase">Khách hàng</h4>
         <strong class="d-block">{{ invoice.full_name }}</strong>
-        <span class="text-sm">Điện thoại: {{ invoice.phone }}</span>
+        <span class="text-sm text-muted">SĐT: {{ invoice.phone }}</span>
       </div>
-      <div>
+      <div class="info-card-cell">
         <h4 class="text-muted text-xs uppercase">Bệnh nhân thú cưng</h4>
         <strong class="d-block">{{ invoice.pet_name }}</strong>
-        <span class="text-sm">Dịch vụ: {{ invoice.service }}</span>
+        <span class="text-sm text-muted">Dịch vụ: {{ invoice.service }}</span>
       </div>
-      <div>
+      <div class="info-card-cell">
         <h4 class="text-muted text-xs uppercase">Bác sĩ phụ trách</h4>
         <strong class="d-block">{{ invoice.doctor_name or 'Đội ngũ Bác sĩ PetCare' }}</strong>
-        <span class="text-sm">Ngày khám: {{ invoice.appointment_date }}</span>
+        <span class="text-sm text-muted">Ngày khám: {{ invoice.appointment_date }}</span>
       </div>
     </div>
 
@@ -61,41 +65,41 @@
     <table class="invoice-items-table mt-4">
       <thead>
         <tr>
-          <th>STT</th>
+          <th class="col-stt">STT</th>
           <th>Nội dung chi phí / Khoản mục y tế</th>
-          <th class="text-right">Thành tiền (VNĐ)</th>
+          <th class="col-amount">Thành tiền (VNĐ)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>1</td>
+          <td class="col-stt">1</td>
           <td>
             <strong>Phí khám chuyên khoa & dịch vụ chính</strong>
             <small class="d-block text-muted">{{ invoice.service }}</small>
           </td>
-          <td class="text-right">{{ '{:,.0f}'.format(invoice.examination_fee) }} đ</td>
+          <td class="col-amount">{{ '{:,.0f}'.format(invoice.examination_fee) }} đ</td>
         </tr>
         {% if invoice.medicine_fee > 0 %}
           <tr>
-            <td>2</td>
+            <td class="col-stt">2</td>
             <td>
               <strong>Tiền thuốc điều trị & vật tư y tế</strong>
             </td>
-            <td class="text-right">{{ '{:,.0f}'.format(invoice.medicine_fee) }} đ</td>
+            <td class="col-amount">{{ '{:,.0f}'.format(invoice.medicine_fee) }} đ</td>
           </tr>
         {% endif %}
         {% for item in items %}
           <tr>
-            <td>{{ loop.index + 2 }}</td>
+            <td class="col-stt">{{ loop.index + (2 if invoice.medicine_fee > 0 else 1) }}</td>
             <td>{{ item.description }}</td>
-            <td class="text-right">{{ '{:,.0f}'.format(item.amount) }} đ</td>
+            <td class="col-amount">{{ '{:,.0f}'.format(item.amount) }} đ</td>
           </tr>
         {% endfor %}
       </tbody>
       <tfoot>
         <tr class="total-row">
           <td colspan="2" class="text-right"><strong>TỔNG TIỀN THANH TOÁN:</strong></td>
-          <td class="text-right"><strong class="grand-total">{{ '{:,.0f}'.format(invoice.total_amount) }} VNĐ</strong></td>
+          <td class="col-amount"><strong class="grand-total">{{ '{:,.0f}'.format(invoice.total_amount) }} VNĐ</strong></td>
         </tr>
       </tfoot>
     </table>
@@ -109,15 +113,15 @@
     <div class="invoice-signatures-row mt-5">
       <div class="sig-col text-center">
         <p><strong>Người nộp tiền</strong></p>
-        <small>(Ký và ghi rõ họ tên)</small>
+        <small class="text-muted">(Ký và ghi rõ họ tên)</small>
         <div class="sig-space-invoice"></div>
-        <p>{{ invoice.full_name }}</p>
+        <p><strong>{{ invoice.full_name }}</strong></p>
       </div>
       <div class="sig-col text-center">
         <p><strong>Người lập phiếu & Thu ngân</strong></p>
-        <small>(Ký và đóng dấu đã thu tiền)</small>
+        <small class="text-muted">(Ký và đóng dấu đã thu tiền)</small>
         <div class="sig-space-invoice"></div>
-        <p>PetCare Cashier</p>
+        <p><strong>PetCare Cashier</strong></p>
       </div>
     </div>
   </div>

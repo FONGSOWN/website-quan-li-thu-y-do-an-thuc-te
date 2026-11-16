@@ -4411,11 +4411,75 @@ tr:hover td {
 }
 
 /* ── Invoice Paper Sheet ────────────────────────────────────────────── */
+/* ── Input With Currency Unit (Làm gọn bảng giá tiền) ──────────────── */
+.input-with-unit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 380px;
+}
+
+.input-with-unit .form-control {
+  width: 100%;
+  padding-right: 68px !important;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: #ffffff;
+}
+
+.input-with-unit .unit-tag {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #475569;
+  background: #f1f5f9;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  pointer-events: none;
+  line-height: 1.2;
+}
+
+/* ── Extra Items Section & Spacing ─────────────────────────────────── */
+.pricing-summary-card {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 14px;
+  border: 1px solid var(--border-light);
+}
+
+.extra-items-card {
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  margin-top: 1.75rem;
+  margin-bottom: 2.75rem;
+  /* Cách xa rõ ràng khỏi nút thanh toán */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.empty-items-placeholder {
+  border: 1px dashed #e2e8f0;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.item-row-animate {
+  animation: pageFadeIn 0.25s ease-out;
+}
+
+/* ── Invoice Paper Sheet (Hóa đơn In / Lưu PDF gọn gàng) ───────────── */
 .invoice-paper-sheet {
   background: #ffffff;
   max-width: 760px;
   margin: 0 auto 3rem;
-  padding: 3rem;
+  padding: 2.75rem 3rem;
   box-shadow: var(--shadow-card);
   border-radius: 16px;
   border: 1px solid var(--border-light);
@@ -4428,66 +4492,150 @@ tr:hover td {
 }
 
 .invoice-title {
-  font-size: 1.8rem;
+  font-size: 1.75rem;
   font-weight: 800;
   color: var(--primary);
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
 }
 
 .badge-payment {
   background: #dcfce7;
   color: #15803d;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 0.78rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
 }
 
 .invoice-divider {
   border: none;
-  border-top: 2px dashed #cbd5e1;
+  border-top: 1.5px dashed #cbd5e1;
   margin: 1.5rem 0;
 }
 
 .invoice-info-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
+  gap: 1.25rem;
+  background: #f8fafc;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
   margin-bottom: 2rem;
+}
+
+.info-card-cell h4 {
+  margin: 0 0 6px 0;
+  color: #64748b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.info-card-cell strong {
+  display: block;
+  font-size: 1.05rem;
+  color: #0f172a;
+  margin-bottom: 3px;
+  word-break: break-word;
+}
+
+.info-card-cell span {
+  display: block;
+  font-size: 0.84rem;
+  color: #475569;
 }
 
 .invoice-items-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .invoice-items-table th {
-  background: #f8fafc;
-  padding: 10px 14px;
-  font-size: 0.82rem;
-  border-bottom: 2px solid #cbd5e1;
+  background: #f1f5f9;
+  padding: 11px 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #cbd5e1;
 }
 
 .invoice-items-table td {
-  padding: 12px 14px;
+  padding: 12px 16px;
   border-bottom: 1px solid #f1f5f9;
+  font-size: 0.92rem;
+}
+
+.invoice-items-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.invoice-items-table .col-stt {
+  width: 55px;
+  text-align: center;
+}
+
+.invoice-items-table .col-amount {
+  width: 190px;
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .total-row td {
-  border-top: 2px solid #0f172a;
-  padding-top: 14px;
+  background: #f8fafc;
+  border-top: 2px solid #0284c7;
+  padding: 14px 16px;
 }
 
 .grand-total {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   color: #0284c7;
+}
+
+.invoice-note {
+  background: #f8fafc;
+  border-left: 3px solid #0284c7;
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
 }
 
 .invoice-signatures-row {
   display: flex;
   justify-content: space-around;
+  margin-top: 3rem;
 }
 
 .sig-space-invoice {
-  height: 60px;
+  height: 65px;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+  }
+
+  .print-page-wrap {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .invoice-paper-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
 }
 
 /* ── Animations & Transitions ───────────────────────────────────────── */
@@ -5387,7 +5535,7 @@ main {
   .about-clinic-card {
     padding: 2rem 1.4rem !important;
   }
-  
+
   .feature-item {
     padding: 1rem 1.2rem !important;
     gap: 1rem !important;
@@ -5912,6 +6060,7 @@ main {
   overflow: hidden;
   transition: box-shadow 0.2s;
 }
+
 .widget-card:hover {
   box-shadow: 0 8px 32px rgba(2, 132, 199, 0.15);
 }
@@ -5925,6 +6074,7 @@ main {
   border-bottom: 1.5px solid #e0f0fb;
   background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
 }
+
 .widget-header h3 {
   font-size: 1rem;
   font-weight: 700;
@@ -5934,6 +6084,7 @@ main {
   align-items: center;
   gap: 0.4rem;
 }
+
 .widget-header .small-link {
   font-size: 0.8rem;
   color: #0284c7;
@@ -5944,6 +6095,7 @@ main {
   background: #e0f0fb;
   transition: background 0.15s;
 }
+
 .widget-header .small-link:hover {
   background: #bae6fd;
 }
@@ -5957,6 +6109,7 @@ main {
   flex-direction: column;
   gap: 0.6rem;
 }
+
 .timeline-item {
   display: flex;
   align-items: center;
@@ -5967,24 +6120,29 @@ main {
   border: 1px solid #e2e8f0;
   transition: background 0.15s;
 }
+
 .timeline-item:hover {
   background: #f0f9ff;
   border-color: #bae6fd;
 }
+
 .today-item {
   background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
   border-color: #0284c7 !important;
 }
+
 .timeline-date {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
+
 .timeline-date strong {
   font-size: 0.85rem;
   color: #1e293b;
   font-weight: 600;
 }
+
 .badge-today {
   font-size: 0.7rem;
   font-weight: 700;
@@ -5993,32 +6151,38 @@ main {
   padding: 0.15rem 0.5rem;
   border-radius: 20px;
 }
+
 .timeline-shift {
   display: flex;
   align-items: center;
 }
+
 .shift-badge {
   font-size: 0.75rem;
   font-weight: 700;
   padding: 0.2rem 0.65rem;
   border-radius: 20px;
 }
+
 .shift-badge.shift-sáng,
 .shift-badge.shift-sang {
   background: #fef9c3;
   color: #92400e;
 }
+
 .shift-badge.shift-chiều,
 .shift-badge.shift-chieu {
   background: #fce7f3;
   color: #9d174d;
 }
+
 .shift-badge.shift-cả-ngày,
 .shift-badge.shift-ca-ngay,
 .shift-badge.shift-cả-ngay {
   background: #dcfce7;
   color: #166534;
 }
+
 .shift-badge.shift-tối,
 .shift-badge.shift-toi {
   background: #ede9fe;
@@ -6030,16 +6194,20 @@ main {
   border-color: #fde68a;
   box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);
 }
+
 .widget-card.card-tips:hover {
   box-shadow: 0 8px 32px rgba(245, 158, 11, 0.18);
 }
+
 .widget-card.card-tips .widget-header {
   background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
   border-bottom-color: #fde68a;
 }
+
 .widget-card.card-tips .widget-header h3 {
   color: #92400e;
 }
+
 .tips-list {
   list-style: none;
   padding: 0.75rem 1.25rem 1rem;
@@ -6048,6 +6216,7 @@ main {
   flex-direction: column;
   gap: 0.6rem;
 }
+
 .tips-list li {
   display: flex;
   align-items: flex-start;
@@ -6060,6 +6229,7 @@ main {
   background: #fffbeb;
   border-left: 3px solid #f59e0b;
 }
+
 .tips-list li::before {
   content: "✓";
   font-weight: 800;
@@ -6094,6 +6264,7 @@ main {
   overflow: hidden;
   transition: box-shadow 0.2s;
 }
+
 .widget-card:hover {
   box-shadow: 0 8px 32px rgba(2, 132, 199, 0.15);
 }
@@ -6107,6 +6278,7 @@ main {
   border-bottom: 1.5px solid #e0f0fb;
   background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
 }
+
 .widget-header h3 {
   font-size: 1rem;
   font-weight: 700;
@@ -6116,6 +6288,7 @@ main {
   align-items: center;
   gap: 0.4rem;
 }
+
 .widget-header .small-link {
   font-size: 0.8rem;
   color: #0284c7;
@@ -6126,6 +6299,7 @@ main {
   background: #e0f0fb;
   transition: background 0.15s;
 }
+
 .widget-header .small-link:hover {
   background: #bae6fd;
 }
@@ -6139,6 +6313,7 @@ main {
   flex-direction: column;
   gap: 0.6rem;
 }
+
 .timeline-item {
   display: flex;
   align-items: center;
@@ -6149,24 +6324,29 @@ main {
   border: 1px solid #e2e8f0;
   transition: background 0.15s;
 }
+
 .timeline-item:hover {
   background: #f0f9ff;
   border-color: #bae6fd;
 }
+
 .today-item {
   background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
   border-color: #0284c7 !important;
 }
+
 .timeline-date {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
+
 .timeline-date strong {
   font-size: 0.85rem;
   color: #1e293b;
   font-weight: 600;
 }
+
 .badge-today {
   font-size: 0.7rem;
   font-weight: 700;
@@ -6175,32 +6355,38 @@ main {
   padding: 0.15rem 0.5rem;
   border-radius: 20px;
 }
+
 .timeline-shift {
   display: flex;
   align-items: center;
 }
+
 .shift-badge {
   font-size: 0.75rem;
   font-weight: 700;
   padding: 0.2rem 0.65rem;
   border-radius: 20px;
 }
+
 .shift-badge.shift-sáng,
 .shift-badge.shift-sang {
   background: #fef9c3;
   color: #92400e;
 }
+
 .shift-badge.shift-chiều,
 .shift-badge.shift-chieu {
   background: #fce7f3;
   color: #9d174d;
 }
+
 .shift-badge.shift-cả-ngày,
 .shift-badge.shift-ca-ngay,
 .shift-badge.shift-cả-ngay {
   background: #dcfce7;
   color: #166534;
 }
+
 .shift-badge.shift-tối,
 .shift-badge.shift-toi {
   background: #ede9fe;
@@ -6212,16 +6398,20 @@ main {
   border-color: #fde68a;
   box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);
 }
+
 .widget-card.card-tips:hover {
   box-shadow: 0 8px 32px rgba(245, 158, 11, 0.18);
 }
+
 .widget-card.card-tips .widget-header {
   background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
   border-bottom-color: #fde68a;
 }
+
 .widget-card.card-tips .widget-header h3 {
   color: #92400e;
 }
+
 .tips-list {
   list-style: none;
   padding: 0.75rem 1.25rem 1rem;
@@ -6230,6 +6420,7 @@ main {
   flex-direction: column;
   gap: 0.6rem;
 }
+
 .tips-list li {
   display: flex;
   align-items: flex-start;
@@ -6242,6 +6433,7 @@ main {
   background: #fffbeb;
   border-left: 3px solid #f59e0b;
 }
+
 .tips-list li::before {
   content: "✓";
   font-weight: 800;
@@ -6257,14 +6449,17 @@ main {
   vertical-align: -3px;
   flex-shrink: 0;
 }
+
 .stat-icon svg {
   display: block;
 }
+
 .empty-icon svg {
   display: block;
   margin: 0 auto;
   color: #94a3b8;
 }
+
 .empty-icon {
   display: flex;
   align-items: center;

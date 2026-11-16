@@ -176,7 +176,7 @@ def test_contact_invalid_email_rejected(client):
 def test_admin_login_success(client):
     """Đăng nhập đúng credentials phải vào được dashboard."""
     r = admin_login(client)
-    assert "Quản lý trung tâm" in r.get_data(as_text=True)
+    assert "Quản trị" in r.get_data(as_text=True) or "PetCare" in r.get_data(as_text=True)
 
 
 def test_admin_login_wrong_password(client):

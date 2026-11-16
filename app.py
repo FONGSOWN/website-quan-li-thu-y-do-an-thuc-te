@@ -1339,9 +1339,20 @@ def create_app(test_config=None):
     @app.post("/admin/appointments/<int:appointment_id>/delete")
     @admin_required
     def delete_appointment(appointment_id):
-        get_db().execute("DELETE FROM appointments WHERE id=?", (appointment_id,))
-        get_db().commit()
-        flash("Đã xóa lịch hẹn thành công.", "success")
+        database = get_db()
+        # Xóa các hóa đơn và mục phụ thu liên kết nếu có (tránh lỗi khóa ngoại)
+        invoices = database.execute("SELECT id FROM invoices WHERE appointment_id=?", (appointment_id,)).fetchall()
+        for inv in invoices:
+            database.execute("DELETE FROM invoice_items WHERE invoice_id=?", (inv["id"],))
+            database.execute("DELETE FROM invoices WHERE id=?", (inv["id"],))
+        
+        # Xóa hồ sơ bệnh án liên kết nếu có
+        database.execute("DELETE FROM medical_records WHERE appointment_id=?", (appointment_id,))
+        
+        # Xóa lịch hẹn
+        database.execute("DELETE FROM appointments WHERE id=?", (appointment_id,))
+        database.commit()
+        flash("Đã xóa lịch hẹn và dữ liệu liên quan thành công.", "success")
         return redirect(url_for("admin_dashboard"))
 
     # ── LIÊN HỆ & TIN NHẮN ──────────────────────────────────────────────
